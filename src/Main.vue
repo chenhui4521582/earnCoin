@@ -20,14 +20,16 @@ import Login from '@/components/login/login'
 import { newUtils } from '@/utils/utils'
 export default {
   name: 'APP',
-  data () {
-    return {
-      showCloseTip: false,
-      transitionName: ''
-    }
-  },
+  data: () => ({
+    transitionName: '',
+  }),
   components: {
     Login
+  },
+  computed: {
+    keepAlive () {
+      return !!(this.$route.meta && this.$route.meta.keepAlive)
+    },
   },
   watch: {
     $route (to, from) {

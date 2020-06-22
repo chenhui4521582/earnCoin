@@ -3,27 +3,19 @@
     <transition name="mask">
       <div class="modal-mask" v-show="show"></div>
     </transition>
-    <div class="modal-content" :class="{'showWidth':isWidth}">
-      <div class="header" :class="{notitile:!title}">
+    <div class="modal-content">
+      <div class="header">
         <span>{{title}}</span>
+        <div class="close-icon"  v-if="closeIconShow" @click="closeModal"></div>
       </div>
-      <div class="content" :class="{'line': type==2}">
+      <div class="content">
         <slot></slot>
       </div>
-      <div class="footer-warp" v-if="type == 1 && buttonShow">
+      <div class="footer-warp" v-if="buttonShow">
         <slot name="footer">
-          <wf-button v-if="saveButtonShow" :long=true @click="save">{{saveText}}</wf-button>
+          <div class="btn" v-if="saveButtonShow" @click="save">{{saveText}}</div>
         </slot>
       </div>
-      <div class="btns" v-if="type == 2 && buttonShow">
-        <slot name="footer">
-          <div class="btn cancel" v-if="closeButtonShow" @click="close">{{closeText}}</div>
-          <div class="btn confirm" v-if="saveButtonShow" @click="save">{{saveText}}</div>
-        </slot>
-      </div>
-      <slot name="other"></slot>
-      <div class="close-icon" v-if="(type == 1 && closeIconShow)||(type == 2 && closeIcon2Show)"
-        @click="closeModal"></div>
     </div>
   </div>
 </template>
@@ -37,10 +29,6 @@ export default {
     }
   },
   props: {
-    isWidth: {
-      type: Boolean,
-      default: false
-    },
     value: {
       type: Boolean,
       default: false
@@ -52,15 +40,7 @@ export default {
       type: String,
       default: '我是标题'
     },
-    closeText: {
-      type: String,
-      default: '取消'
-    },
     closeIconShow: {
-      type: Boolean,
-      default: true
-    },
-    closeButtonShow: {
       type: Boolean,
       default: true
     },
@@ -76,18 +56,10 @@ export default {
       type: Boolean,
       default: true
     },
-    buttonOptions: {
-      type: Object,
-      default: () => ({})
-    },
     centerScroll: {
       type: Boolean,
       default: false
-    },
-    closeIcon2Show: {//type2 加关闭按钮
-      type: Boolean,
-      default: false
-    },
+    }
   },
   watch: {
     value (val) {
@@ -145,83 +117,57 @@ export default {
 }
 .modal-content {
   position: absolute;
-  width: 470px;
-  min-height: 200px;
+  width: 5rem;
+  min-height: 2.9rem;
   z-index: 2;
-  background-color: #ffffff;
-  border-radius: 32px;
-  top: 42%;
+  border-radius: 0 0 .5rem .5rem;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-
-  &.showWidth {
-    width: 600px;
-  }
-
   .header {
-    margin-top: 30px;
-    width: 100%;
     position: relative;
-    font-size: 28px;
-    font-weight: bold;
-    color: #000000;
-    line-height: 40px;
+    width: 100%;
+    height: .9rem;
+    line-height: .9rem;
     text-align: center;
-    &:not(.notitile) {
-      height: 40px;
-      margin-top: 36px;
-    }
+    font-size: .32rem;
+    font-weight: bold;
+    color: #252525;
+    background: url(./assets/title.png) no-repeat center top;
+    background-size: 100% 100%;
   }
   .content {
-    padding: 8px 30px 23px;
-    &.line {
-      border-bottom: 2px solid #e6e6e6;
-    }
+    min-height: 2.7rem;
+    padding: .2rem;
+    background: #fff;
   }
   .footer-warp {
-    margin-bottom: 30px;
-    height: 70px;
+    margin-top: -1px;
+    height: 1.06rem;
     width: 100%;
-    text-align: center;
-    box-sizing: border-box;
-    padding: 0 30px;
+    background: #fff;
+    border-radius:0 0 .5rem .5rem;
   }
-  .btns {
-    height: 90px;
-    width: 100%;
+  .btn {
+    margin:0 auto .36rem;
+    width: 2.4rem;
+    height: .7rem;
+    line-height: .7rem;
     text-align: center;
-    box-sizing: border-box;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    .btn {
-      margin: 0 10px;
-      width: 100%;
-      height: 90px;
-      line-height: 90px;
-      font-size: 24px;
-    }
-    .cannel {
-      color: #000000;
-    }
-    .confirm {
-      color: #ff4141;
-    }
+    font-size: .26rem;
+    font-weight: bold;
+    text-align: center;
+    background: #FFCA00;
+    border-radius: .35rem;
   }
   .close-icon {
     position: absolute;
-    height: 18px;
-    width: 18px;
-    top: 20px;
-    right: 20px;
-    text-align: center;
-    line-height: 40px;
+    height: .2rem;
+    width: .2rem;
+    top: .37rem;
+    right: .31rem;
     background: url('./assets/close.png') no-repeat;
     background-size: 100% 100%;
-    i {
-      font-size: 18px;
-      color: #888888;
-    }
   }
 }
 // 动画

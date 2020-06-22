@@ -7,6 +7,7 @@ import './utils/rem'
 Vue.use(CommonComponents)
 Vue.config.productionTip = false
 new Vue({
+  router,
   store,
   render: h => h(App)
 }).$mount('#app')
