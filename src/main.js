@@ -1,10 +1,11 @@
 import Vue from 'vue'
-import App from './App.vue'
-import router from './router'
-import store from './store'
-
+import App from '@/Main.vue'
+import router from '@/router/router'
+import store from '@/store'
+import CommonComponents from '@/components'
+import './utils/rem'
+Vue.use(CommonComponents)
 Vue.config.productionTip = false
-
 new Vue({
   router,
   store,
