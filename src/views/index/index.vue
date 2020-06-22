@@ -1,6 +1,6 @@
 <template>
   
-</emplate>
+</template>
 <script>
 export default {
   name: 'Index'  
