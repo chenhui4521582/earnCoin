@@ -25,12 +25,12 @@ export default {
     transform:translate(-50%,-50%);
     text-align: center;
     img{
-        width: 152px;
+        width: 1.52rem;
     }
     p{
-        font-size:20px;
+        font-size: .2rem;
         color: #BBBBBB;
-        margin-top: 20px;
+        margin-top: .2rem;
     }
 }
 </style>

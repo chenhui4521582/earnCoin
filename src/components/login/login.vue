@@ -221,46 +221,46 @@ export default {
 <style lang="less" scoped>
 .login-btn {
   position: fixed;
-  bottom: 110px;
+  bottom: 1.1rem;
   left: 0;
   z-index: 99;
   .fps {
-    padding: 10px 20px;
+    padding: .1rem .2rem;
     background: rgba(0,25,255,.6);
     p{
-      margin-bottom: 10px;
-      font-size: 24px;
+      margin-bottom: .1rem;
+      font-size: .24rem;
       color: #FFF;
     }
     .btn {
-      margin-top: 10px;
-      padding: 10px;
+      margin-top: .1rem;
+      padding: .1rem;
       text-align: center;
-      font-size: 24px;
+      font-size: .24rem;
       background: rgba(182,182,182, .6);
-      border-radius: 28px;
+      border-radius: .28rem;
       color: #FFF;
     }
     .user,.pwd {
-      margin-right: 5px;
-      padding-left: 5px;
-      width: 200px;
-      height: 40px;
+      margin-right: .05rem;
+      padding-left: .05rem;
+      width: 2rem;
+      height: .4rem;
       background: rgba(255,255,255, .6);
       color: #000;
     }
   }
   .validate {
     .nav {
-      margin: 15px 0;
-      font-size: 24px;
+      margin: .15rem 0;
+      font-size: .24rem;
       color: #888888;
       display: flex;
       justify-content: space-between;
       .item {
-        padding: 10px 20px;
+        padding: .1rem .2rem;
         border: 1px solid #eee;
-        border-radius: 16px;
+        border-radius: .16rem;
         &.active {
           background: #ff4141;
           color: #fff;
@@ -269,11 +269,11 @@ export default {
     }
     .form {
       .form-group {
-        margin-bottom: 20px;
-        height: 70px;
-        padding: 15px 0 15px 15px;
+        margin-bottom: .2rem;
+        height: .7rem;
+        padding: .15rem 0 .15rem .15rem;
         background: #F7F7F7;
-        border-radius: 16px;
+        border-radius: .16rem;
         display: flex;
         justify-content: flex-start;
         align-items: center;
@@ -282,19 +282,19 @@ export default {
         }
         p {
           width: 100%;
-          font-size: 24px;
+          font-size: .24rem;
           color: #000000;
         }
         &.pwd {
-          margin-bottom: 24px;
+          margin-bottom: .24rem;
         }
         &.code {
-          margin-bottom: 24px;
+          margin-bottom: .24rem;
           .send-code {
-            width: 220px;
+            width: 2.2rem;
             text-align: center;
             color: #FF4141;
-            font-size: 24px;
+            font-size: .24rem;
             border-left: 1px solid #e6e6e6;
           }
         }
