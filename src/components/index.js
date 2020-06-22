@@ -1,11 +1,14 @@
 import Modal from './modal/modal.vue'
 import Toast from './toast/toast'
+import Loading from './loading/loading'
+import NoData from './noData/noData'
 import Filters from './Filters'
 
 // 自定义全局组件
 const components = [
   Modal,
-  loading
+  Loading,
+  NoData
 ]
 
 const install = function (Vue) {

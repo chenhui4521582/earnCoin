@@ -7,8 +7,15 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Home',
-      component: () => import(/* webpackChunkName: "Home" */ '../views/Home')
+      name: 'Index',
+      component: () => import(/* webpackChunkName: "Home" */ '../views/index/')
+    },
+    {
+      path: '/task',
+      name: 'Task',
+      component: () => import(/* webpackChunkName: "Home" */ '../views/task/task')
     }
+
+    
   ]
 })
