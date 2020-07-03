@@ -136,7 +136,10 @@ export default {
     },
     goTask () {
       this.$router.push({
-        name: 'task'
+        name: 'task',
+        query: {
+          currentIndex: '2'
+        }
       })
       this.$marchSetsPoint('A_H5PT0303003632')
     },

@@ -60,7 +60,8 @@ export default {
     }
   },
   mounted () {
-    this._getGreatTaskList()
+    const { currentIndex } = this.$route.query
+    this.handclick(currentIndex)
   }
 }
 </script>
