@@ -277,7 +277,6 @@ export default {
     /** 重新下载 **/
     resetDownload () {
       this.copy(() => {
-        console.log(this.taskDetail.download.split('?')[0])
         location.href = this.taskDetail.download.split('?')[0]
       })
     }

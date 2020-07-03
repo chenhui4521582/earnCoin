@@ -60,7 +60,7 @@ export default {
     }
   },
   mounted () {
-    const { currentIndex } = this.$route.query
+    const { currentIndex = 1 } = this.$route.query
     this.handclick(currentIndex)
   }
 }
