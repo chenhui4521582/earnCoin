@@ -209,7 +209,8 @@ export default {
             })
           } else {
             jumpUrl({
-              url: this.taskDetail.download
+              url: this.taskDetail.download,
+              gameId: this.taskDetail.gameId
             })
           }
         }
@@ -259,7 +260,8 @@ export default {
         this.$Toast('任务已领取,打开app试玩吧')
       }else{
         jumpUrl({
-          url: this.taskDetail.download
+          url: this.taskDetail.download,
+          gameId: this.taskDetail.gameId
         })
       }
     },
