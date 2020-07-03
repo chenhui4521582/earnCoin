@@ -45,8 +45,7 @@ export default {
       getMyTaskList().then( res=> {
         const {code, data, message} = _get(res, 'data')
         if(code == 200) {
-          // this.myTaskList = data
-          this.myTaskList = []
+          this.myTaskList = data
         }
       })
     },

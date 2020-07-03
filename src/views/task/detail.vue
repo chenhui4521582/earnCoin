@@ -107,6 +107,7 @@
 import Service from '@/components/servicePop/service'
 import UserGuide from './components/userGuide/userGuide'
 import { getTaskDetail, startTask, getAward } from '@/services/task'
+import { jumpUrl } from '@/utils/utils'
 import _get from 'lodash.get'
 export default {
   name: 'taskDetail',
@@ -207,8 +208,9 @@ export default {
               location.href = this.taskDetail.download.split('?')[0]
             })
           } else {
-            const { ACCESS_TOKEN, APP_CHANNEL } = localStorage
-            location.href = `${this.download}?channel=${APP_CHANNEL}&token=${ACCESS_TOKEN}&time=${Date.now()}`
+            jumpUrl({
+              url: this.taskDetail.download
+            })
           }
         }
       })
@@ -256,8 +258,9 @@ export default {
       if(this.taskDetail.gameType == 1) {
         this.$Toast('任务已领取,打开app试玩吧')
       }else{
-        const { ACCESS_TOKEN, APP_CHANNEL } = localStorage
-        location.href = `${this.download}?channel=${APP_CHANNEL}&token=${ACCESS_TOKEN}&time=${Date.now()}`
+        jumpUrl({
+          url: this.taskDetail.download
+        })
       }
     },
     /** 复制src到原生粘贴板 **/
