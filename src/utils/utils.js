@@ -194,6 +194,7 @@ class utils {
     this.openGame(URL, SDK, params)
   }
   async marchSetsPoint (_pointId, _pointObject) {
+    
     try {
       /** 获取用户信息 **/
       let userInfo = localStorage.getItem('user_Info')

@@ -13,7 +13,7 @@ Toast.install = function(Vue) {
   // 在挂载到body
   document.body.appendChild(instance.$el)
   // 注册全局方法
-  Vue.prototype.$Toast = (msg, callback, position, duration = 1500, ) => {
+  Vue.prototype.$Toast = (msg, callback, position, duration = 1500) => {
     clearTimeout(time)
     instance.message = msg
     instance.position = position

@@ -3,7 +3,7 @@ export default [
     name: 'filter',
     method: url => {
       if (url && !url.includes('://') && !url.includes('data:image')) {
-        return process.env.VUE_APP_FILE_HOST + url
+        return `//file.beeplaying.com${url}`
       } else {
         return url
       }
@@ -37,10 +37,15 @@ export default [
   {
     name: 'formatTime',
     method: (date, type) => {
-      if (date instanceof Date) {
+      if(!date) return
+      console.log(date)
+      if (typeof(date) == 'number') {
+        date = new Date(date)
+      } else if (date instanceof Date) {
         date = data.getTime()
       } else {
         date = new Date(date.replace(/-/g, '/'))
+        
       }
       let y = date.getFullYear()
       let m = date.getMonth() + 1
@@ -57,14 +62,14 @@ export default [
         return `${y}-${m}-${d} ${h}:${minute}:${second}`
       } else if (type === 'y-m-d') {
         return `${y}-${m}-${d}`
-      }
-      else if (type === 'y年m月d日') {
+      } else if (type === 'y年m月d日') {
         return `${y}年${m}月${d}日`
-      }
-      else if (type === 'm-d') {
+      } else if (type === 'm-d') {
         return `${m}-${d}`
       } else if (type === 'y.m.d') {
         return `${y}.${m}.${d}`
+      } else if (type === 'h:m') {
+        return `${h}:${minute}`
       } else if (type === 'm.d') {
         return `${m}.${d}`
       } else {

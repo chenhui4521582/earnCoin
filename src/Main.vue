@@ -62,6 +62,10 @@ export default {
 <style lang="less">
 @import url('./assets/less/base.less');
 @import url('./assets/iconfont/iconfont.css');
+#app{
+  font-size: .24rem;
+  color: #333333;
+}
 .slide-right-enter-active,
 .slide-right-leave-active,
 .slide-left-enter-active,

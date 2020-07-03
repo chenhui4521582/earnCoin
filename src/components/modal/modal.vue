@@ -3,6 +3,9 @@
     <transition name="mask">
       <div class="modal-mask" v-show="show"></div>
     </transition>
+    <div class="light" v-if="type==2">
+      <img class="inner-img" src="./assets/hight-title.png" alt="">
+    </div>
     <div class="modal-content">
       <div class="header">
         <span>{{title}}</span>
@@ -115,10 +118,18 @@ export default {
   overflow: hidden;
   pointer-events: none;
 }
+.light {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -4.05rem);
+  width: 5rem;
+  height: 3.12rem;
+  z-index: 1;
+}
 .modal-content {
   position: absolute;
   width: 5rem;
-  min-height: 2.9rem;
   z-index: 2;
   border-radius: 0 0 .5rem .5rem;
   top: 50%;
@@ -137,7 +148,7 @@ export default {
     background-size: 100% 100%;
   }
   .content {
-    min-height: 2.7rem;
+    min-height: 2rem;
     padding: .2rem;
     background: #fff;
   }
