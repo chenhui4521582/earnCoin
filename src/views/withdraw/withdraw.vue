@@ -27,7 +27,7 @@
         <span>
           <i>提现方式</i>
         </span>
-        <em>目前暂时只支持微信提现</em>
+        <em>目前只支持微信提现</em>
       </div>
       <div class="is-bind">
         <!-- 没有绑定微信 -->
@@ -89,8 +89,8 @@
     <modal v-model="showRule" title="说明" saveText="知道了" @on-save="saveCallback">
       <div class="rule-content">
         1. 金币汇率：10000金币=1元<br>
-        2. 金币可通过完成任务、签到登方法获取<br>
-        3. 当金币收益满1000时，可进行提现
+        2. 金币可通过完成任务、签到等方法获取<br>
+        3. 当金币收益满3000时，可进行提现
       </div>
     </modal>
     <!-- 用户金币不够 -->

@@ -1,7 +1,7 @@
 <template>
   <div class="my-task">
     <template v-if="showList">
-      <div class="task-item" v-for="(item, index) in list" :key="index">
+      <div class="task-item" v-for="(item, index) in list" :key="index" @click="goDetail(item)">
         <div class="group">
           <div class="task-img">
             <img class="inner-img" :src="item.icon | filter" alt="">
@@ -21,8 +21,8 @@
             <div class="finish-name">+{{innerItem.name}}</div>
           </div>
         </div>
-        <div class="btn underway " v-if="item.status == 0" @click="goDetail(item)">进行中</div>
-        <div class="btn finish" v-if="item.status == 1" @click="goDetail(item)">已完成</div>
+        <div class="btn underway " v-if="item.status == 0" >进行中</div>
+        <div class="btn finish" v-if="item.status == 1">已完成</div>
       </div>
     </template>
     <div class="no-list" v-else>

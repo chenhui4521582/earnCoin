@@ -1,6 +1,6 @@
 <template>
   <div class="task-items">
-    <div class="task-item" v-for="(item, index) in list" :key="index">
+    <div class="task-item" v-for="(item, index) in list" :key="index" @click="goDetail(item)">
       <div class="task-img">
         <img class="inner-img" :src="item.icon | filter" alt="">
       </div>
@@ -9,7 +9,7 @@
         <div class="desc">{{item.remark}}</div>
       </div>
       <div class="add-num">+{{item.award}}</div>
-      <div class="btn" @click="goDetail(item)">去完成</div>
+      <div class="btn" >去完成</div>
     </div>
   </div>
 </template>

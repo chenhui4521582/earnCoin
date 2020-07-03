@@ -37,7 +37,7 @@
       >点击复制“坤瑞游戏”</div>
     </div>
     <div class="group">
-      <div class="title">3.公众号内选择“红包券兑换”</div>
+      <div class="title">3.公众号内选择“金币兑换”</div>
       <div class="step2">
         <img class="inner-img" src="./img/step2.png" alt="">  
       </div>

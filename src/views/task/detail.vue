@@ -50,7 +50,7 @@
           </div>
           <div class="btn yellow1" v-if="item.status == 2" @click="_getAward(item)">领奖励</div>
           <div class="btn gray" v-if="item.status == 1">已完成</div>
-          <div class="btn yellow" v-if="item.status == 0">待完成</div>
+          <div class="btn yellow" v-if="item.status == 0" @click="startTaskConfirm">去完成</div>
         </div>
       </div>
       <div class="no-data" v-else>
