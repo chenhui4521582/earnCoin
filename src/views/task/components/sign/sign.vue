@@ -113,6 +113,7 @@ export default {
         if(code == 200) {
           this.showAward = true
           this.award = data.awardsDesc
+          this.init()
         }else {
           this.$Toast( message )
         }
