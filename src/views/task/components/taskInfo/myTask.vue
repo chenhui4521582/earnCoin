@@ -1,27 +1,32 @@
 <template>
   <div class="my-task">
-    <div class="task-item" v-for="(item, index) in list" :key="index">
-      <div class="group">
-        <div class="task-img">
-          <img class="inner-img" :src="item.icon | filter" alt="">
+    <template v-if="showList">
+      <div class="task-item" v-for="(item, index) in list" :key="index">
+        <div class="group">
+          <div class="task-img">
+            <img class="inner-img" :src="item.icon | filter" alt="">
+          </div>
+          <div class="task-desc">
+            <div class="name">{{item.name}}</div>
+            <div class="desc">{{childTask(item.remark)[0].name}}</div>
+          </div>
+          <div class="num">
+            <div class="total">+{{item.award || 0}}</div>
+            <div class="add">已赚 {{item.finish || 0}}</div>
+          </div>
         </div>
-        <div class="task-desc">
-          <div class="name">{{item.name}}</div>
-          <div class="desc">{{childTask(item.remark)[0].name}}</div>
+        <div class="task-group">
+          <div class="task" v-for="(innerItem, innerIndex) in childTask(item.remark)" :key="innerIndex">
+            <div class="finish-num">+{{innerItem.award}}</div>
+            <div class="finish-name">+{{innerItem.name}}</div>
+          </div>
         </div>
-        <div class="num">
-          <div class="total">+{{item.award || 0}}</div>
-          <div class="add">已赚 {{item.finish || 0}}</div>
-        </div>
+        <div class="btn underway " v-if="item.status == 0" @click="goDetail(item)">进行中</div>
+        <div class="btn finish" v-if="item.status == 1" @click="goDetail(item)">已完成</div>
       </div>
-      <div class="task-group">
-        <div class="task" v-for="(innerItem, innerIndex) in childTask(item.remark)" :key="innerIndex">
-          <div class="finish-num">+{{innerItem.award}}</div>
-          <div class="finish-name">+{{innerItem.name}}</div>
-        </div>
-      </div>
-      <div class="btn underway " v-if="item.status == 0" @click="goDetail(item)">进行中</div>
-      <div class="btn finish" v-if="item.status == 1" @click="goDetail(item)">已完成</div>
+    </template>
+    <div class="no-list" v-else>
+      <img class="inner-img" src="../../img/no-list.png" alt="">
     </div>
   </div>
 </template>
@@ -33,6 +38,11 @@ export default {
     list: {
       type: Array,
       default: () => []
+    }
+  },
+  computed: {
+    showList () {
+      return this.list.length
     }
   },
   methods: {
@@ -169,6 +179,10 @@ export default {
         color: #FFFFFF;
       }
     }
+  }
+  .no-list {
+    width: 100%;
+    height: 2.1rem;
   }
 }
 </style>
