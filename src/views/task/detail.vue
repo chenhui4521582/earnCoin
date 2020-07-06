@@ -149,8 +149,9 @@ export default {
       return this.taskDetail && this.taskDetail.configInfo && this.taskDetail.configInfo[index] || []
     },
     remark () {
-      if(this.taskDetail.tUserId && this.taskDetail.gameType) {
+      if(this.taskDetail.tUserId || this.taskDetail.tUserName) {
         let name = this.taskDetail.gameType == 1 ? this.taskDetail.tUserId : this.taskDetail.tUserName
+        console.log(name)
         return `账号：${name}<br>${this.taskDetail.remark}`
       }
       return this.taskDetail.remark || ''
