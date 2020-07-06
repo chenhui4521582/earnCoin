@@ -331,7 +331,7 @@ export default {
       margin-bottom: .5rem;
       height: 1rem;
       background: #fff;
-      border:3px solid #FFCA00;
+      border: .03rem solid #FFCA00;
       border-radius: .3rem;
       .unbind,.bind-end {
         height: 100%;
@@ -404,6 +404,7 @@ export default {
           position: absolute;
           left: 50%;
           top: 0;
+          z-index: 3;
           transform: translate(-50%, 0);
           width: .9rem;
           height: .3rem;

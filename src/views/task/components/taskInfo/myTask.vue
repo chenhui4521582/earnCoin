@@ -25,7 +25,7 @@
         <div class="btn finish" v-if="item.status == 1">已完成</div>
       </div>
     </template>
-    <div class="no-list" v-else>
+    <div class="no-list" @click="goGreatTask" v-else>
       <img class="inner-img" src="../../img/no-list.png" alt="">
     </div>
   </div>
@@ -78,6 +78,9 @@ export default {
         return list
       }
       return []
+    },
+    goGreatTask () {
+      this.$emit('switchTab')
     }
   }
 }

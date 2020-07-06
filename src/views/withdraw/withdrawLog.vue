@@ -21,7 +21,7 @@
           <div class="num">{{item.remark}}</div>
           <div class="status">
             <!-- 增加 -->
-            <div class="waiting" v-if="item.changeType == 1">+{{item.changeNum}}</div>
+            <div class="success" v-if="item.changeType == 1">+{{item.changeNum}}</div>
             <!-- 减少 -->
             <div class="error" v-if="item.changeType == -1">-{{item.changeNum}}</div>
           </div>
@@ -130,9 +130,12 @@ export default {
   height: 100vh;
   background: #F2F2F2;
   .tab-bar {
+    height: .58rem;
     display: flex;
     justify-content: center;
     align-items: flex-end;
+    background: #E6E6E6;
+    border-radius: .3rem .3rem 0 0;
     .item {
       flex-shrink: 0;
       width: 2.8rem;
@@ -141,13 +144,6 @@ export default {
       text-align: center;
       font-size: .22rem;
       color: #ACACAC;
-      background: #E6E6E6;
-      &:first-child {
-        border-radius: .3rem 0 0 0;
-      }
-      &:last-child {
-        border-radius: 0 .3rem  0 0;
-      }
       &.active {
         flex: 1;
         height: .7rem;
@@ -162,7 +158,7 @@ export default {
   }
   .coin-list,.withdraw-list {
     position: fixed;
-    top: 1.9rem;
+    top: 1.79rem;
     bottom: .58rem;
     left: .3rem;
     right: .3rem;

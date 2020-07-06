@@ -6,10 +6,13 @@
         <img src="../../img/sign/sign-icon.png" alt="" class="sign-icon">
         <!-- 头部文字 -->
         <div class="wrap">
-          <div class="day"><i>已连续签到</i><span>{{ signEndDay }}</span><i>天</i></div>
+          <div class="day">
+            <i>已连续签到</i><span>{{ signEndDay }}</span><i>天</i><img src="../../img/sign/rule-icon.png" alt="" class="rule-icon" @click="openRule">
+          </div>
           <div class="tips">
             连续签到7天额外获得 <span>2000个金币</span>
           </div>
+  
         </div>
         <!-- 打开收起 -->
         <div class="toggle" :class="{'closed': signToggle }" @click="signToggleClick"></div>
@@ -36,7 +39,7 @@
             <div class="award">+{{item.showName}}个</div>
           </li>
         </ul>
-        <div class="sign-btn" :class="{gray: isSign}" @click="_sign">签到领奖励</div>
+        <div class="sign-btn" :class="{gray: isSign}" @click="_sign">{{isSign ? '明天再来吧' : '签到领奖励'}}</div>
       </template>
       <!-- 奖品弹框 -->
       <Modal 
@@ -50,6 +53,17 @@
           <img :src="item.awardIcon | filter" class="award-img" />
           <p>{{ item.awardsNumDesc }}</p>
         </div>
+      </Modal>
+      <!-- 规则弹框 -->
+      <Modal v-model="showRule" title="说明" saveText="知道了" @on-save="ruleCallback">
+        <div class="rule-content">
+          1. 每天签到可获得一定金币，若连续签到<br>
+          断开，则从第一天开始重新记录。<br>
+          2. 连续签到天数越多奖励越高，每签满7天<br>
+          都可额外获得2000个金币。<br>
+          3. 签到发放金币至【我的金币】，可在金<br>
+          币记录中查看。
+        </div>  
       </Modal>
     </div>
   </div>
@@ -67,7 +81,8 @@ export default {
     isCurDaySign: false,
     signToggle: true,
     showAward: false,
-    award: []
+    award: [],
+    showRule: false
   }),
   computed: {
     signEndDay () {
@@ -119,6 +134,12 @@ export default {
         }
       })
       this.$marchSetsPoint('A_H5PT0303003636')
+    },
+    openRule () {
+      this.showRule = true
+    },
+    ruleCallback () {
+      this.showRule = false
     },
     awardCallback () {
       this.showAward = false
@@ -196,6 +217,11 @@ export default {
             line-height: .32rem;
             font-style: normal;
           }
+          .rule-icon {
+            margin-left: .15rem;
+            width: .3rem;
+            height: .3rem;
+          }
         }
         .tips {
           font-size: .24rem;
@@ -239,7 +265,7 @@ export default {
         font-size: .24rem;
       }
       .icon {
-        margin: .18rem auto .08rem;
+        margin: .16rem auto .08rem;
         width: .44rem;
         height: .44rem;
       }
@@ -259,7 +285,7 @@ export default {
           height: .84rem;
         }
         .award {
-          margin-top: .7rem;
+          margin-top: .68rem;
           padding-left: .27rem;
           text-align: left;
         }
@@ -377,8 +403,6 @@ export default {
 
 }
 
-
-
 .scalc-enter-active {
   animation: fadeAnimation 0.3s ease-in-out;
 }
@@ -435,5 +459,9 @@ export default {
     color: #E8382B;
     text-align: center;
   }
+}
+.rule-content {
+  line-height: .42rem;
+  color: #000000;
 }
 </style>

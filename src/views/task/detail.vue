@@ -48,7 +48,7 @@
             </div>
             <div class="task-text">{{item.remark}}</div>
           </div>
-          <div class="btn yellow1" v-if="item.status == 2" @click="_getAward(item)">领奖励</div>
+          <div class="btn yellow2" v-if="item.status == 2" @click="_getAward(item)">领奖励</div>
           <div class="btn gray" v-if="item.status == 1">已完成</div>
           <div class="btn yellow" v-if="item.status == 0" @click="taskUnderway">去完成</div>
         </div>
@@ -376,7 +376,7 @@ export default {
   .task-desc {
     position: relative;
     overflow: hidden;
-    margin-bottom: .2rem;
+    margin-bottom: .32rem;
     padding: .23rem .23rem .5rem;
     line-height: .4rem;
     height: 2.32rem;
@@ -415,6 +415,9 @@ export default {
       display: flex;
       justify-self: center;
       align-items: flex-end;
+      background: #E6E6E6;
+      height: .58rem;
+      border-radius: .3rem .3rem 0 0 ;
       .item {
         position: relative;
         flex: 1;
@@ -424,7 +427,6 @@ export default {
         font-size: .22rem;
         font-weight: bold;
         text-align: center;
-        background: #E6E6E6;
         .line {
           position: absolute;
           right: -1px;
@@ -440,13 +442,9 @@ export default {
           border-right: 1px solid ;
         }
         &:last-child {
-          border-radius: 0 .3rem 0 0 ;
           .line {
             display: none;
           }
-        }
-        &:first-child {
-          border-radius: .3rem 0 0 0;
         }
       }
     }
@@ -516,6 +514,10 @@ export default {
             background: #FFE790;
             color: #D39436;
           }
+          &.yellow2 {
+            background: #FF7800;
+            color: #FFFFFF;
+          }
           &.gray {
             background: #ACACAC;
             color: #fff;
@@ -578,7 +580,7 @@ export default {
       justify-content: center;
       margin-right: .2rem;
       width: 2.2rem;
-      border: 2px solid #E7BD69
+      border: .02rem solid #E7BD69
     }
     .task-btn {
       width: 4.2rem;

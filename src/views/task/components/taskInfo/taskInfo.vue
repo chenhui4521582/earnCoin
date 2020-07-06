@@ -9,7 +9,7 @@
       </div>
     </div>
     <great-task v-show="currentIndex == 1" :list="greatTaskList"/>
-    <my-task v-show="currentIndex == 2" :list="myTaskList" />
+    <my-task v-show="currentIndex == 2" :list="myTaskList" @switchTab="handclick(1)"/>
   </div>
 </template>
 <script>
