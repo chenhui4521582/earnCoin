@@ -4,7 +4,14 @@
     <div class="bind-wrap">
       <div class="bind-box">
         <div class="content-wrap">
-          <p v-if="!bind">手机号<input type="tel" v-model="phone" maxlength="11" placeholder="请与游戏内绑定的手机号一致"></p>
+          <template v-if="!bind">
+            <p v-if="!bind">手机号<input type="tel" v-model="phone" maxlength="11" placeholder="请与游戏内绑定的手机号一致"></p>
+            <p>验证码
+              <input type="text" class="code" v-model="code" maxlength="6"placeholder="请输入验证码">
+              <span class="count-down" v-if="showSendCode" @click="_sendCode">获取验证码</span>
+              <span class="count-down" v-else>{{leftTime}}s</span>
+            </p>
+          </template>
           <p v-else>手机号绑定成功：{{phone}}</p>
         </div>
       </div>
@@ -24,14 +31,17 @@
 </template>
 <script>
 import { getUrlParams } from '@/utils/utils'
-import { gzhBindPhone } from '@/services/withdraw'
+import { gzhBindPhone, sendCode } from '@/services/withdraw'
 import _get from 'lodash.get'
 export default {
   name: 'App',
   data() {
     return {
       phone: '',
-      bind: false
+      code: '',
+      bind: false,
+      leftTime: 60,
+      showSendCode: true
     }
   },
   computed: {
@@ -47,7 +57,7 @@ export default {
         this.$Toast('请输入正确格式的手机号码')
         return 
       } 
-      gzhBindPhone(openId, this.phone).then( res => {
+      gzhBindPhone(openId, this.phone, this.code).then( res => {
         const {code, data, message} = _get(res, 'data')
         if(code == 200) {
           this.$Toast('绑定成功')
@@ -56,8 +66,40 @@ export default {
           this.$Toast( message )
         }
       })
-
-    }
+    },
+    _sendCode () {
+      if (!this.isRight) {
+          this.$Toast('手机号格式错误')
+          return
+      }
+      this.showSendCode = false
+      sendCode(this.phone).then(res => {
+        const {code, data, message} = _get(res, 'data')
+        if (code == 200) {
+          this.$Toast('发送成功');
+          this.countdown()
+        } else {
+          this.$Toast(message);
+          clearInterval(this.stop)
+          this.stop=null
+        }
+      })
+    },
+    countdown() {
+      this.stop = setInterval(() => {
+        this.leftTime--
+        if (this.leftTime <= 0) {
+            this.leftTime=60;
+            this.showSendCode = true
+            clearInterval(this.stop)
+            this.stop=null
+            return
+        }
+        if (this.leftTime < 10) {
+            this.leftTime = `0${this.leftTime}`
+        }
+      }, 1000)
+    },
   }
 }
 </script>
@@ -85,7 +127,7 @@ export default {
             position: absolute;
             top: 2.7rem;
             font-weight: bold;
-            height: 3.6rem;
+            height: 3.9rem;
             width: 100%;
             &:before {
                 content: '';
@@ -139,13 +181,14 @@ export default {
                         &:last-child {
                             img, span {
                                 position: absolute;
-                                right: .1rem;
-                                top: .1rem;
+                                right: 0;
+                                top: 0;
                                 width: 1.61rem;
-                                height: .65rem;
+                                height: .7rem;
                             }
                             span {
-                                line-height: .5rem;
+                                text-align: center;
+                                line-height: .7rem;
                                 font-size: .24rem;
                                 font-weight: 500;
                                 color: rgba(53, 178, 249, 1);
@@ -155,7 +198,7 @@ export default {
                 }
             }
             .bind-btn {
-                margin: 0 auto;
+                margin: .3rem auto 0;
                 width: 5.9rem;
                 height: .7rem;
                 background: rgba(53, 178, 249, 1);
@@ -165,10 +208,6 @@ export default {
                 font-weight: 400;
                 color: rgba(255, 255, 255, 1);
                 text-align: center;
-                position: absolute;
-                bottom: 1rem;
-                left: 0;
-                right: 0;
             }
 
         }

@@ -20,9 +20,9 @@ const API = {
   getCoinLog: `${HOST.PLATFORM_API}/point/api/account/point-history`, // 金币明细记录
   getIconList: `${HOST.PLATFORM_API}/point/api/entrance/icon/list`, // 首页Icon列表
   getYesterdayRank: `${HOST.PLATFORM_API}/point/api/account/yesterday-rank`, // 昨日金币排行
-  getSignList : `${HOST.TEST}/point/api/signIn/list`, //签到列表
-  sign : `${HOST.TEST}/point/api/signIn/sign`, //签到
-  getTodaySign : `${HOST.TEST}/point/api/signIn/todayStatus`, //今天是否签到
+  getSignList : `${HOST.PLATFORM_API}/point/api/signIn/list`, //签到列表
+  sign : `${HOST.PLATFORM_API}/point/api/signIn/sign`, //签到
+  getTodaySign : `${HOST.PLATFORM_API}/point/api/signIn/todayStatus`, //今天是否签到
   getTaskInfo : `${HOST.PLATFORM_API}/point/api/task/info`, //获取用户任务信息
   getGreatTaskList : `${HOST.PLATFORM_API}/point/api/task/list`, //获取高额任务列表
   getMyTaskList : `${HOST.PLATFORM_API}/point/api/task/userList`, //获取高额任务列表
@@ -36,6 +36,7 @@ const API = {
   userWithDraw: `${HOST.PLATFORM_API}/point/withdraw/cash/{level}`, // 用户提现
   gzhBindPhone: `${HOST.PLATFORM_API}/point/api/wechat/bind`, // 公总号绑定手机号
   isBindGZH: `${HOST.PLATFORM_API}/point/api/user/bindStatus`, // 用户是否绑定公总号
+  sendCode: `${HOST.PLATFORM_API}/point/api/user/sendCode/` //发送验证码
 }
 
 export default API

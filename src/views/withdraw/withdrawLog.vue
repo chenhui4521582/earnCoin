@@ -48,9 +48,9 @@
           <div class="num">{{item.amount}}</div>
           <div class="status">
             <!-- 已到账 -->
-            <div class="success" v-if="item.status == 1">已到账</div>
+            <div class="success" v-if="item.status == 2">已到账</div>
             <!-- 审核中 -->
-            <div class="waiting" v-if="item.status == 2">审核中</div>
+            <div class="waiting" v-if="item.status == 1">审核中</div>
             <!-- 失败 -->
             <div class="error" v-if="item.status == 3">
               <p>发放失败</p>

@@ -3,8 +3,8 @@ import Api from './API/API'
 /**
  * @description 提现  获取用户金币信息
  */
-const gzhBindPhone = function (openId, phone) {
-  return $axios.post(`${Api.gzhBindPhone}/${openId}/${phone}`)
+const gzhBindPhone = function (openId, phone, code) {
+  return $axios.post(`${Api.gzhBindPhone}/${openId}/${phone}/${code}`)
 }
 
 /**
@@ -35,14 +35,24 @@ const getCoinLog = function (params) {
   return $axios.post(Api.getCoinLog, params)
 }
 
+/**
+ * @description 首页  发送验证码
+ */
+const sendCode = function (phone) {
+  return $axios.post(`${Api.sendCode}/${phone}`)
+}
 
-export { gzhBindPhone, getWithdrawList, getWithdrawLog, userWithDraw, getCoinLog }
+
+
+
+export { gzhBindPhone, getWithdrawList, getWithdrawLog, userWithDraw, getCoinLog, sendCode }
 
 const Services = {
   gzhBindPhone,
   getWithdrawList,
   getWithdrawLog,
   userWithDraw,
-  getCoinLog
+  getCoinLog,
+  sendCode
 }
 export default Services

@@ -128,6 +128,7 @@ export default {
         if(code == 200) {
           this.showAward = true
           this.award = data.awardsDesc
+          this.isSign = true
           this._getSignList()
         }else {
           this.$Toast( message )
