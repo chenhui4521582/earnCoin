@@ -77,28 +77,25 @@ export default {
         const {code, data, message} = _get(res, 'data')
         if (code == 200) {
           this.$Toast('发送成功');
-          this.countdown()
+          this.countdownFn()
         } else {
           this.$Toast(message);
-          clearInterval(this.stop)
-          this.stop=null
         }
       })
     },
-    countdown() {
-      this.stop = setInterval(() => {
-        this.leftTime--
-        if (this.leftTime <= 0) {
-            this.leftTime=60;
-            this.showSendCode = true
-            clearInterval(this.stop)
-            this.stop=null
-            return
-        }
-        if (this.leftTime < 10) {
-            this.leftTime = `0${this.leftTime}`
-        }
-      }, 1000)
+    /** 验证码倒计时计算 **/
+    countdownFn() {
+      if (this.leftTime === 0) {
+          this.leftTime = 60;
+          this.showSendCode = true
+          clearTimeout(this.timer);
+          return false;
+      } else {
+          this.leftTime--;
+          this.timer = setTimeout(() => {
+            this.countdownFn();
+          }, 1000);
+      }
     },
   }
 }
