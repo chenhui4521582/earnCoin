@@ -120,13 +120,14 @@ export default {
     }
     .num {
       position: absolute;
-      right: .35rem;
+      right: .2rem;
       top: .2rem;
       font-weight: bold;
       height: .8rem;
       display: flex;
       flex-direction: column;
       justify-content: center;
+      text-align: right;
       .total {
         margin-bottom: 0.08rem;
         color: #D39436;
@@ -151,7 +152,7 @@ export default {
         line-height: .3rem;
         color: #E8382B;
         font-size: .2rem;
-        border: 1px solid #E8382B;
+        border: 1px solid #F2F2F2;
         border-radius: .06rem;
       }
       .finish-name {
@@ -174,8 +175,8 @@ export default {
       border-radius: .4rem;
       background: #FFE790;
       &.underway {
-        color: #D39436;
-        background: #FFE790;
+        color: #000000;
+        background: #FFCA00;
       }
       &.finish {
         background: #DCDCDC;

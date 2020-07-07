@@ -295,7 +295,7 @@ export default {
             text-align: center;
             color: #FF4141;
             font-size: .24rem;
-            border-left: 1px solid #e6e6e6;
+            border-left: 1px solid #F2F2F2;
           }
         }
       }

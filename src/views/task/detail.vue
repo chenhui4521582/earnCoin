@@ -151,7 +151,6 @@ export default {
     remark () {
       if(this.taskDetail.tUserId || this.taskDetail.tUserName) {
         let name = this.taskDetail.gameType == 1 ? this.taskDetail.tUserId : this.taskDetail.tUserName
-        console.log(name)
         return `账号：${name}<br>${this.taskDetail.remark}`
       }
       return this.taskDetail.remark || ''
@@ -300,7 +299,7 @@ export default {
     align-items: center;
     border-radius: .3rem .3rem 0 0;
     background: #fff;
-    border-bottom: 1px solid #DCDCDC;
+    border-bottom: 1px solid #F2F2F2;
     .task-img {
       margin-right: .2rem;
       width: 1.04rem;
@@ -330,7 +329,7 @@ export default {
     padding: 0 .3rem;
     height: .7rem;
     background: #fff;
-    border-bottom: 1px solid #DCDCDC;
+    border-bottom: 1px solid #F2F2F2;
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -453,13 +452,14 @@ export default {
     .list {
       background: #fff;
       border-radius: 0 0 .3rem .3rem;
+      border-top: 1px solid #F2F2F2;
       .items {
         padding-right: .3rem;
         display: flex;
         justify-content: flex-start;
         align-items: center;
         height: 1.2rem;
-        border-bottom: 1px solid #E8E8E8;
+        border-bottom: 1px solid #F2F2F2;
         &:last-child {
           border: none;
         }
@@ -494,7 +494,7 @@ export default {
               line-height: .3rem;
               font-size: .2rem;
               color: #E8382B;
-              border:1px solid #E8382B;
+              border:1px solid #F2F2F2;
               border-radius: .06rem;
             }
           }
@@ -513,8 +513,8 @@ export default {
           
           border-radius: .3rem;
           &.yellow {
-            background: #FFE790;
-            color: #D39436;
+            color: #000000;
+            background: #FFCA00;
           }
           &.yellow2 {
             background: #FF7800;
@@ -535,6 +535,7 @@ export default {
       overflow: hidden;
       background: #fff;
       border-radius: 0 0 .3rem .3rem;
+      border-top: 1px solid #F2F2F2;
       .content {
         margin: .8rem auto 1.2rem;
         width: 2.5rem;
@@ -560,10 +561,10 @@ export default {
     align-items: center;
     height: 1.1rem;
     background: #fff;
-    border-top: 1px solid #DCDCDC;
+    border-top: 1px solid #F2F2F2;
     .service-btn,.task-btn {
       height: .8rem;
-      line-height: .8rem;
+      line-height: .82rem;
       text-align: center;
       font-size: .26rem;
       font-weight: bold;
@@ -582,7 +583,7 @@ export default {
       justify-content: center;
       margin-right: .2rem;
       width: 2.2rem;
-      border: .02rem solid #E7BD69
+      border: .02rem solid #F2F2F2
     }
     .task-btn {
       width: 4.2rem;

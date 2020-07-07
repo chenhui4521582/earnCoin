@@ -394,7 +394,7 @@ export default {
       }
       .nav {
         background: #fff;
-        border-bottom: 1px solid #E8E8E8;
+        border-bottom: 1px solid #F2F2F2;
         .item {
           height: .6rem;
           line-height: .6rem;
@@ -422,7 +422,7 @@ export default {
         overflow-x: hidden;
         -webkit-overflow-scrolling: touch;
         .items {
-          border-bottom: 1px solid #E8E8E8;
+          border-bottom: 1px solid #F2F2F2;
           .item {
             overflow: hidden;
             text-overflow: ellipsis;

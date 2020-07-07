@@ -208,7 +208,7 @@ export default {
           line-height: .5rem;
           text-align: center;
           color: #FF7800;
-          border-left: 1px solid #DCDCDC;
+          border-left: 1px solid #F2F2F2;
         }
       }
 

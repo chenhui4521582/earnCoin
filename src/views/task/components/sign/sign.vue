@@ -128,7 +128,7 @@ export default {
         if(code == 200) {
           this.showAward = true
           this.award = data.awardsDesc
-          this.init()
+          this._getSignList()
         }else {
           this.$Toast( message )
         }
@@ -143,10 +143,8 @@ export default {
     },
     awardCallback () {
       this.showAward = false
-      this.signToggle = false
       /** 重新拉取数据 **/
       this._getSignList()
-      this._getTodaySign()
     },
     goIndex () {
       this.$marchSetsPoint('A_H5PT0022001316')

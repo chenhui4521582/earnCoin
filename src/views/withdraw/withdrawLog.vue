@@ -1,6 +1,6 @@
 <template>
   <div class="withdraw-log">
-    <wf-header title="提现" />
+    <wf-header title="记录" />
     <div class="tab-bar">
       <div class="item" :class="{'active': currentIndex == 1}" @click="handleClick(1)">金币记录</div>
       <div class="item" :class="{'active': currentIndex == 2}" @click="handleClick(2)">提现记录</div>
@@ -158,7 +158,7 @@ export default {
   }
   .coin-list,.withdraw-list {
     position: fixed;
-    top: 1.79rem;
+    top: 1.78rem;
     bottom: .58rem;
     left: .3rem;
     right: .3rem;
@@ -166,11 +166,12 @@ export default {
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
     background: #fff;
-    border-top: 1px solid #E8E8E8;
+    border-top: 1px solid #F2F2F2;
+    border-radius: 0 0 .3rem .3rem;
     .nav {
       display: flex;
       justify-items: center;
-      border-bottom: 1px solid #E8E8E8;
+      border-bottom: 1px solid #F2F2F2;
       .item {
         width: 33.33%;
         height: .6rem;
@@ -184,7 +185,7 @@ export default {
         display: flex;
         justify-content: center;
         height: .9rem;
-        border-bottom: 1px solid #E8E8E8;
+        border-bottom: 1px solid #F2F2F2;
         color: #000;
         .time {
           display: flex;

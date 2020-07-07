@@ -79,9 +79,8 @@ export default {
       text-align: center;
       font-size: .28rem;
       font-weight: bold;
-      color: #000000;
-      font-weight: bold;
       border-radius: .4rem;
+      color: #000000;
       background: #FFCA00;
     }
   }

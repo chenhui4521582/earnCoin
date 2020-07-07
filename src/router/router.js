@@ -40,7 +40,7 @@ export default new Router({
       name: 'withdrawLog',
       component: () => import(/* webpackChunkName: "withdrawLog" */ '../views/withdraw/withdrawLog'),
       meta: {
-        title: '提现'
+        title: '记录'
       }
     },
     {
