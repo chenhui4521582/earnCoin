@@ -56,6 +56,11 @@
               <p>发放失败</p>
               <p class="service" @click="openService">联系客服></p>
             </div>
+            <!-- 金币已退还 -->
+            <div class="back" v-if="item.status == 4">
+              <p>发放失败</p>
+              <p>金币已退还</p>
+            </div>
           </div>
         </div>
       </div>
@@ -218,6 +223,10 @@ export default {
             .service {
               font-size: .2rem;
             }
+          }
+          .back {
+            text-align: center;
+            color: #999;
           }
         }
       }
