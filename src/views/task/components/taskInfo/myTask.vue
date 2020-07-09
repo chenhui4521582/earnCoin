@@ -152,7 +152,7 @@ export default {
         line-height: .3rem;
         color: #E8382B;
         font-size: .2rem;
-        border: 1px solid #F2F2F2;
+        border: 1px solid #E8382B;
         border-radius: .06rem;
       }
       .finish-name {

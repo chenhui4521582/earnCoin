@@ -50,7 +50,7 @@
           </div>
           <div class="btn yellow2" v-if="item.status == 2" @click="_getAward(item)">领奖励</div>
           <div class="btn gray" v-if="item.status == 1">已完成</div>
-          <div class="btn yellow" v-if="item.status == 0" @click="taskUnderway">去完成</div>
+          <div class="btn yellow" v-if="item.status == 0" @click="listItemClick">去完成</div>
         </div>
       </div>
       <div class="no-data" v-else>
@@ -100,7 +100,7 @@
       </div>
     </modal>
     <!-- 原生粘贴板 -->
-    <textarea cols="20" rows="10" id="copy" style="width:0;height:0">1111111111111111</textarea>
+    <textarea cols="20" rows="10" id="copy" style="width:0;height:0"></textarea>
   </div>
 </template>
 <script>
@@ -264,6 +264,14 @@ export default {
           url: this.taskDetail.download,
           gameId: this.taskDetail.gameId
         })
+      }
+    },
+    /** 任务列表点击 **/
+    listItemClick () {
+      if(this.taskDetail.status == 2) {
+        this.startTaskConfirm()
+      }else {
+        this.taskUnderway()
       }
     },
     /** 复制src到原生粘贴板 **/
@@ -494,7 +502,7 @@ export default {
               line-height: .3rem;
               font-size: .2rem;
               color: #E8382B;
-              border:1px solid #F2F2F2;
+              border:1px solid #E8382B;
               border-radius: .06rem;
             }
           }
@@ -583,7 +591,7 @@ export default {
       justify-content: center;
       margin-right: .2rem;
       width: 2.2rem;
-      border: .02rem solid #F2F2F2
+      border: .02rem solid #E7BD69
     }
     .task-btn {
       width: 4.2rem;
