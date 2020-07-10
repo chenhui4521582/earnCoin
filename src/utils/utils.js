@@ -197,7 +197,7 @@ class utils {
   async marchSetsPoint (_pointId, _pointObject) {
     try {
       /** 获取用户信息 **/
-      let userInfo = localStorage.getItem('user_Info')
+      let userInfo = JSON.parse(localStorage.getItem('user_Info'))
       if (!userInfo) {
         let r = await axios.post(API.getTransInfo)
         userInfo = r.data.data

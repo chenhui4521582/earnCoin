@@ -100,7 +100,7 @@
       </div>
     </modal>
     <!-- 原生粘贴板 -->
-    <textarea cols="20" rows="10" id="copy" style="width:0;height:0"></textarea>
+    <textarea cols="20" rows="10" id="copy" style="width:0;height:0;opacity:0"></textarea>
   </div>
 </template>
 <script>
@@ -276,7 +276,7 @@ export default {
     },
     /** 复制src到原生粘贴板 **/
     copy (callback) {
-      let text = this.taskDetail.download.split('?')[1]
+      let text = `from=earnCoin&${this.taskDetail.download.split('?')[1]}`
       let input = document.getElementById("copy")
       input.value = text;
       input.select()
