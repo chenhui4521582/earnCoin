@@ -26,15 +26,15 @@
       </div>
     </div>
     <div class="group">
-      <div class="title">2.微信搜索并关注“坤瑞游戏”</div>
+      <div class="title">2.微信搜索并关注“”</div>
       <div class="step1">
         <img class="inner-img" src="./img/step1.png" alt="">
       </div>
       <div class="btn" 
-        v-clipboard:copy="'坤瑞游戏'"
+        v-clipboard:copy="'坤睿游戏'"
         v-clipboard:success="onCopy"
         v-clipboard:error="onError"
-      >点击复制“坤瑞游戏”</div>
+      >点击复制“坤睿游戏”</div>
     </div>
     <div class="group">
       <div class="title">3.公众号内选择“金币兑换”</div>
