@@ -26,7 +26,7 @@
       </div>
     </div>
     <div class="group">
-      <div class="title">2.微信搜索并关注“”</div>
+      <div class="title">2.微信搜索并关注“坤睿游戏”</div>
       <div class="step1">
         <img class="inner-img" src="./img/step1.png" alt="">
       </div>
