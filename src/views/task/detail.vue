@@ -36,22 +36,39 @@
         </div>
       </div>
       <div class="list" v-if="taskList.length">
-        <div class="items" v-for="(item, index) in taskList" :key="index">
-          <div class="rank">{{item.taskLevel}}</div>
-          <div class="desc">
-            <div class="name">
-              <div class="img">
-                <img class="inner-img" src="./img/coin-icon.png" alt="">
+        <!-- 任务列表 -->
+        <template v-if="currentIndex != 2">
+          <div class="items" v-for="(item, index) in taskList" :key="index">
+            <div class="rank">{{item.taskLevel}}</div>
+            <div class="desc">
+              <div class="name">
+                <div class="img">
+                  <img class="inner-img" src="./img/coin-icon.png" alt="">
+                </div>
+                <div class="prize">+{{item.award}}金币</div>
+                <div class="rmb">≈{{item.awardR}}元</div>
               </div>
-              <div class="prize">+{{item.award}}金币</div>
-              <div class="rmb">≈{{item.awardR}}元</div>
+              <div class="task-text">{{item.remark}}</div>
             </div>
-            <div class="task-text">{{item.remark}}</div>
+            <div class="btn yellow2" v-if="item.status == 2" @click="_getAward(item)">领奖励</div>
+            <div class="btn gray" v-if="item.status == 1">已完成</div>
+            <div class="btn yellow" v-if="item.status == 0" @click="listItemClick">去完成</div>
           </div>
-          <div class="btn yellow2" v-if="item.status == 2" @click="_getAward(item)">领奖励</div>
-          <div class="btn gray" v-if="item.status == 1">已完成</div>
-          <div class="btn yellow" v-if="item.status == 0" @click="listItemClick">去完成</div>
-        </div>
+        </template>
+        <!-- 礼包列表 -->
+        <template v-else>
+          <div class="card-items" v-for="(item, index) in taskList" :key="index">
+            <div class="card-id">{{index + 1}}</div>
+            <div class="desc">
+              <div class="card-name">{{item.batchName}}</div>
+              <div class="card-content">{{item.content}}</div>
+              <div class="card-explain">剩余:&nbsp;{{item.type == 1 ? '充足' :  item.num}}&nbsp;&nbsp;&nbsp;过期时间：{{item.expiredTime}}</div>
+            </div>
+            <div class="btn" v-if="item.status == 0" @click="_getCard(item)">免费领取</div>
+            <div class="btn active" v-if="item.status == 1" @click="openCodeModal(item)">查看兑换码</div>
+            <div class="btn gray" v-if="item.status == 2">已领完</div>
+          </div>
+        </template>
       </div>
       <div class="no-data" v-else>
         <div class="content">
@@ -81,22 +98,26 @@
         <p>金币 +{{award || 0}}个</p>
       </div>
     </modal>
-    <!-- 开始APP任务询问 -->
-    <modal v-model="showApptaskConfirm" title="温馨提示" saveText="知道了" @on-save="_startTask">
-      <div class="confirm-content">
-        应用开始下载，请及时关注下载进度。<br><br>
-        小提示：注册成功后请返回当前页面确认<br>
-        用户信息，核对完成后再开始其他任务，<br>
-        以免造成不必要的损失。
-      </div>
-    </modal>
-   <!-- 开始h5任务询问 -->
+    <!-- 开始h5任务询问 -->
     <modal v-model="showH5taskConfirm" title="温馨提示" saveText="进入游戏" @on-save="_startTask">
       <div class="confirm-content">
         任务已领取，请在创建昵称后回到当前<br>
         页面，点击【刷新】，确认显示昵称与您<br>
         注册昵称一致后再进行充值，<br>
         以免造成不必要的损失。
+      </div>
+    </modal>
+    <!-- 用户领取兑换码 -->
+    <modal v-model="showExchangeCard" title="领取成功" saveText="进入游戏" @on-save="taskUnderway">
+      <div class="exchange-content">
+        <div class="card">
+          兑换码：<div class="code">{{cardAward.code}}</div>
+          <div class="copy" 
+            v-clipboard:copy="cardAward.code"
+            v-clipboard:success="onSuccess" 
+          >复制</div>
+        </div>
+        <div class="pwd">兑换路径：{{cardAward.getWay}}</div>
       </div>
     </modal>
     <!-- 原生粘贴板 -->
@@ -106,7 +127,8 @@
 <script>
 import Service from '@/components/servicePop/service'
 import UserGuide from './components/userGuide/userGuide'
-import { getTaskDetail, startTask, getAward } from '@/services/task'
+
+import { getTaskDetail, startTask, getAward, getCard } from '@/services/task'
 import { jumpUrl } from '@/utils/utils'
 import _get from 'lodash.get'
 export default {
@@ -120,7 +142,9 @@ export default {
     showAward: false,
     award: '',
     showApptaskConfirm: false,
-    showH5taskConfirm: false
+    showH5taskConfirm: false,
+    showExchangeCard: false,
+    cardAward: {}
   }),
   components: {
     UserGuide,
@@ -163,6 +187,9 @@ export default {
     }
   },
   methods: {
+    handClick (index) {
+      this.currentIndex = index
+    },
     /** 是否显示下拉菜单 **/
     isShowPullDown () {
       this.$nextTick(res => {
@@ -177,9 +204,6 @@ export default {
     openPullDown () {
       this.pullDown = true
       this.pullDownBtn = false
-    },
-    handClick (index) {
-      this.currentIndex = index
     },
     /** 打开客服弹框 **/
     openService () {
@@ -288,6 +312,26 @@ export default {
       this.copy(() => {
         location.href = this.taskDetail.download.split('?')[0]
       })
+    },
+    /** 获取礼包码 **/
+    _getCard ({id}) {
+      getCard(id).then(res => {
+        const {code, data, message} = _get(res, 'data')
+        if(code == 200) {
+          this.openCodeModal(data)
+          this._getTaskDetail()
+        }
+      })
+    },
+    /** 查看礼包码 **/
+    openCodeModal ({code, getWay}) {
+      this.cardAward = {
+        code, getWay
+      }
+      this.showExchangeCard = true
+    },
+    onSuccess () {
+      this.$Toast('复制成功，请前往游戏兑换礼包')
     }
   },
   mounted () {
@@ -538,6 +582,56 @@ export default {
           }
         }
       }
+      .card-items {
+        padding: .25rem .3rem;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        border-bottom: 1px solid #E8E8E8;
+        &:last-child {
+          border: none
+        }
+        .card-id {
+          padding-right: .25rem;
+        }
+        .desc {
+          margin-right: .2rem;
+          .card-name {
+            font-size: .24rem;
+            color: #000;
+            font-weight: bold;
+          }
+          .card-content {
+            font-size: .2rem;
+            color: #666666;
+          }
+          .card-explain {
+            font-size: .2rem;
+            color: #E7BD69;
+          }
+        }
+        .btn {
+          flex-shrink: 0;
+          margin-left: auto;
+          width: 1.5rem;
+          height: .5rem;
+          line-height: .52rem;
+          font-size: .26rem;
+          color: #fff;
+          font-weight: bold;
+          border-radius: .4rem;
+          text-align: center;
+          background: #FF7800;
+          &.gray {
+            background: #ACACAC;
+            color: #fff;
+          }
+          &.active {
+            background: #FFE790;
+            color: #D39436;
+          }
+        }
+      }
     }
     .no-data {
       overflow: hidden;
@@ -632,6 +726,35 @@ export default {
     text-align: center;
     color: #252525;
     line-height: .4rem;
+  }
+  .exchange-content {
+    padding-top: .1rem;
+    .card {
+      margin-bottom: .15rem;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      .code {
+        font-size: .32rem;
+        color: #252525;
+        font-weight: bold;
+      }
+      .copy {
+        margin-left: auto;
+        width: .9rem;
+        height: .5rem;
+        line-height: .5rem;
+        font-weight: bold;
+        font-size: .26rem;
+        color: #D39436;
+        text-align: center;
+        border-radius: .4rem;
+        background: #FFE790;
+      }
+    }
+    .pwd {
+      line-height: .4rem;
+    }
   }
 
 }

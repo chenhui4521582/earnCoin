@@ -146,7 +146,7 @@ export default {
       }
       .finish-num {
         margin-right: .2rem;
-        width: .8rem;
+        width: 1.1rem;
         height: .3rem;
         text-align: center;
         line-height: .3rem;

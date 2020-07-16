@@ -6,7 +6,7 @@
       <div class="item" :class="{'active': currentIndex == 2}" @click="handleClick(2)">提现记录</div>
     </div>
     <!-- 金币记录 -->
-    <div class="coin-list" v-show="currentIndex == 1">
+    <div class="coin-list" v-if="currentIndex == 1">
       <div class="nav">
         <div class="item">时间</div>
         <div class="item">变动原因</div>
@@ -33,13 +33,13 @@
       </div>
     </div>
     <!-- 提现记录 -->
-   <div class="withdraw-list" v-show="currentIndex == 2">
+   <div class="withdraw-list" v-if="currentIndex == 2">
       <div class="nav">
         <div class="item">提现时间</div>
         <div class="item">提现额度</div>
         <div class="item">提现状态</div>
       </div>
-      <div class="list" v-if="log.length">
+      <div class="list1" v-if="log.length">
         <div class="item" v-for="(item, index) in log" :key="index">
           <div class="time">
             <p>{{item.receiveTime | formatTime('y-m-d')}}</p>
@@ -135,6 +135,10 @@ export default {
   height: 100vh;
   background: #F2F2F2;
   .tab-bar {
+    position: fixed;
+    top: 1.2rem;
+    left: .3rem;
+    right: .3rem;
     height: .58rem;
     display: flex;
     justify-content: center;
@@ -167,10 +171,7 @@ export default {
     bottom: .58rem;
     left: .3rem;
     right: .3rem;
-    overflow-x: hidden;
-    overflow-y: scroll;
-    -webkit-overflow-scrolling: touch;
-    background: #fff;
+    background: #fff; 
     border-top: 1px solid #F2F2F2;
     border-radius: 0 0 .3rem .3rem;
     .nav {
@@ -185,7 +186,15 @@ export default {
         color: #ACACAC;
       }
     }
-    .list {
+    .list,.list1 {
+      position: absolute;
+      top: .63rem;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      overflow-x: hidden;
+      overflow-y: scroll;
+      -webkit-overflow-scrolling: touch;
       .item {
         display: flex;
         justify-content: center;
