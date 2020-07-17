@@ -335,10 +335,10 @@ export default {
     .item {
       margin-right: .2rem;
       height: 1.4rem;
-      
       &:nth-child(1) {
         width: 2.6rem;
         flex-shrink: 0;
+        animation: scale infinite 2s;
       }
       &:nth-child(2) {
         flex: 1;
@@ -474,6 +474,17 @@ export default {
     span {
       color: #5186CA;
       text-decoration: underline;
+    }
+  }
+  @keyframes scale {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
     }
   }
 }
