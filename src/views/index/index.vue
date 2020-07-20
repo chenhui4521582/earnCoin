@@ -46,7 +46,12 @@
     </div>
     <!-- task-nav -->
     <div class="task-nav">
-      <div class="item" v-for="(item, index) in iconList" :key="index" @click="jump(item.link, index)">
+      <div class="item" 
+        v-for="(item, index) in iconList" 
+        :class="{'animation': !showUserGuide}"
+        :key="index" 
+        @click="jump(item.link, index)"
+      >
         <img :src="item.img | filter" class="inner-img" alt="">
       </div>
     </div>
@@ -92,14 +97,18 @@
     <base-footer></base-footer>
     <!-- 客服弹框 -->
     <Service v-model="showService" />
+    <!-- 新手引导 -->
+    <user-guide v-if="showUserGuide" @hideUserGuide="hideUserGuide"/>
   </div>
 </template>
 <script>
 import BaseFooter from '@/components/baseFooter/baseFooter'
 import Service from '@/components/servicePop/service'
+import UserGuide from './components/userGuide'
 import Services from '@/services/index'
 import { getAccountInfo, getUserInfo, getTaskInfo } from '@/services/user'
 import _get from 'lodash.get'
+import { getUrlParams } from '@/utils/utils'
 export default {
   name: 'Index',
   data: () => ({
@@ -109,11 +118,13 @@ export default {
     yesterdayRank: [],
     avatar: '/cdn/common/images/common/img_photo.png',
     showService: false,
-    iconList: []
+    iconList: [],
+    showUserGuide: false
   }),
   components: {
     BaseFooter,
-    Service
+    Service,
+    UserGuide
   },
   computed: {
     showRank () {
@@ -146,6 +157,7 @@ export default {
     goUserAgreement () {
       window.location.href = 'https://wap.beeplaying.com/xmWap/#/my/userAgreement'
     },
+    
     /** 获取用户信息 **/
     _getUserInfo () {
       getUserInfo().then(res => {
@@ -191,12 +203,26 @@ export default {
         }
       })
     },
+    /** 跳转 **/
     jump (url, index) {
       this.$marchSetsPoint('H5PT0303003628', {
         task_name: index
       })
       
       window.location.href = url
+    },
+    /** 判断是否显示新手引导 **/
+    isUserGuide () {
+      let userLabel = getUrlParams('userlabel')
+      let cacheNewUser = localStorage.getItem('cacheNewUser')
+      if(userLabel && !cacheNewUser) {
+        this.showUserGuide = true
+        localStorage.setItem('cacheNewUser', Date.now())
+      }
+    },
+    /** 新手引导回调函数 **/
+    hideUserGuide () {
+      this.showUserGuide = false
     }
   },
   mounted () {
@@ -205,6 +231,7 @@ export default {
     this._getTaskInfo()
     this._getYesterdayRank()
     this._getIconList()
+    this.isUserGuide()
     this.$marchSetsPoint('P_H5PT0303', {
       source_address: document.referrer
     })
@@ -335,10 +362,12 @@ export default {
     .item {
       margin-right: .2rem;
       height: 1.4rem;
+      &.animation:nth-child(1) {
+        animation: scale infinite 2s;
+      }
       &:nth-child(1) {
         width: 2.6rem;
         flex-shrink: 0;
-        animation: scale infinite 2s;
       }
       &:nth-child(2) {
         flex: 1;
