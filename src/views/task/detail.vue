@@ -85,7 +85,7 @@
       </div>
       <div class="task-btn yellow1" v-if="taskDetail.status == 2" @click="startTaskConfirm">开始任务</div>
       <div class="task-btn gray" v-if="taskDetail.status == 1" >任务已完成</div>
-      <div class="task-btn yellow" v-if="taskDetail.status == 0" @click="resetDownload">如安装包下载失败，点此重新下载</div>
+      <div class="task-btn red" v-if="taskDetail.status == 0" @click="resetDownload">如安装包下载失败，点此重新下载</div>
     </div>
     <!-- 客服弹框 -->
     <Service v-model="showService" />
@@ -708,6 +708,10 @@ export default {
       &.yellow {
         background: #FFE790;
         color: #D39436;
+      }
+      &.red {
+        background: #E8382B;
+        color: #fff;
       }
       &.gray {
         background: #ACACAC;
