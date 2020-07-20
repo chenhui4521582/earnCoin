@@ -4,6 +4,7 @@ import Loading from './loading/loading'
 import NoData from './noData/noData'
 import Header from './header/header'
 import Filters from './Filters'
+import VueClipboard from 'vue-clipboard2'
 
 // 自定义全局组件
 const components = [
@@ -23,6 +24,7 @@ const install = function (Vue) {
     Vue.filter(filter.name, filter.method)
   })
   Vue.use(Toast)
+  Vue.use(VueClipboard)
 }
 
 // Vue 是全局变量时，自动 install

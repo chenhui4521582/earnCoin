@@ -56,7 +56,14 @@ const getAward = function (id) {
   return $axios.post(Api.getAward.replace('{configId}', id))
 }
 
-export { getSignList, sign, getTodaySign, getGreatTaskList, getTaskDetail, getMyTaskList, startTask, getAward }
+/**
+ * @description 任务详情  领取礼包
+ */
+const getCard = function (id) {
+  return $axios.post(Api.getCard.replace('{batchId}', id))
+}
+
+export { getSignList, sign, getTodaySign, getGreatTaskList, getTaskDetail, getMyTaskList, startTask, getAward, getCard }
 
 const Services = {
   getSignList,
@@ -66,6 +73,7 @@ const Services = {
   getTaskDetail,
   getMyTaskList,
   startTask,
-  getAward
+  getAward,
+  getCard
 }
 export default Services

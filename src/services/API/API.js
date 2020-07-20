@@ -36,7 +36,8 @@ const API = {
   userWithDraw: `${HOST.PLATFORM_API}/point/withdraw/cash/{level}`, // 用户提现
   gzhBindPhone: `${HOST.PLATFORM_API}/point/api/wechat/bind`, // 公总号绑定手机号
   isBindGZH: `${HOST.PLATFORM_API}/point/api/user/bindStatus`, // 用户是否绑定公总号
-  sendCode: `${HOST.PLATFORM_API}/point/api/user/sendCode/` //发送验证码
+  sendCode: `${HOST.PLATFORM_API}/point/api/user/sendCode/`, //发送验证码
+  getCard: `${HOST.PLATFORM_API}/point/api/cdkey/receive/{batchId}` //获取礼包码
 }
 
 export default API
