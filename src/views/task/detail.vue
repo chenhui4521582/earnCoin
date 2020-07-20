@@ -15,7 +15,7 @@
       <div class="status red" v-if="taskDetail.status == 2">任务未开始</div>
       <div class="status gray" v-if="taskDetail.status == 1">任务已完成</div>
       <div class="status yellow" v-if="taskDetail.status == 0">任务已开始</div>
-      <div class="refresh" @click="_getTaskDetail"><img class="inner-img" src="./img/refresh.png" alt=""></div>
+      <div class="refresh" ref="refreshBtn" @click="refershTask"><img class="inner-img" src="./img/refresh.png" alt=""></div>
       <div class="total">全部任务完成后<span>+{{taskDetail.award}}</span><span class="unit">元</span></div>
     </div>
     <div class="task-desc" :class="{'active': pullDown}">
@@ -230,6 +230,15 @@ export default {
         }
       })
     },
+    /** 刷新任务 **/
+    refershTask () {
+      this.$refs.refreshBtn.classList.add('animation')
+      this._getTaskDetail()
+      setTimeout(() => {
+        this.$Toast('刷新完成')
+        this.$refs.refreshBtn.classList.remove('animation')
+      },1000)
+    },
     /** 开始任务 **/
     _startTask () {
       const id = this.$route.query.id
@@ -425,6 +434,9 @@ export default {
     .refresh {
       width: .3rem;
       height: .3rem;
+      &.animation {
+        animation: refresh 1s 1;
+      }
     }
     .total {
       margin-left: auto;
@@ -778,5 +790,13 @@ export default {
     }
   }
 
+}
+@keyframes refresh {
+    0% {
+      transform: rotate(0);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
 }
 </style>
