@@ -85,7 +85,7 @@
       </div>
       <div class="task-btn yellow1" v-if="taskDetail.status == 2" @click="startTaskConfirm">开始任务</div>
       <div class="task-btn gray" v-if="taskDetail.status == 1" >任务已完成</div>
-      <div class="task-btn yellow" v-if="taskDetail.status == 0" @click="taskUnderway">任务进行中</div>
+      <div class="task-btn yellow" v-if="taskDetail.status == 0" @click="resetDownload">如安装包下载失败，点此重新下载</div>
     </div>
     <!-- 客服弹框 -->
     <Service v-model="showService" />
@@ -96,6 +96,15 @@
       <div class="award-content">
         <img src="./img/big-coin.png" alt="">
         <p>金币 +{{award || 0}}个</p>
+      </div>
+    </modal>
+    <!-- 开始APP任务询问 -->
+    <modal v-model="showApptaskConfirm" title="温馨提示" saveText="知道了" @on-save="_startTask">
+      <div class="confirm-content">
+        应用开始下载，请及时关注下载进度。<br><br>
+        小提示：注册成功后请返回当前页面确认<br>
+        用户信息，核对完成后再开始其他任务，<br>
+        以免造成不必要的损失。
       </div>
     </modal>
     <!-- 开始h5任务询问 -->
@@ -310,7 +319,14 @@ export default {
     /** 重新下载 **/
     resetDownload () {
       this.copy(() => {
-        location.href = this.taskDetail.download.split('?')[0]
+        switch (this.taskDetail.appId) {
+          case 40000: 
+            location.href = 'https://wap.beeplaying.com/ddwgame/'
+          break;
+          case 10000:
+            location.href = 'https://fish.665e.com/fish/fishdown/'
+            break;
+        }
       })
     },
     /** 获取礼包码 **/
