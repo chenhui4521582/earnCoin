@@ -56,39 +56,11 @@
       </div>
     </div>
     <!-- ranking -->
-    <div class="ranking">
-      <div class="title">
-        <span>
-          <i>赚钱排行</i>
-        </span>
-        <em>每日赚钱榜（24:00更新）</em>
-      </div>
-      <div class="rank">
-        <div class="nav">
-          <div class="item">排名</div>
-          <div class="item">用户昵称</div>
-          <div class="item">累计已赚</div>
-          <div class="item">当天已赚</div>
-        </div>
-        <div class="list" v-if="showRank">
-          <div class="items" v-for="(item, index) in yesterdayRank" :key="index">
-            <div class="item">
-              <img v-if="item.rank == 1" src="./img/rank1-icon.png" alt="">
-              <img v-else-if="item.rank == 2" src="./img/rank2-icon.png" alt="">
-              <img v-else-if="item.rank == 3" src="./img/rank3-icon.png" alt="">
-              <span v-else>{{item.rank}}</span>
-            </div>
-            <div class="item">{{item.nickName}}</div>
-            <div class="item">{{item.totalNum}}</div>
-            <div class="item">{{item.rankNum}}</div>
-          </div>
-        </div>
-        <div class="no-data" v-else>
-          <img class="inner-img" src="./img/no-data.png" alt="">
-          <p>亲，暂无数据哦~</p>
-        </div>
-      </div>
-    </div>
+    <rank-info 
+      v-for="(item, index) in list"
+      :info="item"
+      :key="index"
+    />
     <!-- agreement -->
     <div class="agreement">
       高额赚 <span @click="goUserAgreement">用户协议</span>
@@ -105,6 +77,7 @@
 import BaseFooter from '@/components/baseFooter/baseFooter'
 import Service from '@/components/servicePop/service'
 import UserGuide from './components/userGuide'
+import RankInfo from './components/rankInfo'
 import Services from '@/services/index'
 import { getAccountInfo, getUserInfo, getTaskInfo } from '@/services/user'
 import _get from 'lodash.get'
@@ -119,12 +92,14 @@ export default {
     avatar: '/cdn/common/images/common/img_photo.png',
     showService: false,
     iconList: [],
-    showUserGuide: false
+    showUserGuide: false,
+    list: []
   }),
   components: {
     BaseFooter,
     Service,
-    UserGuide
+    UserGuide,
+    RankInfo
   },
   computed: {
     showRank () {
@@ -157,7 +132,6 @@ export default {
     goUserAgreement () {
       window.location.href = 'https://wap.beeplaying.com/xmWap/#/my/userAgreement'
     },
-    
     /** 获取用户信息 **/
     _getUserInfo () {
       getUserInfo().then(res => {
@@ -185,12 +159,12 @@ export default {
         }
       })
     },
-    /** 昨日金币排行 **/
-    _getYesterdayRank () {
-      Services.getYesterdayRank().then( res => {
+    /** 获取推荐排行榜 **/
+    _getRankList () {
+      Services.getRankList(0).then( res => {
         const {code, data, message} = _get(res, 'data')
         if(code == 200) {
-          this.yesterdayRank = data
+          this.list = data
         }
       })
     },
@@ -229,8 +203,8 @@ export default {
     this._getUserInfo()
     this._getAccountInfo()
     this._getTaskInfo()
-    this._getYesterdayRank()
     this._getIconList()
+    this._getRankList()
     this.isUserGuide()
     this.$marchSetsPoint('P_H5PT0303', {
       source_address: document.referrer
@@ -240,7 +214,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .index {
-  padding: 0 .3rem 1.1rem;
+  padding: 0 .3rem 1.2rem;
   min-height: 100vh;
   background: url(./img/banner.png) no-repeat center top #F2F2F2;
   background-size: 7.2rem 6.74rem;
