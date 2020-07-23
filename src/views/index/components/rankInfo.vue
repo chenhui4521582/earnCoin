@@ -2,7 +2,7 @@
   <div class="rank-info" v-if="showList" :style="{'background-image': `url(${iconList[infoType].titleImg})`}">
     <div class="header">
       <div class="title">{{info.name}}</div>
-      <div class="more">
+      <div class="more" @click="goRanking(info)">
         更多
       </div>
     </div>
@@ -68,6 +68,23 @@ export default {
         name: 'taskDetail',
         query: { id }
       })
+    },
+    goRanking ({ type }) {
+      this.$router.push({
+        name: 'ranking',
+        query: { type }
+      })
+      switch (type) {
+        case 1: 
+          this.$marchSetsPoint('A_H5PT0303003859')
+          break
+        case 2: 
+          this.$marchSetsPoint('A_H5PT0303003860')
+          break
+        case 3: 
+          this.$marchSetsPoint('A_H5PT0303003861')
+          break
+      }
     }
   }
 }
