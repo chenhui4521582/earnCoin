@@ -27,7 +27,7 @@
           <div class="desc">{{item.recommendRemark}}</div>
         </div>
         <div class="wrap"> 
-          <div class="earn-Num">+{{item.award}}</div>
+          <div class="earn-Num">+{{item.award}}元</div>
           <div class="btn">试玩</div>
         </div>
       </div>
@@ -107,7 +107,7 @@ export default {
     },
     /** 初始化 **/
     init () {
-      let {type} = this.$route.query
+      let {type = 1} = this.$route.query 
       if(type) {
         setTimeout(() => {
           this.currentIndex = type
