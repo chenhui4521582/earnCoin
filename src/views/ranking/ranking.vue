@@ -151,7 +151,7 @@ export default {
     justify-content: flex-start;
     .item {
       position: relative;
-      width: 1rem;
+      width: 1.4rem;
       text-align: center;
       height: .57rem;
       line-height: .6rem;
@@ -167,7 +167,7 @@ export default {
       bottom: .08rem;
       left: 0;
       z-index: 1;
-      width: 1rem;
+      width: 1.4rem;
       height: .1rem;
       background: #FFC300;
       transition: left .2s;
