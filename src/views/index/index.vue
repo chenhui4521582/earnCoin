@@ -88,7 +88,6 @@ export default {
     userInfo: {},
     accountInfo: {},
     taskInfo: {},
-    yesterdayRank: [],
     avatar: '/cdn/common/images/common/img_photo.png',
     showService: false,
     iconList: [],
@@ -100,11 +99,6 @@ export default {
     Service,
     UserGuide,
     RankInfo
-  },
-  computed: {
-    showRank () {
-      return this.yesterdayRank.length
-    }
   },
   methods: {
     openService () {
@@ -354,120 +348,7 @@ export default {
       }
     }
   }
-  .ranking {
-    .title {
-      display: flex;
-      align-items: flex-end;
-      span {
-        position: relative;
-        margin-right: .2rem;
-        &::after {
-          content: '';
-          position: absolute;
-          bottom: .08rem;
-          left: 0;
-          z-index: 1;
-          height: .1rem;
-          width: 100%;
-          background: #FFC300;
-        }
-        i {
-          position: relative;
-          z-index: 2;
-          font-size: .42rem;
-          font-style: normal;
-          color: #000;
-          font-weight: bold;
-        }
-      }
-      em {
-        font-style: normal;
-        color: #666;
-      }
-    }
-    .rank {
-      overflow: hidden;
-      margin-top: .14rem;
-      padding-bottom: .2rem;
-      border-radius: .3rem;
-      background: #fff;
-      .nav,.items {
-        display: flex;
-        justify-content: center;
-      }
-      .nav {
-        background: #fff;
-        border-bottom: 1px solid #F2F2F2;
-        .item {
-          height: .6rem;
-          line-height: .6rem;
-          text-align: center;
-          font-size: .24rem;
-          color: #ACACAC;
-          font-weight:bold;
-          &:nth-child(1) {
-            width: 20%;
-          }
-          &:nth-child(2) {
-            width: 27%;
-          }
-          &:nth-child(3) {
-            width: 27%;
-          }
-          &:nth-child(4) {
-            width: 27%;
-          }
-        }
-      }
-      .list {
-        height: 6.4rem;
-        overflow-y: scroll;
-        overflow-x: hidden;
-        -webkit-overflow-scrolling: touch;
-        .items {
-          border-bottom: 1px solid #F2F2F2;
-          .item {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: .9rem;
-            font-size: .24rem;
-            color: #000000;
-            img {
-              width: .38rem;
-              height: .38rem;
-            }
-            &:nth-child(1) {
-              width: 20%;
-            }
-            &:nth-child(2) {
-              width: 27%;
-            }
-            &:nth-child(3) {
-              width: 27%;
-            }
-            &:nth-child(4) {
-              width: 27%;
-            }
-          }
-        }
-      }
-      .no-data {
-        margin: 1.6rem auto;
-        width: 2.5rem;
-        height: 1.88rem;
-        p {
-          margin-top: .13rem;
-          white-space: nowrap;
-          font-size: .2rem;
-          color: #E7BD69;
-          text-align: center;
-        }
-      }
-    }
-  }
+
   .agreement {
     height: .56rem;
     line-height: .56rem;

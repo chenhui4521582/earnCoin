@@ -16,15 +16,23 @@ const getRankTab = function () {
 }
 
 /**
+ * @description 首页  昨日金币排行
+ */
+const getYesterdayRank = function () {
+  return $axios.post(Api.getYesterdayRank)
+}
+
+/**
  * @description 首页  获取金刚位
  */
 const getIconList = function () {
   return $axios.post(Api.getIconList)
 }
 
-export { getRankList, getRankTab, getIconList }
+export { getYesterdayRank, getRankList, getRankTab, getIconList }
 
 const Services = {
+  getYesterdayRank,
   getRankList,
   getRankTab,
   getIconList
