@@ -28,7 +28,7 @@
         </div>
         <div class="wrap"> 
           <div class="earn-Num">+{{item.award}}元</div>
-          <div class="btn">试玩</div>
+          <div class="btn" @click="goDetail(item)">试玩</div>
         </div>
       </div>
     </div>
@@ -104,6 +104,12 @@ export default {
       let navItem = this.$refs.navItem
       let navLine = this.$refs.navLine
       navLine.style.left = (navItem[0].offsetWidth) * index + 'px'
+    },
+    goDetail ({id}) {
+      this.$router.push({
+        name: 'taskDetail',
+        query: { id }
+      })
     },
     /** 初始化 **/
     init () {
