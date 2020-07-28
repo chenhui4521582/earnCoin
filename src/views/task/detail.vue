@@ -50,9 +50,12 @@
               </div>
               <div class="task-text">{{item.remark}}</div>
             </div>
-            <div class="btn yellow2" v-if="item.status == 2" @click="_getAward(item)">领奖励</div>
-            <div class="btn gray" v-if="item.status == 1">已完成</div>
-            <div class="btn yellow" v-if="item.status == 0" @click="listItemClick">去完成</div>
+            <div class="right">
+              <div class="btn yellow2" v-if="item.status == 2" @click="_getAward(item)">领奖励</div>
+              <div class="btn gray" v-if="item.status == 1">已完成</div>
+              <div class="btn yellow" v-if="item.status == 0" @click="listItemClick">去完成</div>
+              <div class="progress" v-if="item.userFinish || item.configFinish">当前进度：{{item.userFinish}}/{{item.configFinish}}</div>
+            </div>
           </div>
         </template>
         <!-- 礼包列表 -->
@@ -583,31 +586,43 @@ export default {
             color: #000000;
           }
         }
-        .btn {
+        .right {
           margin-left: auto;
-          width: 1.5rem;
-          height: .5rem;
-          line-height: .5rem;
-          text-align: center;
-          font-size: .26rem;
-          font-weight: bold;
-          
-          border-radius: .3rem;
-          &.yellow {
-            color: #000000;
-            background: #FFCA00;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: flex-end;
+          text-align: right;
+          .btn {
+            margin-bottom: .05rem;
+            width: 1.5rem;
+            height: .5rem;
+            line-height: .5rem;
+            text-align: center;
+            font-size: .26rem;
+            font-weight: bold;
+            border-radius: .3rem;
+            &.yellow {
+              color: #000000;
+              background: #FFCA00;
+            }
+            &.yellow2 {
+              background: #FF7800;
+              color: #FFFFFF;
+            }
+            &.gray {
+              background: #ACACAC;
+              color: #fff;
+            }
+            &.yellow1 {
+              background: #FFCA00;
+              color: #000000;
+            }
           }
-          &.yellow2 {
-            background: #FF7800;
-            color: #FFFFFF;
-          }
-          &.gray {
-            background: #ACACAC;
-            color: #fff;
-          }
-          &.yellow1 {
-            background: #FFCA00;
-            color: #000000;
+          .progress {
+            color: #FF7800;
+            font-size: .2rem;
+            font-weight: bold;
           }
         }
       }
