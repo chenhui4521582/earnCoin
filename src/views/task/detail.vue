@@ -54,7 +54,7 @@
               <div class="btn yellow2" v-if="item.status == 2" @click="_getAward(item)">领奖励</div>
               <div class="btn gray" v-if="item.status == 1">已完成</div>
               <div class="btn yellow" v-if="item.status == 0" @click="listItemClick">去完成</div>
-              <div class="progress" v-if="item.userFinish || item.configFinish">当前进度：{{item.userFinish}}/{{item.configFinish}}</div>
+              <div class="progress" v-if="item.userFinish || item.configFinish">当前进度：{{item.userFinish | amountComputen1}}/{{item.configFinish | amountComputen2}}</div>
             </div>
           </div>
         </template>
@@ -162,6 +162,16 @@ export default {
   components: {
     UserGuide,
     Service
+  },
+  filters: {
+    amountComputen1 (val) {
+      if (!val) { return 0 }
+      return val > 10000 ? (val / 10000).toFixed(1) + '万' : val
+    },
+    amountComputen2 (val) {
+      if (!val) { return 0 }
+      return val > 10000 ? parseInt(val / 10000) + '万' : val
+    }
   },
   computed: {
     activeStyle () {
