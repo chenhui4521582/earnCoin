@@ -39,7 +39,7 @@
         <!-- 任务列表 -->
         <template v-if="taskNav[currentIndex].value != 3">
           <div class="items" v-for="(item, index) in taskList" :key="index">
-            <div class="rank">{{item.taskLevel}}</div>
+            <div class="rank">{{index + 1}}</div>
             <div class="desc">
               <div class="name">
                 <div class="img">
@@ -196,10 +196,10 @@ export default {
       return this.taskDetail && this.taskDetail.configInfo && this.taskDetail.configInfo[index] || []
     },
     remark () {
-      if(this.taskDetail.tUserId || this.taskDetail.tUserName) {
-        let name = this.taskDetail.gameType == 1 ? this.taskDetail.tUserId : this.taskDetail.tUserName
-        return `账号：${name}<br>${this.taskDetail.remark}`
-      }
+      // if(this.taskDetail.tUserId || this.taskDetail.tUserName) {
+      //   let name = this.taskDetail.gameType == 1 ? this.taskDetail.tUserId : this.taskDetail.tUserName
+      //   return `账号：${name}<br>${this.taskDetail.remark}`
+      // }
       return this.taskDetail.remark || ''
     },
     showResetDownLoad() {
