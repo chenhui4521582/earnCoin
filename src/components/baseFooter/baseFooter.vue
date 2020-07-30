@@ -16,14 +16,14 @@ export default {
         {
           name: '首页',
           routerName: 'index',
-          defaultBg: require('./image/my_default.png'),
-          activeBg: require('./image/my_active.png')
+          defaultBg: require('./image/index_default.png'),
+          activeBg: require('./image/index_active.png')
         },
         {
           name: '点我赚',
           routerName: 'task',
-          defaultBg: require('./image/index_default.png'),
-          activeBg: require('./image/index_active.png')
+          defaultBg: require('./image/my_default.png'),
+          activeBg: require('./image/my_active.png')
         }
       ],
     }
