@@ -13,20 +13,31 @@
       </div>
       <img src="./img/phone-icon2.png" alt="">
     </div>
-    <div class="user-agreement">登录就代表同意快乐赚的用户协议</div>
-    <div class="service">登录遇到问题，联系客服</div>
+    <div class="user-agreement">登录就代表同意快乐赚的 <span @click="goUserAgreement">用户协议</span></div>
+    <div class="service">登录遇到问题，<span @click="openService">联系客服</span></div>
+    <!-- 客服弹框 -->
+    <Service v-model="showService" />
   </div>
 </template>
 <script>
+import Service from '@/components/servicePop/service'
 import { getUrlParams} from '@/utils/utils'
 import _get from 'lodash.get'
 export default {
   name: 'loginPage',
   data: () => ({
-    phone: '',
-    code: '',
+    showService: false
   }),
+  components: {
+    Service
+  },
   methods: {
+    goUserAgreement () {
+      window.location.href = 'https://wap.beeplaying.com/xmWap/#/my/userAgreement'
+    },
+    openService () {
+      this.showService = true
+    },
     init () {}
   },
   mounted () {
@@ -98,7 +109,29 @@ export default {
         height: .8rem;
       }
     }
-    .user-agreement {}
-    .service {}
+    .user-agreement {
+      position: absolute;
+      bottom: 1.17rem;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      font-size: .2rem;
+      color: #ACACAC;
+      span {
+        color: #5186CA;
+      }
+    }
+    .service {
+      position: absolute;
+      bottom: .82rem;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      font-size: .2rem;
+      color: #ACACAC;
+      span {
+        color: #5186CA;
+      }
+    }
   }
 </style>>
