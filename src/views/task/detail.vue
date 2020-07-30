@@ -39,7 +39,7 @@
         <!-- 任务列表 -->
         <template v-if="taskNav[currentIndex].value != 3">
           <div class="items" v-for="(item, index) in taskList" :key="index">
-            <div class="rank">{{item.taskLevel}}</div>
+            <div class="rank">{{index + 1}}</div>
             <div class="desc">
               <div class="name">
                 <div class="img">

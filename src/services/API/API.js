@@ -20,6 +20,8 @@ const API = {
   getCoinLog: `${HOST.PLATFORM_API}/point/api/account/point-history`, // 金币明细记录
   getIconList: `${HOST.PLATFORM_API}/point/api/entrance/icon/list`, // 首页Icon列表
   getYesterdayRank: `${HOST.PLATFORM_API}/point/api/account/yesterday-rank`, // 昨日金币排行
+  getRankTab: `${HOST.PLATFORM_API}/point/api/task/recommendTab`, // 获取排行Tab
+  getRankList: `${HOST.PLATFORM_API}/point/api/task/recommendTaskList`, // 获取排行数据排行
   getSignList : `${HOST.PLATFORM_API}/point/api/signIn/list`, //签到列表
   sign : `${HOST.PLATFORM_API}/point/api/signIn/sign`, //签到
   getTodaySign : `${HOST.PLATFORM_API}/point/api/signIn/todayStatus`, //今天是否签到

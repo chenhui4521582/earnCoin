@@ -58,6 +58,22 @@ export default new Router({
       meta: {
         title: '提现'
       }
+    },
+    {
+      path: '/ranking',
+      name: 'ranking',
+      component: () => import(/* webpackChunkName: "ranking" */ '../views/ranking/ranking'),
+      meta: {
+        title: '赚金榜'
+      }
+    },
+    {
+      path: '/earnRanking',
+      name: 'earnRanking',
+      component: () => import(/* webpackChunkName: "earnRanking" */ '../views/ranking/earnRanking'),
+      meta: {
+        title: '高额赚'
+      }
     }
   ]
 })
