@@ -17,7 +17,8 @@
     <div class="list" :class="{'animation': animation}">
       <div class="item" v-for="(item, index) in list" :key="index">
         <div class="ranking-num">
-          <img :src="iconList[currentIndex].list[index]" alt="">
+          <img v-if="index < 3"   :src="iconList[currentIndex].list[index]" alt="">
+          <span v-else> {{index+1}}</span>
         </div>
         <div class="item-img">
           <img class="inner-img" :src="item.gameIcon | filter" alt="">
