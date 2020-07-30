@@ -74,6 +74,23 @@ export default new Router({
       meta: {
         title: '高额赚'
       }
-    }
+    },
+    {
+      path: '/loadingPage',
+      name: 'loadingPage',
+      component: () => import(/* webpackChunkName: "loadingPage" */ '../views/loadingPage/loadingPage'),
+      meta: {
+        title: '高额赚'
+      }
+    },
+    {
+      path: '/loginPage',
+      name: 'loginPage',
+      component: () => import(/* webpackChunkName: "loginPage" */ '../views/loginPage/loginPage'),
+      meta: {
+        title: '登录'
+      }
+    },
+
   ]
 })
