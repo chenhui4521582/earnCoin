@@ -3,11 +3,11 @@
     <div class="logo">
       <img class="inner-img" src="./img/logo.png" alt="">
     </div>
-    <div class="wechat-login">
+    <div class="wechat-login" @click="_wechatLogin">
       <img src="./img/wechat-icon.png" alt="">
       微信授权登录
     </div>
-    <div class="phone-login">
+    <div class="phone-login" @click="goFastLogin">
       <div class="title">
         <div class="text">手机号登录</div>
       </div>
@@ -21,7 +21,9 @@
 </template>
 <script>
 import Service from '@/components/servicePop/service'
+import AppCall from '@/utils/native/index'
 import { getUrlParams} from '@/utils/utils'
+import { getAccessToken, wechatLogin } from '@/services/user'
 import _get from 'lodash.get'
 export default {
   name: 'loginPage',
@@ -38,7 +40,53 @@ export default {
     openService () {
       this.showService = true
     },
-    init () {}
+    goFastLogin () {
+      this.$router.push({
+        name: 'fastLogin'
+      })
+    },
+    /** 获取ACCESS_TOKEN **/
+    _getAccessToken (requestToken) {
+      getAccessToken({
+        token: requestToken,
+        type: 1
+      }).then(res => {
+        const {code, data, message} = _get(res, 'data')
+        if(code == 200) {
+          this.$Toast('登录成功！', () => {
+            localStorage.setItem('ACCESS_TOKEN', data.accessToken)
+            this.$router.push({
+              name: 'index'
+            })
+          })
+        }
+      })
+    },
+    /** 微信登录 **/
+    _wechatLogin () {
+      /** 调用APP方法微信登录 **/
+      AppCall.WXLogin()
+      /** window层创建微信登录回调方法 **/
+      this.wechatCallback()
+    },
+    /** 微信登录回调 **/
+    wechatCallback () {
+      window.WXMessage = (callback) => {
+        callback = JSON.parse(callback)
+        wechatLogin({
+          code: callback.Code,
+          appId: callback.AppId
+        }).then (res => {
+          const {code, data, message} = _get(res, 'data')
+          if (code == 200) {
+            this._getAccessToken(res,0)
+          } else {
+            this.$Toast( message )
+          }
+        })
+
+      }
+    }
   },
   mounted () {
 

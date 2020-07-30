@@ -42,6 +42,7 @@ const bindMobilePhone = function (phone, smsCode) {
 const isBindGZH = function () {
   return $axios.post(Api.isBindGZH)
 }
+
 /**
  * @description 绑定手机提交
  */
@@ -49,7 +50,48 @@ const getUserPhone = function () {
   return $axios.post(Api.getUserPhone)
 }
 
-export { getAccountInfo, getUserInfo, getTaskInfo, getPhoneCode, bindMobilePhone, isBindGZH, getUserPhone }
+/**
+ * @description 微信登录
+ */
+const wechatLogin = function (params) {
+  return $axios.post(Api.wechatLogin, params)
+}
+
+/**
+ * @description 发送验证码
+ */
+const sendCode = function (params) {
+  return $axios.post(Api.sendCode, params)
+}
+
+/**
+ * @description 获取requestToken
+ */
+const getRequestToken = function (params) {
+  return $axios.post(Api.getRequestToken, params)
+}
+
+
+/**
+ * @description 获取ACCESSToken
+ */
+const getAccessToken = function (params) {
+  return $axios.post(Api.getAccessToken, params)
+}
+
+export { 
+  getAccountInfo,
+  getUserInfo,
+  getTaskInfo,
+  getPhoneCode,
+  bindMobilePhone,
+  isBindGZH,
+  getUserPhone,
+  wechatLogin,
+  sendCode,
+  getRequestToken,
+  getAccessToken
+}
 
 const Services = {
   getAccountInfo,
@@ -58,6 +100,10 @@ const Services = {
   getPhoneCode,
   bindMobilePhone,
   isBindGZH,
-  getUserPhone
+  getUserPhone,
+  wechatLogin,
+  sendCode,
+  getRequestToken,
+  getAccessToken
 }
 export default Services

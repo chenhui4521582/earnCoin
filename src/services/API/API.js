@@ -39,7 +39,12 @@ const API = {
   gzhBindPhone: `${HOST.PLATFORM_API}/point/api/wechat/bind`, // 公总号绑定手机号
   isBindGZH: `${HOST.PLATFORM_API}/point/api/user/bindStatus`, // 用户是否绑定公总号
   sendCode: `${HOST.PLATFORM_API}/point/api/user/sendCode/`, //发送验证码
-  getCard: `${HOST.PLATFORM_API}/point/api/cdkey/receive/{batchId}` //获取礼包码
+  getCard: `${HOST.PLATFORM_API}/point/api/cdkey/receive/{batchId}`, //获取礼包码
+  wechatLogin: `${HOST.UIC_API}/uic/api/app/wechat/login`, //微信登录
+  getRequestToken: `//uic-api.beeplaying.com/uic/api/user/login/sms/requestToken`, // 获取requestToken
+  getAccessToken: `${HOST.UIC_API}/uic/api/user/login/accessToken`, //获取ACCESSTOKEN
+  sendCode: `${HOST.UIC_API}/uic/api/user/login/sendSmsCode`, // 发送验证码
+  
 }
 
 export default API

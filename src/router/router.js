@@ -88,9 +88,25 @@ export default new Router({
       name: 'loginPage',
       component: () => import(/* webpackChunkName: "loginPage" */ '../views/loginPage/loginPage'),
       meta: {
-        title: '登录'
+        title: '高额赚'
       }
     },
+    {
+      path: '/loginPage/fastLogin',
+      name: 'fastLogin',
+      component: () => import(/* webpackChunkName: "fastLogin" */ '../views/loginPage/fastLogin'),
+      meta: {
+        title: '高额赚'
+      }
+    },
+    {
+      path: '/loginPage/otherPhone',
+      name: 'otherPhone',
+      component: () => import(/* webpackChunkName: "otherPhone" */ '../views/loginPage/otherPhone'),
+      meta: {
+        title: '高额赚'
+      }
+    }
 
   ]
 })
