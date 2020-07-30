@@ -50,9 +50,12 @@
               </div>
               <div class="task-text">{{item.remark}}</div>
             </div>
-            <div class="btn yellow2" v-if="item.status == 2" @click="_getAward(item)">领奖励</div>
-            <div class="btn gray" v-if="item.status == 1">已完成</div>
-            <div class="btn yellow" v-if="item.status == 0" @click="listItemClick">去完成</div>
+            <div class="right">
+              <div class="btn yellow2" v-if="item.status == 2" @click="_getAward(item)">领奖励</div>
+              <div class="btn gray" v-if="item.status == 1">已完成</div>
+              <div class="btn yellow" v-if="item.status == 0" @click="listItemClick">去完成</div>
+              <div class="progress" v-if="item.userFinish || item.configFinish">当前进度：{{item.userFinish | amountComputen1}}/{{item.configFinish | amountComputen2}}</div>
+            </div>
           </div>
         </template>
         <!-- 礼包列表 -->
@@ -160,6 +163,16 @@ export default {
     UserGuide,
     Service
   },
+  filters: {
+    amountComputen1 (val) {
+      if (!val) { return 0 }
+      return val > 10000 ? (val / 10000).toFixed(1) + '万' : val
+    },
+    amountComputen2 (val) {
+      if (!val) { return 0 }
+      return val > 10000 ? parseInt(val / 10000) + '万' : val
+    }
+  },
   computed: {
     activeStyle () {
       return {
@@ -183,10 +196,10 @@ export default {
       return this.taskDetail && this.taskDetail.configInfo && this.taskDetail.configInfo[index] || []
     },
     remark () {
-      if(this.taskDetail.tUserId || this.taskDetail.tUserName) {
-        let name = this.taskDetail.gameType == 1 ? this.taskDetail.tUserId : this.taskDetail.tUserName
-        return `账号：${name}<br>${this.taskDetail.remark}`
-      }
+      // if(this.taskDetail.tUserId || this.taskDetail.tUserName) {
+      //   let name = this.taskDetail.gameType == 1 ? this.taskDetail.tUserId : this.taskDetail.tUserName
+      //   return `账号：${name}<br>${this.taskDetail.remark}`
+      // }
       return this.taskDetail.remark || ''
     },
     showResetDownLoad() {
@@ -583,31 +596,43 @@ export default {
             color: #000000;
           }
         }
-        .btn {
+        .right {
           margin-left: auto;
-          width: 1.5rem;
-          height: .5rem;
-          line-height: .5rem;
-          text-align: center;
-          font-size: .26rem;
-          font-weight: bold;
-          
-          border-radius: .3rem;
-          &.yellow {
-            color: #000000;
-            background: #FFCA00;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: flex-end;
+          text-align: right;
+          .btn {
+            margin-bottom: .05rem;
+            width: 1.5rem;
+            height: .5rem;
+            line-height: .5rem;
+            text-align: center;
+            font-size: .26rem;
+            font-weight: bold;
+            border-radius: .3rem;
+            &.yellow {
+              color: #000000;
+              background: #FFCA00;
+            }
+            &.yellow2 {
+              background: #FF7800;
+              color: #FFFFFF;
+            }
+            &.gray {
+              background: #ACACAC;
+              color: #fff;
+            }
+            &.yellow1 {
+              background: #FFCA00;
+              color: #000000;
+            }
           }
-          &.yellow2 {
-            background: #FF7800;
-            color: #FFFFFF;
-          }
-          &.gray {
-            background: #ACACAC;
-            color: #fff;
-          }
-          &.yellow1 {
-            background: #FFCA00;
-            color: #000000;
+          .progress {
+            color: #FF7800;
+            font-size: .2rem;
+            font-weight: bold;
           }
         }
       }
