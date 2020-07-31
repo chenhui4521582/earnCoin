@@ -79,6 +79,34 @@ const getAccessToken = function (params) {
   return $axios.post(Api.getAccessToken, params)
 }
 
+/**
+ * @description 游客登录
+ */
+const visitorLogin = function (params) {
+  return $axios.post(Api.visitorLogin, params)
+}
+
+/**
+ * @description 判断用户是否领取过红包
+ */
+const userIsReceive = function (params) {
+  return $axios.post(Api.userIsReceive, params)
+}
+
+/**
+ * @description 领取红包
+ */
+const getRedPacketAward = function (params) {
+  return $axios.post(Api.getRedPacketAward, params)
+}
+
+/**
+ * @description 告知后端领取了多少红包
+ */
+const sendRedPacketToServer = function (params) {
+  return $axios.post(Api.sendRedPacketToServer, params)
+}
+
 export { 
   getAccountInfo,
   getUserInfo,
@@ -90,7 +118,11 @@ export {
   wechatLogin,
   sendCode,
   getRequestToken,
-  getAccessToken
+  getAccessToken,
+  visitorLogin,
+  userIsReceive,
+  getRedPacketAward,
+  sendRedPacketToServer
 }
 
 const Services = {
@@ -104,6 +136,10 @@ const Services = {
   wechatLogin,
   sendCode,
   getRequestToken,
-  getAccessToken
+  getAccessToken,
+  visitorLogin,
+  userIsReceive,
+  getRedPacketAward,
+  sendRedPacketToServer
 }
 export default Services
