@@ -31,7 +31,7 @@
 </template>
 <script>
 import { getUrlParams } from '@/utils/utils'
-import { gzhBindPhone, sendCode } from '@/services/withdraw'
+import { gzhBindPhone, sendCode, isBindPhone } from '@/services/withdraw'
 import _get from 'lodash.get'
 export default {
   name: 'App',
@@ -97,6 +97,19 @@ export default {
           }, 1000);
       }
     },
+    isBind () {
+      const openId = getUrlParams('openId')
+      isBindPhone(openId).then(res => {
+        const {code, data, message} = _get(res, 'data')
+        if(code == 200) {
+          this.bind = data.flag
+          this.phone = data.phone 
+        }
+      })
+    }
+  },
+  mounted () {
+    this.isBind()
   }
 }
 </script>

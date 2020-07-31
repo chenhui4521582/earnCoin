@@ -1,7 +1,16 @@
 import $axios from './http/http'
 import Api from './API/API'
+
+
 /**
- * @description 提现  获取用户金币信息
+ * @description 提现  获取用户是否绑定手机号
+ */
+const isBindPhone = function (openId) {
+  return $axios.post(`${Api.isBindPhone}/${openId}`)
+}
+
+/**
+ * @description 提现  绑定手机号
  */
 const gzhBindPhone = function (openId, phone, code) {
   return $axios.post(`${Api.gzhBindPhone}/${openId}/${phone}/${code}`)
@@ -45,9 +54,10 @@ const sendCode = function (phone) {
 
 
 
-export { gzhBindPhone, getWithdrawList, getWithdrawLog, userWithDraw, getCoinLog, sendCode }
+export { isBindPhone, gzhBindPhone, getWithdrawList, getWithdrawLog, userWithDraw, getCoinLog, sendCode }
 
 const Services = {
+  isBindPhone,
   gzhBindPhone,
   getWithdrawList,
   getWithdrawLog,
