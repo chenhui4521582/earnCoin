@@ -7,20 +7,10 @@ let APP_CHANNEL = getUrlParams('channel') || localStorage.getItem('APP_CHANNEL')
 let ACCESS_TOKEN = getUrlParams('token') || localStorage.getItem('ACCESS_TOKEN')
 if (APP_CHANNEL) {
   localStorage.setItem('APP_CHANNEL', APP_CHANNEL)
-} else {
-  //如果是保存到ios屏幕的打开时默认是100000渠道号
-  if (window.navigator.standalone) {
-    localStorage.setItem('APP_CHANNEL', 100000)
-  }
-  else {
-    localStorage.setItem('APP_CHANNEL', 100070)
-  }
 }
 if (ACCESS_TOKEN) {
   localStorage.setItem('ACCESS_TOKEN', ACCESS_TOKEN)
 }
-/** 平台跳转配置请勿删除!!!!! **/
-localStorage.setItem('PLANT_VERSION', 'xmWap')
 /** axios 请求连接等待时间 **/
 axios.defaults.timeout = 10000
 /** axios Request 配置 **/
@@ -64,24 +54,15 @@ axios.interceptors.response.use(
         /** 开发环境跳转登录页, 生产环境跳转断开连接 **/
         if (NODE_ENV === 'production') {
           /** 实名认证页面, 风控页面不需要监控token **/
-          let noCheckTokenArr = ['riskManagement', 'authentication', 'zfbmiddle', 'wechatmiddle', 'feedback', 'loginTip', 'userAgreement']
+          let noCheckTokenArr = ['loadingPage']
           let noCheckToken = noCheckTokenArr.find(item => {
             return window.location.href.indexOf(item) != -1
           })
           if (noCheckToken) return
-          let APP_CHANNEL = getUrlParams('channel') || localStorage.getItem('APP_CHANNEL')
-          if (['100000', '100061', '100086'].indexOf(APP_CHANNEL) > -1) {
-            window.location.href = 'https://wap.beeplaying.com/publicWap/loginPage.html#/?channel=' + APP_CHANNEL + '&from=plat'
-          }
-          if (APP_CHANNEL == '100030') {
-            window.location.href = 'https://wap.beeplaying.com/loginPages/newDDWlogin.html?channel=100030#/'
-          }
-          else {
-            Vue.prototype.$Toast('登录失效')
-            setTimeout(() => {
-              window.location.href = 'https://wap.beeplaying.com/loginPages/failureLogon.html'
-            }, 1500)
-          }
+          Vue.prototype.$Toast('登录失效')
+          setTimeout(() => {
+            window.location.href = 'https://wap.beeplaying.com/loginPages/failureLogon.html'
+          }, 1500)
         }
       } else {
         let message = errorList[code]

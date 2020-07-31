@@ -41,7 +41,7 @@ const API = {
   sendCode: `${HOST.PLATFORM_API}/point/api/user/sendCode/`, //发送验证码
   getCard: `${HOST.PLATFORM_API}/point/api/cdkey/receive/{batchId}`, //获取礼包码
   wechatLogin: `${HOST.UIC_API}/uic/api/app/wechat/login`, //微信登录
-  getRequestToken: `//uic-api.beeplaying.com/uic/api/user/login/sms/requestToken`, // 获取requestToken
+  getRequestToken: `${HOST.UIC_API}/uic/api/user/login/sms/requestToken`, // 获取requestToken
   getAccessToken: `${HOST.UIC_API}/uic/api/user/login/accessToken`, //获取ACCESSTOKEN
   sendCode: `${HOST.UIC_API}/uic/api/user/login/sendSmsCode`, // 发送验证码
   visitorLogin: `${HOST.UIC_API}/uic/api/user/login/visitor`, // 游客登录

@@ -26,7 +26,12 @@ export default {
   methods: {
     /** 游客登录 **/
     _visitorLogin () {
-
+      visitorLogin({
+        source: 1,
+        visitorToken: this.DEVICE_TOKEN
+      }).then(res => {
+        
+      })
     },
     /** 红包领取完毕回调方法 **/
     redPacketFinish () {
