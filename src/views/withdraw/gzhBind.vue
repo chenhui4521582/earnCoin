@@ -4,18 +4,19 @@
     <div class="bind-wrap">
       <div class="bind-box">
         <div class="content-wrap">
-          <template v-if="!bind">
+          <template v-if="!bind && show">
             <p v-if="!bind">手机号<input type="tel" v-model="phone" maxlength="11" placeholder="请与游戏内绑定的手机号一致"></p>
             <p>验证码
-              <input type="text" class="code" v-model="code" maxlength="6"placeholder="请输入验证码">
+              <input type="text" class="code" v-model="code" maxlength="6" placeholder="请输入验证码">
               <span class="count-down" v-if="showSendCode" @click="_sendCode">获取验证码</span>
               <span class="count-down" v-else>{{leftTime}}s</span>
             </p>
           </template>
-          <p v-else>手机号绑定成功：{{phone}}</p>
+          <p v-if="bind && show">手机号绑定成功：{{phone}}</p>
         </div>
+        <p class="bind-btn" v-if="!bind && show"  @click="bindPhone">立即绑定</p>
       </div>
-      <p class="bind-btn" v-if="!bind"  @click="bindPhone">立即绑定</p>
+      
     </div>
     <div class="rule">
         <div class="rule-content">
@@ -37,6 +38,7 @@ export default {
   name: 'App',
   data() {
     return {
+      show: false,
       phone: '',
       code: '',
       bind: false,
@@ -104,7 +106,11 @@ export default {
         if(code == 200) {
           this.bind = data.flag
           this.phone = data.phone 
+          this.show = true
         }
+      }).catch( () => {
+        this.show = true
+        this.bind = false
       })
     }
   },
