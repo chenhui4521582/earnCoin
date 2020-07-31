@@ -53,7 +53,6 @@ AppCall.extend({
           params.username = data.userName
           params.islogin = false
           if (!!params.userID) params.islogin = true
-          // console.log(params)
           resolve(params)
         })
     })

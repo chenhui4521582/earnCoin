@@ -1,5 +1,5 @@
 <template>
-  <div class="red-packet">
+  <div class="red-packet" v-if="value">
     <div class="mask"></div>
     <!-- 红包弹框 -->
     <div class="open-red-packet" v-if="step == 1">
@@ -8,9 +8,9 @@
         <img class="inner-img" src="../img/open-btn.png" alt="">
       </div>
       <div class="explain">
-        已有账号，<a>直接登录</a> 
+        已有账号，<a @click="login">直接登录</a> 
       </div>
-      <div class="close">
+      <div class="close" @click="hidePopup">
         <img class="inner-img" src="../img/close.png" alt="">
       </div>
     </div>
@@ -23,7 +23,7 @@
       <div class="receive-btn" @click="redPacketFinish">
         <img class="inner-img" src="../img/get-btn.png" alt="">
       </div>
-      <div class="close">
+      <div class="close" @click="redPacketFinish">
         <img class="inner-img" src="../img/close.png" alt="">
       </div>
     </div>  
@@ -35,6 +35,10 @@ import _get from 'lodash.get'
 export default {
   name: 'redPacket',
   props: {
+    value: {
+      type: Boolean,
+      default: false
+    },
     redPacketData: {
       type: Object,
       default: () => {}
@@ -55,20 +59,23 @@ export default {
         if(code == 200) {
           this.step = 2
           this.awardData = data
-        }else {
-
         }
       })
     },
-    /** 关闭红包 **/
-    hidePopup () {
+    hidePopup() {
       this.$emit('input', false)
-      this.$emit('hidePopup')
+      this.$emit('hideRedPacket')
     },
     /** 领取红包 = **/
     redPacketFinish () {
       this.$emit('input', false)
       this.$emit('redPacketFinish')
+    },
+    /** 调用 **/
+    login () {
+      this.$router.push({
+        name: 'loginPage'
+      })
     }
   },
 }

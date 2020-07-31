@@ -38,7 +38,6 @@ export default [
     name: 'formatTime',
     method: (date, type) => {
       if(!date) return
-      console.log(date)
       if (typeof(date) == 'number') {
         date = new Date(date)
       } else if (date instanceof Date) {

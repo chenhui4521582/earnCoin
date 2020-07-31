@@ -80,18 +80,12 @@ let AppCall = {
     for (i = 0; i < params.length; i++) {
       obj["arg" + (i + 1)] = params[i]
     }
-
-    // console.log(name);
     if (isIOS && isMyNewApp) {
       setupWebViewJavascriptBridge(function (bridge) {
         bridge.callHandler(name, obj, callback1)
       })
-
-      //log('isIOS && window.WebViewJavascriptBridge');
-      // WebViewJavascriptBridge.callHandler(name, obj, callback);
       return true
     } else if (isIOS && window.WebViewJavascriptBridge) {
-      //log('isIOS && window.WebViewJavascriptBridge');
       WebViewJavascriptBridge.callHandler(name, obj, callback1)
       return true
     }

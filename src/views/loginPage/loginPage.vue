@@ -41,9 +41,7 @@ export default {
       this.showService = true
     },
     goFastLogin () {
-      this.$router.push({
-        name: 'fastLogin'
-      })
+      AppCall.switchAccount()
     },
     /** 获取ACCESS_TOKEN **/
     _getAccessToken (requestToken) {
@@ -64,27 +62,27 @@ export default {
     },
     /** 微信登录 **/
     _wechatLogin () {
-      /** 调用APP方法微信登录 **/
-      AppCall.WXLogin()
       /** window层创建微信登录回调方法 **/
       this.wechatCallback()
+      /** 调用APP方法微信登录 **/
+      AppCall.WXLogin()
     },
     /** 微信登录回调 **/
     wechatCallback () {
       window.WXMessage = (callback) => {
-        callback = JSON.parse(callback)
+        // callback = JSON.parse(callback)
         wechatLogin({
           code: callback.Code,
           appId: callback.AppId
         }).then (res => {
           const {code, data, message} = _get(res, 'data')
+          alert(data)
           if (code == 200) {
-            this._getAccessToken(res,0)
+            this._getAccessToken(data)
           } else {
             this.$Toast( message )
           }
         })
-
       }
     }
   },
@@ -147,7 +145,7 @@ export default {
           top: 50%;
           transform: translate(0, -50%);
           width: 100%;
-          height: .01rem;
+          height: .02rem;
           background: #ACACAC;
         }
       }

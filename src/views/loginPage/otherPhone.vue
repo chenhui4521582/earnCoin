@@ -118,7 +118,7 @@ export default {
       })
     },
     submit() {
-      if(!isSubmit) return 
+      if(!this.isSubmit) return 
       this._getRequestToken()
     },
   },

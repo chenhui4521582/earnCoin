@@ -4,14 +4,15 @@
       v-model="showRedPacket" 
       :redPacketData="redPacketData" 
       @redPacketFinish="redPacketFinish"
-      @hidePopup="hidePopup"
+      @hideRedPacket="hideRedPacket"
     />
   </div>
 </template>
 <script>
 import { getUrlParams } from '@/utils/utils'
 import RedPacket from './components/redPacket'
-import { visitorLogin, userIsReceive, getRedPacketAward, sendRedPacketToServer} from '@/services/user'
+import { visitorLogin, userIsReceive, getRedPacketAward, sendRedPacketToServer, getAccessToken} from '@/services/user'
+import AppCall from '@/utils/native/index'
 import _get from 'lodash.get'
 export default {
   name: 'loadingPage',
@@ -24,43 +25,64 @@ export default {
     RedPacket
   },
   methods: {
-    /** 游客登录 **/
-    _visitorLogin () {
-      visitorLogin({
-        source: 1,
-        visitorToken: this.DEVICE_TOKEN
-      }).then(res => {
-        
-      })
-    },
-    /** 红包领取完毕回调方法 **/
-    redPacketFinish () {
-      /** 有token 直接进首页， 没token 直接注册游客 **/
-      if(this.ACCESS_TOKEN) {
-        this.$router.push({
-          name: 'index'
-        })
+    async _visitorLogin (callback) {
+      /** 游客登录 **/
+      const vRes = await visitorLogin({ source: 1,visitorToken: this.DEVICE_TOKEN })
+      let vCode = _get(vRes, 'data.code')
+      let vData = _get(vRes, 'data.data')
+      let vMessage = _get(vRes, 'data.message')
+      if(vCode == 200) {
+        /** 获取ACCESS_TOKEN **/
+        const ARes = await getAccessToken({ token: vData, type: 1 })
+        let aCode = _get(ARes, 'data.code')
+        let aData = _get(ARes, 'data.data')
+        if(aCode == 200) {
+          this.$Toast('登录成功！', () => {
+            localStorage.setItem('ACCESS_TOKEN', aData.accessToken)
+            callback && callback ()
+          })
+        }
       }else {
-        this._visitorLogin()
+        this.Toast(vMessage)
       }
     },
-    /** 红宝弹框关闭 **/
-    hidePopup () {
-      /** 有token 直接进首页， 没token 直接注册游客 **/
+    /** 红包弹框关闭回调方法 **/
+    hideRedPacket () {
+      /** 有token 直接进首页 **/
       if(this.ACCESS_TOKEN) {
         this.$router.push({
           name: 'index'
         })
       }else {
-        this._visitorLogin()
+        /** 关闭红包弹框注册游客用户 **/
+        this._visitorLogin(() => {
+          this.$router.push({
+            name: 'index'
+          })
+        })
+      }
+    },
+    /** 红包弹框领取完毕回调方法 **/
+    redPacketFinish () {
+      /** 有token发送奖品数据到后端并且进入首页 **/
+      if(this.ACCESS_TOKEN) {
+        sendRedPacketToServer()
+        this.$router.push({
+          name: 'index'
+        })
+      }else {
+        /** 领取红包完毕注册游客用户并且发送奖品数据到后端 **/
+        this._visitorLogin(()=> {
+          sendRedPacketToServer()
+          this.$router.push({
+            name: 'index'
+          })
+        })
       }
     },
     /** 判断用户是否领取过红包 **/
     _userIsReceive () { 
       userIsReceive().then(res => {
-        res = {
-          data: {"code":200,"data":{"popup":true,"min":"0.1元","max":"1元","award":null,"balance":null,"num":null},"message":null}
-        }
         const {code, data, message} = _get(res, 'data')
         if(code == 200) {
           const showRedPacket = _get(data, 'popup', false)
@@ -77,13 +99,13 @@ export default {
         /** 用户token过期,跳转到登录页 **/
         if(code == 102) {
           this.$router.push({
-            name: 'loadingPage'
+            name: 'loginPage'
           })
         }
       })
     },
-    init () {
-      this.DEVICE_TOKEN = getUrlParams('divice')
+    async init () {
+      this.DEVICE_TOKEN = getUrlParams('divice') || await AppCall.getDeviceID()
       this.ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN')
       this._userIsReceive()
     }

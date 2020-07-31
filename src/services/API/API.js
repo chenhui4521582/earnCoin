@@ -47,7 +47,7 @@ const API = {
   visitorLogin: `${HOST.UIC_API}/uic/api/user/login/visitor`, // 游客登录
   userIsReceive: `${HOST.PLATFORM_API}/point/api/new/user/red/pack/popup`, //判断用户是否领取过红包
   getRedPacketAward: `${HOST.PLATFORM_API}/point/api/new/user/red/pack/award`, //领取红包
-  sendRedPacketToServer: `${HOST.PLATFORM_API}/point/api/new/user/red/pack/send/{num}`, //告知后端领取了多少红包
+  sendRedPacketToServer: `${HOST.PLATFORM_API}/point/api/new/user/red/pack/send`, //告知后端领取了多少红包
 }
 
 export default API

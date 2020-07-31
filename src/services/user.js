@@ -103,8 +103,8 @@ const getRedPacketAward = function (params) {
 /**
  * @description 告知后端领取了多少红包
  */
-const sendRedPacketToServer = function (params) {
-  return $axios.post(Api.sendRedPacketToServer, params)
+const sendRedPacketToServer = function () {
+  return $axios.post(Api.sendRedPacketToServer)
 }
 
 export { 
