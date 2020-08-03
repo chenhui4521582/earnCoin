@@ -68,6 +68,7 @@ export default {
         name: 'taskDetail',
         query: { id }
       })
+      this.$marchSetsPoint('A_H5PT0303003786')
     },
     goRanking ({ type }) {
       this.$router.push({
