@@ -16,7 +16,8 @@ export default new Router({
       name: 'task',
       component: () => import(/* webpackChunkName: "Task" */ '../views/task/task'),
       meta: {
-        title: '高额赚'
+        title: '高额赚',
+        keepAlive: true
       }
     },
     {

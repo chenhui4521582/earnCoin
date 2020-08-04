@@ -40,22 +40,18 @@ export default {
     iconList: {
       1: {
         titleImg: require('../img/ranking-title.png'),
-        // list: [require('../img/rank1-icon.png'), require('../img/rank2-icon.png'), require('../img/rank3-icon.png')]
       },
       2: {
         titleImg: require('../img/newgame-title.png'),
-        // list: [require('../img/newgame-icon1.png'), require('../img/newgame-icon2.png'), require('../img/newgame-icon3.png')]
       },
       3: {
         titleImg: require('../img/hot-title.png'),
-        // list: [require('../img/hot-icon1.png'), require('../img/hot-icon2.png'), require('../img/hot-icon3.png')]
       }
     }
   }),
   computed: {
     showList () {
       let list = _get(this.info, 'list', [])
-      console.log(list.length)
       return list.length
     },
     infoType () {

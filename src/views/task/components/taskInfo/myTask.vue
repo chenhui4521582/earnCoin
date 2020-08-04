@@ -8,7 +8,7 @@
           </div>
           <div class="task-desc">
             <div class="name">{{item.name}}</div>
-            <div class="desc">{{childTask(item.remark)[0].name}}</div>
+            <!-- <div class="desc">{{childTask(item.remark)[0].name}}</div> -->
           </div>
           <div class="num">
             <div class="total">+{{item.award || 0}}</div>
@@ -17,8 +17,8 @@
         </div>
         <div class="task-group">
           <div class="task" v-for="(innerItem, innerIndex) in childTask(item.remark)" :key="innerIndex">
+            <div class="finish-name">{{innerItem.name}}</div>
             <div class="finish-num">+{{innerItem.award}}</div>
-            <div class="finish-name">+{{innerItem.name}}</div>
           </div>
         </div>
         <div class="btn underway " v-if="item.status == 0" >进行中</div>
@@ -59,10 +59,7 @@ export default {
           task_name: name
         })
       }
-      this.$router.push({
-        name: 'taskDetail',
-        query: { id }
-      })
+      this.$emit('goDetail', id)
     },
     /** 子任务 **/
     childTask (task) {
@@ -144,9 +141,14 @@ export default {
       &:last-child {
         margin-bottom: 0;
       }
+      .finish-name {
+        margin-right: .12rem;
+        font-size: .2rem;
+        color: #666666;
+      }
       .finish-num {
         margin-right: .2rem;
-        width: 1.1rem;
+        padding: 0 .1rem;
         height: .3rem;
         text-align: center;
         line-height: .3rem;
@@ -155,10 +157,7 @@ export default {
         border: 1px solid #E8382B;
         border-radius: .06rem;
       }
-      .finish-name {
-        font-size: .2rem;
-        color: #666666;
-      }
+
     }
     .btn {
       position: absolute;

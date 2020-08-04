@@ -8,8 +8,8 @@
         <i>我的任务</i>
       </div>
     </div>
-    <great-task v-show="currentIndex == 1" :list="greatTaskList"/>
-    <my-task v-show="currentIndex == 2" :list="myTaskList" @switchTab="handclick(1)"/>
+    <great-task v-show="currentIndex == 1" :list="greatTaskList" @goDetail="goDetail"/>
+    <my-task v-show="currentIndex == 2" :list="myTaskList" @switchTab="handclick(1)" @goDetail="goDetail"/>
   </div>
 </template>
 <script>
@@ -40,12 +40,22 @@ export default {
         this.$marchSetsPoint('A_H5PT0303003639')
       }
     },
+    goDetail (id) {
+      this.$router.push({
+        name: 'taskDetail',
+        query: { id }
+      })
+      localStorage.setItem('taskCurrent', this.currentIndex) 
+    },
     /** 获取任务列表 **/
     _getMyTaskList () {
       getMyTaskList().then( res=> {
         const {code, data, message} = _get(res, 'data')
         if(code == 200) {
           this.myTaskList = data
+          this.$nextTick(()=> {
+            this.goScroll()
+          })
         }
       })
     },
@@ -55,13 +65,60 @@ export default {
         const {code, data, message} = _get(res, 'data')
         if(code == 200) {
           this.greatTaskList = data
+          this.$nextTick(()=> {
+            this.goScroll()
+          })
         }
       })
+    },
+    /** scrll定位 **/
+    goScroll () {
+      let scroll = localStorage.getItem('taskScrllTop')
+      if(scroll) {
+        window.scrollTo(0,scroll);
+      }
+    },
+    bodyOnscrll () {
+      clearTimeout(timer)
+      let timer = setTimeout(() => {
+        let scroll = (document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop)
+        if(scroll) {
+          localStorage.setItem('taskScrllTop', scroll)
+          localStorage.setItem('taskCurrent', this.currentIndex)
+        }
+      }, 500)
+    },
+    async init () {
+      const taskCurrent = _get(this.$route, 'params.taskCurrent') || localStorage.getItem('taskCurrent') || 1
+      const from = _get(this.$route, 'params.from')
+      this.currentIndex = taskCurrent
+      /** 首页点击过来 **/
+      if(taskCurrent == 1 && from) {
+        const res = await getMyTaskList()
+        const {code, data, message} = _get(res, 'data')
+        let runTask = data.find(item => item.status == 0)
+        if(runTask) {
+          this.myTaskList = data
+          this.currentIndex = 2
+        }
+      } else {
+        if(taskCurrent == 1) {
+          this._getGreatTaskList()
+          document.addEventListener('touchmove', this.bodyOnscrll, false)
+        }
+        if(taskCurrent == 2) {
+          this._getMyTaskList()
+          document.addEventListener('touchmove', this.bodyOnscrll, false)
+        }
+      }
+ 
     }
   },
   mounted () {
-    const { currentIndex = 1 } = this.$route.query
-    this.handclick(currentIndex)
+    this.init()
+  },
+  beforeDestroy () {
+    document.removeEventListener('touchmove', this.bodyOnscrll, false)
   }
 }
 </script>

@@ -29,10 +29,7 @@ export default {
         task_id: id,
         task_name: name
       })
-      this.$router.push({
-        name: 'taskDetail',
-        query: { id }
-      })
+      this.$emit('goDetail', id)
     }
   }
 }
