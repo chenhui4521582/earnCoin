@@ -48,26 +48,22 @@ export default {
       localStorage.setItem('taskCurrent', this.currentIndex) 
     },
     /** 获取任务列表 **/
-    _getMyTaskList () {
+    _getMyTaskList (callback) {
       getMyTaskList().then( res=> {
         const {code, data, message} = _get(res, 'data')
         if(code == 200) {
           this.myTaskList = data
-          this.$nextTick(()=> {
-            this.goScroll()
-          })
+          callback && callback()
         }
       })
     },
     /** 获取任务列表 **/
-    _getGreatTaskList () {
+    _getGreatTaskList (callback) {
       getGreatTaskList().then( res=> {
         const {code, data, message} = _get(res, 'data')
         if(code == 200) {
           this.greatTaskList = data
-          this.$nextTick(()=> {
-            this.goScroll()
-          })
+          callback && callback()
         }
       })
     },
@@ -75,7 +71,7 @@ export default {
     goScroll () {
       let scroll = localStorage.getItem('taskScrllTop')
       if(scroll) {
-        window.scrollTo(0,scroll);
+        window.scrollTo(0, scroll);
       }
     },
     bodyOnscrll () {
@@ -96,26 +92,32 @@ export default {
       if(taskCurrent == 1 && from) {
         const res = await getMyTaskList()
         const {code, data, message} = _get(res, 'data')
-        let runTask = data.find(item => item.status == 0)
+        let runTask = data && data.find(item => item.status == 0)
         if(runTask) {
           this.myTaskList = data
           this.currentIndex = 2
+          return 
         }
-      } else {
-        if(taskCurrent == 1) {
-          this._getGreatTaskList()
-          document.addEventListener('touchmove', this.bodyOnscrll, false)
-        }
-        if(taskCurrent == 2) {
-          this._getMyTaskList()
-          document.addEventListener('touchmove', this.bodyOnscrll, false)
-        }
+      } 
+      if(taskCurrent == 1) {
+        this._getGreatTaskList(() => {
+          this.$nextTick(() => {
+            this.goScroll()
+          })
+        })
       }
- 
+      if(taskCurrent == 2) {
+        this._getMyTaskList(() => {
+          this.$nextTick(() => {
+            this.goScroll()
+          })
+        })
+      }
     }
   },
   mounted () {
     this.init()
+    document.addEventListener('touchmove', this.bodyOnscrll, false)
   },
   beforeDestroy () {
     document.removeEventListener('touchmove', this.bodyOnscrll, false)

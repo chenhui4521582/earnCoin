@@ -179,7 +179,7 @@ export default {
         position: `relative`,
         zIndex: `2`,
         flexShrink: `0`,
-        flex: `0 0 ${6.6 / this.taskNav.length + .5}rem`,
+        flex: this.taskNav.length == 1 ? `1` : `0 0 ${6.6 / this.taskNav.length + .5}rem`,
         height: `.7rem`,
         lineHeight: '.7rem',
         background: `#FFFFFF`,
