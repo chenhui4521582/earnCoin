@@ -161,32 +161,35 @@ class utils {
     let OPEN_TOKEN = localStorage.getItem('OPEN_ACCESS_TOKEN')
     let WJ_GAMETYPE = item.gameId || ''
     if (URL.indexOf('external=1') != -1 || URL.indexOf('?external=1') != -1) {
-      let url = `${URL}&channel=${APP_CHANNEL}&token=${OPEN_TOKEN}&gurl=${base64url.encode(
-        URL.replace('?external=1', '').replace('&external=1', '')
-      )}&pf=xmWap&gameType=${WJ_GAMETYPE}`
-
-      if (WJ_GAMETYPE) {
-        localStorage.setItem('wj_gameType', WJ_GAMETYPE)
-        axios.post(
-          '//platform-api.beeplaying.com/wap/api/game/firstLoad/' + WJ_GAMETYPE
-        )
-        axios.post(
-          '//ops-api.beeplaying.com/ops/api/h5game/saveBehavior'
-        )
-      }
-      if (SDK) {
-        parent.location.href = url
-      } else {
-        window.location.href = url
-      }
+      let url = 
+      `${URL}
+      &channel=${APP_CHANNEL}&token=${OPEN_TOKEN}
+      &gurl=${base64url.encode(URL.replace('?external=1', '').replace('&external=1', ''))}
+      &pf=xmWap&gameType=${WJ_GAMETYPE}
+      ${params}`
+      console.log(url)
+      // if (WJ_GAMETYPE) {
+      //   localStorage.setItem('wj_gameType', WJ_GAMETYPE)
+      //   axios.post(
+      //     '//platform-api.beeplaying.com/wap/api/game/firstLoad/' + WJ_GAMETYPE
+      //   )
+      //   axios.post(
+      //     '//ops-api.beeplaying.com/ops/api/h5game/saveBehavior'
+      //   )
+      // }
+      // if (SDK) {
+      //   parent.location.href = url
+      // } else {
+      //   window.location.href = url
+      // }
       return false
     }
     /** 跳转绝对路劲**/
     if (URL.indexOf('//') != -1) {
       if (SDK) {
-        parent.location.href = URL
+        parent.location.href = `${URL}${params}`
       } else {
-        window.location.href = URL
+        window.location.href = `${URL}${params}`
       }
       return
     }

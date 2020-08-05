@@ -179,7 +179,7 @@ export default {
         position: `relative`,
         zIndex: `2`,
         flexShrink: `0`,
-        flex: `0 0 ${6.6 / this.taskNav.length + .5}rem`,
+        flex: this.taskNav.length == 1 ? `1` : `0 0 ${6.6 / this.taskNav.length + .5}rem`,
         height: `.7rem`,
         lineHeight: '.7rem',
         background: `#FFFFFF`,
@@ -265,10 +265,11 @@ export default {
               location.href = this.taskDetail.download.split('?')[0]
             })
           } else {
+            let duration = `${this.taskDetail.duration ? '&duration=true' : ''}`
             jumpUrl({
               url: this.taskDetail.download,
-              gameId: this.taskDetail.gameId
-            })
+              gameId: this.taskDetail.gameId,
+            }, '', duration)
           }
         }
       })
@@ -316,10 +317,11 @@ export default {
       if(this.taskDetail.gameType == 1) {
         this.$Toast('任务已领取,打开app试玩吧')
       }else{
+        let duration = `${this.taskDetail.duration ? '&duration=true' : ''}`
         jumpUrl({
           url: this.taskDetail.download,
-          gameId: this.taskDetail.gameId
-        })
+          gameId: this.taskDetail.gameId,
+        }, '', duration)
       }
     },
     /** 任务列表点击 **/
