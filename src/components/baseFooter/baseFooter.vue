@@ -50,7 +50,7 @@ export default {
           }
         })
         this.taskTips = false
-        localStorage.setItem('taskTips', `${this.endTime()}`)
+        localStorage.setItem('earnCoin_taskTips', `${this.endTime()}`)
         return 
       }
       this.$router.push({ name: item.routerName })
@@ -64,7 +64,7 @@ export default {
     },
     taskTipsInit () {
       let endTime = this.endTime()
-      let cacheTime = localStorage.getItem('taskTips')
+      let cacheTime = localStorage.getItem('earnCoin_taskTips')
       this.taskTips = false;
       if (cacheTime) {
         if(endTime != cacheTime){
