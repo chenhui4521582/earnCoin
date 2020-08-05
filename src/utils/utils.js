@@ -127,8 +127,8 @@ class utils {
       : Request
   }
   openGame (url, SDK, params) {
-    let APP_CHANNEL = this.localStorage().getString('APP_CHANNEL')
-    let baseUrl = `https:${state.HOST_PLATFORM}/${url}${url.includes('?') ? '&' : '?'}channel=${APP_CHANNEL}&time=${new Date().getTime()}${params || ''}`
+    let APP_CHANNEL = localStorage.getItem('APP_CHANNEL')
+    let baseUrl = `https://wap.beeplaying.com/${url}${url.includes('?') ? '&' : '?'}channel=${APP_CHANNEL}&time=${new Date().getTime()}${params || ''}`
     if (SDK) {
       parent.location.href = baseUrl
     } else {
@@ -167,21 +167,20 @@ class utils {
       &gurl=${base64url.encode(URL.replace('?external=1', '').replace('&external=1', ''))}
       &pf=xmWap&gameType=${WJ_GAMETYPE}
       ${params}`
-      console.log(url)
-      // if (WJ_GAMETYPE) {
-      //   localStorage.setItem('wj_gameType', WJ_GAMETYPE)
-      //   axios.post(
-      //     '//platform-api.beeplaying.com/wap/api/game/firstLoad/' + WJ_GAMETYPE
-      //   )
-      //   axios.post(
-      //     '//ops-api.beeplaying.com/ops/api/h5game/saveBehavior'
-      //   )
-      // }
-      // if (SDK) {
-      //   parent.location.href = url
-      // } else {
-      //   window.location.href = url
-      // }
+      if (WJ_GAMETYPE) {
+        localStorage.setItem('wj_gameType', WJ_GAMETYPE)
+        axios.post(
+          '//platform-api.beeplaying.com/wap/api/game/firstLoad/' + WJ_GAMETYPE
+        )
+        axios.post(
+          '//ops-api.beeplaying.com/ops/api/h5game/saveBehavior'
+        )
+      }
+      if (SDK) {
+        parent.location.href = url
+      } else {
+        window.location.href = url
+      }
       return false
     }
     /** 跳转绝对路劲**/
