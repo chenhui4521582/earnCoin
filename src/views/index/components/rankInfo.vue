@@ -55,7 +55,6 @@ export default {
   computed: {
     showList () {
       let list = _get(this.info, 'list', [])
-      console.log(list.length)
       return list.length
     },
     infoType () {
