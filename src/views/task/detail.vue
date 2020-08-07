@@ -254,8 +254,6 @@ export default {
     },
     /** 开始任务 **/
     _startTask () {
-      /** 时长任务初始化 **/
-      localStorage.removeItem('earnCoinDuration')
       const id = this.$route.query.id
       startTask(id).then(res => {
         const {code, data, message} = _get(res, 'data')
@@ -317,8 +315,6 @@ export default {
     },
     /** 任务进行中 **/
     taskUnderway () {
-      /** 时长任务初始化 **/
-      localStorage.removeItem('earnCoinDuration')
       /** gameType == 1 下载app处理逻辑 **/
       if(this.taskDetail.gameType == 1) {
         this.$Toast('任务已领取,打开app试玩吧')
