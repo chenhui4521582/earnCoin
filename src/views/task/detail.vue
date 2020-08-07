@@ -114,10 +114,10 @@
     <!-- 开始h5任务询问 -->
     <modal v-model="showH5taskConfirm" title="温馨提示" saveText="进入游戏" @on-save="_startTask">
       <div class="confirm-content">
-        任务已领取，请在创建昵称后回到当前<br>
-        页面，点击【刷新】，确认显示昵称与您<br>
-        注册昵称一致后再进行充值，<br>
-        以免造成不必要的损失。
+        任务已领取。<br>
+        小提示：进入游戏，创建账号后任务<br>
+        将自动开始记录。可随时返回任务页<br>
+        查看任务进度。
       </div>
     </modal>
     <!-- 用户领取兑换码 -->
@@ -324,7 +324,7 @@ export default {
         }
         jumpUrl({
           url: this.taskDetail.download,
-          gameId: this.taskDetail.gameId,
+          gameId: this.taskDetail.gameId
         })
       }
     },
