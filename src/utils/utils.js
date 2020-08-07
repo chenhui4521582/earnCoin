@@ -162,11 +162,7 @@ class utils {
     let WJ_GAMETYPE = item.gameId || ''
     if (URL.indexOf('external=1') != -1 || URL.indexOf('?external=1') != -1) {
       let url = 
-      `${URL}
-      &channel=${APP_CHANNEL}&token=${OPEN_TOKEN}
-      &gurl=${base64url.encode(URL.replace('?external=1', '').replace('&external=1', ''))}
-      &pf=xmWap&gameType=${WJ_GAMETYPE}
-      ${params}`
+      `${URL}&channel=${APP_CHANNEL}&token=${OPEN_TOKEN}&gurl=${base64url.encode(URL.replace('?external=1', '').replace('&external=1', ''))}&pf=xmWap&gameType=${WJ_GAMETYPE}`
       if (WJ_GAMETYPE) {
         localStorage.setItem('wj_gameType', WJ_GAMETYPE)
         axios.post(
@@ -186,9 +182,9 @@ class utils {
     /** 跳转绝对路劲**/
     if (URL.indexOf('//') != -1) {
       if (SDK) {
-        parent.location.href = `${URL}${params}`
+        parent.location.href = `${URL}`
       } else {
-        window.location.href = `${URL}${params}`
+        window.location.href = `${URL}`
       }
       return
     }
