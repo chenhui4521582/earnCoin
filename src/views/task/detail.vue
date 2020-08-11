@@ -267,6 +267,8 @@ export default {
           } else {
             if(this.taskDetail.duration) {
               localStorage.setItem('earnCoinDuration', 'true')
+            }else {
+              localStorage.removeItem('earnCoinDuration')
             }
             jumpUrl({
               url: this.taskDetail.download,
@@ -321,6 +323,8 @@ export default {
       }else{
         if(this.taskDetail.duration) {
           localStorage.setItem('earnCoinDuration', 'true')
+        }else {
+          localStorage.removeItem('earnCoinDuration')
         }
         jumpUrl({
           url: this.taskDetail.download,
