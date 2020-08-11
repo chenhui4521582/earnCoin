@@ -80,6 +80,13 @@ const getAccessToken = function (params) {
 }
 
 /**
+ * @description 获取OpenToken
+ */
+const getOpenToken = function () {
+  return $axios.post(Api.getOpenToken)
+}
+
+/**
  * @description 游客登录
  */
 const visitorLogin = function (params) {
@@ -119,6 +126,7 @@ export {
   sendCode,
   getRequestToken,
   getAccessToken,
+  getOpenToken,
   visitorLogin,
   userIsReceive,
   getRedPacketAward,
@@ -137,6 +145,7 @@ const Services = {
   sendCode,
   getRequestToken,
   getAccessToken,
+  getOpenToken,
   visitorLogin,
   userIsReceive,
   getRedPacketAward,

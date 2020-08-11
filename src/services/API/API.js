@@ -43,6 +43,7 @@ const API = {
   wechatLogin: `${HOST.UIC_API}/uic/api/app/wechat/login`, //微信登录
   getRequestToken: `${HOST.UIC_API}/uic/api/user/login/sms/requestToken`, // 获取requestToken
   getAccessToken: `${HOST.UIC_API}/uic/api/user/login/accessToken`, //获取ACCESSTOKEN
+  getOpenToken: `${HOST.UIC_API}/uic/api/user/sdk/openToken`, //获取openToken
   sendCode: `${HOST.UIC_API}/uic/api/user/login/sendSmsCode`, // 发送验证码
   visitorLogin: `${HOST.UIC_API}/uic/api/user/login/visitor`, // 游客登录
   userIsReceive: `${HOST.PLATFORM_API}/point/api/new/user/red/pack/popup`, //判断用户是否领取过红包

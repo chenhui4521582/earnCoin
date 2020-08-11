@@ -11,7 +11,7 @@
 <script>
 import { getUrlParams } from '@/utils/utils'
 import RedPacket from './components/redPacket'
-import { visitorLogin, userIsReceive, getRedPacketAward, sendRedPacketToServer, getAccessToken} from '@/services/user'
+import { visitorLogin, userIsReceive, getRedPacketAward, sendRedPacketToServer, getAccessToken, getOpenToken} from '@/services/user'
 import AppCall from '@/utils/native/index'
 import _get from 'lodash.get'
 export default {
@@ -37,10 +37,17 @@ export default {
         let aCode = _get(ARes, 'data.code')
         let aData = _get(ARes, 'data.data')
         if(aCode == 200) {
-          this.$Toast('登录成功！', () => {
-            localStorage.setItem('ACCESS_TOKEN', aData.accessToken)
-            callback && callback ()
-          })
+          localStorage.setItem('ACCESS_TOKEN', aData.accessToken)
+          /** 获取OPEN_TOKEN **/
+          let openRes = await getOpenToken()
+          let openCode = _get(openRes, 'data.code')
+          let openToken = _get(openRes, 'data.data.token')
+          localStorage.setItem('OPEN_ACCESS_TOKEN', openToken)
+          if (openCode == 200) {
+            this.$Toast('登录成功！', () => {
+              callback && callback ()
+            })
+          }
         }
       }else {
         this.Toast(vMessage)
