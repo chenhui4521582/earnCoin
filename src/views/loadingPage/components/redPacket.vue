@@ -120,6 +120,7 @@ export default {
       margin: .42rem auto 0;
       width: 1.76rem;
       height: 1.8rem;
+      animation: scale infinite 1.5s;
     }
     .explain {
       text-align: center;
@@ -188,4 +189,15 @@ export default {
     }
   }
 }
+  @keyframes scale {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
 </style>
