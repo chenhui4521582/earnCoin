@@ -51,7 +51,7 @@
               <div class="task-text">{{item.remark}}</div>
             </div>
             <div class="right">
-              <div class="btn yellow2" v-if="item.status == 2" @click="_getAward(item)">领奖励</div>
+              <div class="btn yellow2" v-if="item.status == 2" @click="_userIsVisitor(item)">领奖励</div>
               <div class="btn gray" v-if="item.status == 1">已完成</div>
               <div class="btn yellow" v-if="item.status == 0" @click="listItemClick">去完成</div>
               <div class="progress" v-if="item.userFinish || item.configFinish">当前进度：{{item.userFinish | amountComputen1}}/{{item.configFinish | amountComputen2}}</div>
@@ -99,7 +99,9 @@
     <modal v-model="showAward" title="恭喜你获得" saveText="去赚更多" :type="2" @on-save="awardCallback">
       <div class="award-content">
         <img src="./img/big-coin.png" alt="">
-        <p>金币 +{{award || 0}}个</p>
+        <p class="p1">金币 +{{award.award || 0}}个</p>
+        <p v-if="award.balance == 0" class="p2">可以提现了，快去提现吧！</p>
+        <p v-else class="p2">再赚{{ award.balance }}金币马上提现</p>
       </div>
     </modal>
     <!-- 开始APP任务询问 -->
@@ -133,6 +135,16 @@
         <div class="pwd">兑换路径：{{cardAward.getWay}}</div>
       </div>
     </modal>
+    <!-- 游客登录询问 -->
+    <modal v-model="showLoginConfirm" title="账号安全提示" >
+      <div class="loginconfirm-content">
+        为保障账户的资金安全，建议您绑定手机号后领取奖励。
+      </div>
+      <div class="loginconfirm-footer" slot="footer">
+        <div class="footer-btn" @click="goPhoneBind">绑定手机号</div>
+        <p @click="_getCard(confirmItem)">直接领取</p>
+      </div>
+    </modal>
     <!-- 原生粘贴板 -->
     <textarea cols="20" rows="10" id="copy" style="width:0;height:0;opacity:0"></textarea>
   </div>
@@ -140,8 +152,8 @@
 <script>
 import Service from '@/components/servicePop/service'
 import UserGuide from './components/userGuide/userGuide'
-
 import { getTaskDetail, startTask, getAward, getCard } from '@/services/task'
+import { userIsVisitor } from '@/services/user'
 import { jumpUrl } from '@/utils/utils'
 import _get from 'lodash.get'
 export default {
@@ -157,6 +169,8 @@ export default {
     showApptaskConfirm: false,
     showH5taskConfirm: false,
     showExchangeCard: false,
+    showLoginConfirm: false,
+    confirmItem: '',
     cardAward: {}
   }),
   components: {
@@ -369,6 +383,8 @@ export default {
         if(code == 200) {
           this.openCodeModal(data)
           this._getTaskDetail()
+        }else {
+          this.$Toast( message )
         }
       })
     },
@@ -378,6 +394,27 @@ export default {
         code, getWay
       }
       this.showExchangeCard = true
+    },
+    /** 判断用户是否是游客 **/
+    _userIsVisitor (item) {
+      console.log(item)
+      userIsVisitor().then(res => {
+        const {code, data, message} = _get(res, 'data')
+        if(code == 200) {
+          if(data == true) {
+            this.confirmItem = item
+            this.showLoginConfirm = true
+          }else {
+            this._getCard(item)
+          }
+        }
+      })
+    },
+    /** 跳转手机绑定页 **/
+    goPhoneBind () {
+      this.$router.push({
+        name: 'bindPhone'
+      })
     },
     onSuccess () {
       this.$Toast('复制成功，请前往游戏兑换礼包')
@@ -785,9 +822,20 @@ export default {
       width: 1.34rem;
       height: 1.34rem;
     }
-    p {
-      margin: .15rem;
-      color: #E8382B;
+    .p1 {
+      margin-bottom: .1rem;
+      text-align: center;
+      font-size: .24rem;
+      font-weight: bold;
+      color: #D39436;
+      span {
+        color: #E8382B;
+      }
+    }
+    .p2 {
+      text-align: center;
+      color: #000000;
+      font-size: .24rem;
     }
   }
   .confirm-content {
@@ -824,7 +872,30 @@ export default {
       line-height: .4rem;
     }
   }
-
+  .loginconfirm-content {
+    font-size: .24rem;
+    line-height: .4rem;
+    color: #000000;
+  }
+  .loginconfirm-footer {
+    .footer-btn {
+      margin:0 auto .15rem;
+      width: 2.4rem;
+      height: .7rem;
+      line-height: .7rem;
+      text-align: center;
+      font-size: .26rem;
+      font-weight: bold;
+      text-align: center;
+      background: #FFCA00;
+      border-radius: .35rem;
+    }
+    p {
+      text-align: center;
+      font-size: .24rem;
+      color: #ACACAC;
+    }
+  }
 }
 @keyframes refresh {
     0% {

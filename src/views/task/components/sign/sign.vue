@@ -49,10 +49,12 @@
         :type="2"
         @on-save="awardCallback"
       >
-        <div class="award-item" v-for="(item, index) in award" :key="index">
-          <img :src="item.awardIcon | filter" class="award-img" />
-          <p>{{ item.awardsNumDesc }}</p>
+        <div class="award-item" v-for="(item, index) in award.awardsDesc" :key="index">
+          <img v-if="item.awardIcon" :src="item.awardIcon | filter" class="award-img" />
+          <p class="p1">金币 +{{ item.awardsNumDesc }}个<span>≈{{item.awardsNumDesc / 10000}}元</span> </p>
         </div>
+        <p v-if="award.balance == 0" class="p2">可以提现了，快去提现吧！</p>
+        <p v-else class="p2">再赚{{ award.balance }}金币马上提现</p>
       </Modal>
       <!-- 规则弹框 -->
       <Modal v-model="showRule" title="说明" saveText="知道了" @on-save="ruleCallback">
@@ -122,12 +124,23 @@ export default {
       })
     },
     _sign () {
-      if(this.isSign) return
+      // if(this.isSign) return
       sign().then( res => {
+        // res = {
+        //   "data":{"code":200,"data":{"showName":"3500","showIcon":"/group1/M00/42/80/CmcEHF7-1WiAYErIAAAJIlg5cTY122.png","showSignedIcon":"/group1/M00/43/66/CmcEHV7-1g6AVVD6AAAH4-9fIkc580.png","day":7,"status":1,"awardsType":null,"awardsName":"3500+2000","awardsDesc":[{"awardIcon":"/group1/M00/42/81/CmcEHF8D65-AUDFwAAAp4GWqT7s687.png","awardsNumDesc":"3500","awardsType":"1"},{"awardIcon":"/group1/M00/42/81/CmcEHF8D68WAOueNAAAp4GWqT7s706.png","awardsNumDesc":"2000","awardsType":"1"}],"balance":0},"message":null},
+        // }
         let {code, data, message} = _get(res, 'data')
         if(code == 200) {
           this.showAward = true
-          this.award = data.awardsDesc
+          this.award = data
+          if(this.award.day == 7) {
+            // let num = 0
+            // this.award.awardsDesc.forEach(element => {
+            //   num +=  Number(element.awardsNumDesc)
+            // });
+            // this.award.awardsDesc.length = 1
+            this.award.awardsDesc[1].awardIcon = null
+          }
           this.isSign = true
           this._getSignList()
         }else {
@@ -447,6 +460,7 @@ export default {
   }
 }
 .award-item {
+  margin-bottom: .1rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -454,10 +468,20 @@ export default {
     margin: 0 auto .15rem;
     width: 1.34rem;
   }
-  p {
+}
+.p1 {
+  text-align: center;
+  font-size: .24rem;
+  font-weight: bold;
+  color: #D39436;
+  span {
     color: #E8382B;
-    text-align: center;
   }
+}
+.p2 {
+  text-align: center;
+  color: #000000;
+  font-size: .24rem;
 }
 .rule-content {
   line-height: .42rem;

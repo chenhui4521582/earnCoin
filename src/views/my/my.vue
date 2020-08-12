@@ -89,10 +89,7 @@ export default {
     logout () {
       localStorage.removeItem('ACCESS_TOKEN')
       this.$router.push({
-        name: 'loginPage',
-        query: {
-          logout: true
-        }
+        name: 'loginPage'
       })
     }
   },

@@ -80,11 +80,15 @@ export default {
     handClick (item) {
       item.fun && item.fun.call(this)
     },
-    _getNewAppVersion () {
+    _getNewAppVersion (appVersion) {
       getAppVersion().then(res => {
         const {code, data, message} = _get(res, 'data')
         if(code == 200) {
           this.version = data
+          if(appVersion == data.version) {
+            this.$Toast('当前为最新版本')
+            return 
+          }
           if (this.version.force == 0 || this.version.force == 1) {
             this.version.title = `版本更新：${data.version}`
             this.showVersion = true
@@ -104,7 +108,7 @@ export default {
             desc: product.appVersion,
             icon: require('../img/version-icon.png'),
             fun: function () {
-              this._getNewAppVersion()
+              this._getNewAppVersion(product.appVersion)
             }
           })
           this.$emit('inApp')

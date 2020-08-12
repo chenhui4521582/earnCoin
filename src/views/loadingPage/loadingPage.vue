@@ -46,6 +46,8 @@ export default {
           if (openCode == 200) {
             callback && callback ()
           }
+        }else {
+          this.$Toast(message)
         }
       }else {
         this.Toast(vMessage)

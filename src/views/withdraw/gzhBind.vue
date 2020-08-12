@@ -7,7 +7,7 @@
           <template v-if="!bind && show">
             <p v-if="!bind">手机号<input type="tel" v-model="phone" maxlength="11" placeholder="请与游戏内绑定的手机号一致"></p>
             <p>验证码
-              <input type="text" class="code" v-model="code" maxlength="6" placeholder="请输入验证码">
+              <input type="number" class="code" v-model="code" maxlength="6" placeholder="请输入验证码">
               <span class="count-down" v-if="showSendCode" @click="_sendCode">获取验证码</span>
               <span class="count-down" v-else>{{leftTime}}s</span>
             </p>

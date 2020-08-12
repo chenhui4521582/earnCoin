@@ -5,12 +5,12 @@
     </div>
     <div class="form-group">
       <div class="label">手机号</div>
-      <input v-model="validate.mobile" maxlength="11" type="text" placeholder="请输入手机号码" >
+      <input v-model="validate.mobile" type="number" maxlength="11" placeholder="请输入手机号码" >
     </div>
     <div class="form-group">
       <div class="label">验证码</div>
       <div class="code">
-        <input v-model="validate.code" maxlength="6" type="text" placeholder="请输入验证码" >
+        <input v-model="validate.code" type="number" maxlength="6" placeholder="请输入验证码" >
         <div class="send-code">
           <div class="btn" v-if="!validate.countTime" @click="_sendCode">发送验证码</div>
           <div class="count-down">{{validate.countTime}}</div>
@@ -24,6 +24,7 @@
   </div>
 </template>
 <script>
+import AppCall from '@/utils/native'
 import { sendCode, getRequestToken, getAccessToken, getOpenToken } from '@/services/user'
 import _get from 'lodash.get'
 export default {
@@ -101,12 +102,14 @@ export default {
       }
     },
     /** 获取requestToken **/
-    _getRequestToken () {
+    async _getRequestToken () {
       let url = '//uic-api.beeplaying.com/uic/api/user/login/sms/requestToken'
+      let deviceNum = getUrlParams('divice') || await AppCall.getDeviceID()
       let params = {
         smsCode: this.validate.code,
         username: this.validate.mobile,
-        visitorToken: ""
+        visitorToken: deviceNum,
+        deviceNum
       }
       getRequestToken(params).then(res=> {
         let {code, data, message} = _get(res, 'data', {})

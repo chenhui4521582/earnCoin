@@ -142,6 +142,10 @@ export default {
         margin-bottom: 0;
       }
       .finish-name {
+        width: 3rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
         margin-right: .12rem;
         font-size: .2rem;
         color: #666666;

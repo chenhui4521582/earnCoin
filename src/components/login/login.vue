@@ -19,10 +19,10 @@
           <!-- 验证码登录 -->
           <div class="code-login" v-if="currentIndex == 1">
             <div class="form-group">
-              <input v-model="validate.mobile" maxlength="11" type="text" placeholder="请输入手机号" >
+              <input v-model="validate.mobile" maxlength="11" type="number" placeholder="请输入手机号" >
             </div>
             <div class="form-group code">
-              <input v-model="validate.code" maxlength="6" type="text" placeholder="请输入验证码" >
+              <input v-model="validate.code" maxlength="6" type="number" placeholder="请输入验证码" >
               <div class="send-code">
                 <div class="btn" v-if="!validate.countTime" @click="_sendCode">发送验证码</div>
                 <div class="count-down" else>{{validate.countTime}}</div>
@@ -32,7 +32,7 @@
           <!-- 账号登录 -->
           <div class="user-login" v-if="currentIndex == 0">
             <div class="form-group">
-              <input v-model="validate.mobile" maxlength="11" type="text" placeholder="请输入手机号" >
+              <input v-model="validate.mobile" maxlength="11" type="number" placeholder="请输入手机号" >
             </div>
             <div class="form-group pwd">
               <input v-model="validate.password" type="password" placeholder="请输入密码" >

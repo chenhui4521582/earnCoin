@@ -5,7 +5,7 @@
       <div class="group">
         <div class="label">新的手机号</div>
         <div class="input">
-          <input type="text" placeholder="请输入手机号码" maxlength="11" v-model="phone">
+          <input type="number" placeholder="请输入手机号码" maxlength="11" v-model="phone">
           <div class="clear" v-if="showClear" @click="clearPhone" >
             <img class="inner-img" src="../img/clear-icon.png" alt="">
           </div>
@@ -14,7 +14,7 @@
       <div class="group">
         <div class="label">验证码</div>
         <div class="code">
-          <input type="text" placeholder="请输入验证码" maxlength="6" v-model="code">
+          <input type="number" placeholder="请输入验证码" maxlength="6" v-model="code">
           <div class="send" v-if="!showCountdown" @click="getCode">发送验证码</div>
           <div class="countdown" v-else>{{countdown}}s</div>
         </div>

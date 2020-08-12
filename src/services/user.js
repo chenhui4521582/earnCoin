@@ -152,6 +152,13 @@ const getUserCenter = function () {
   return $axios.post(Api.getUserCenter)
 }
 
+/**
+ * @description 用户  判断用户是否是游客
+ */
+const userIsVisitor = function () {
+  return $axios.post(Api.userIsVisitor)
+}
+
 export { 
   getAccountInfo,
   getUserInfo,
@@ -173,7 +180,8 @@ export {
   updatePhoneCode,
   changeUpdatePhoneCode,
   checkOriginalPhoneNo,
-  getAppVersion
+  getAppVersion,
+  userIsVisitor
 }
 
 const Services = {
@@ -197,6 +205,7 @@ const Services = {
   updatePhoneCode,
   changeUpdatePhoneCode,
   checkOriginalPhoneNo,
-  getAppVersion
+  getAppVersion,
+  userIsVisitor
 }
 export default Services

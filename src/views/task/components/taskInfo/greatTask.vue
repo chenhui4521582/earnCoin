@@ -55,9 +55,15 @@ export default {
       display: flex;
       flex-direction: column;
       justify-content: center;
+      width: 3.6rem;
       .name {
         margin-bottom: .08rem;
       }
+      .desc {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      } 
     }
     .add-num {
       position: absolute;
