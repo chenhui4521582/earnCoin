@@ -1,17 +1,9 @@
 <template>
   <div id="app">
-    <transition :name="transitionName">
-      <!-- 缓存页面 -->
-      <template v-if="keepAlive">
-        <keep-alive>
-          <router-view></router-view>
-        </keep-alive>
-      </template>
-      <template v-else>
-        <router-view />
-      </template>
-      <!-- 页面不缓存 -->
+    <transition v-if="keepAlive" :name="transitionName">
+      <router-view v-if="keepAlive"></router-view>
     </transition>
+    <router-view v-if="!keepAlive"/>
     <login />
   </div>
 </template>

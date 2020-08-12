@@ -1,5 +1,5 @@
 <template>
-  <div class="task">
+  <div class="task" >
     <wf-header title="高额赚" />
     <sign />
     <task-info />
