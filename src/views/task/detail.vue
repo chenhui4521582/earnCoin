@@ -142,7 +142,7 @@
       </div>
       <div class="loginconfirm-footer" slot="footer">
         <div class="footer-btn" @click="goPhoneBind">绑定手机号</div>
-        <p @click="_getCard(confirmItem)">直接领取</p>
+        <p @click="_getAward(confirmItem)">直接领取</p>
       </div>
     </modal>
     <!-- 原生粘贴板 -->
@@ -405,7 +405,7 @@ export default {
             this.confirmItem = item
             this.showLoginConfirm = true
           }else {
-            this._getCard(item)
+            this._getAward(item)
           }
         }
       })
