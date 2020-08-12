@@ -44,9 +44,7 @@ export default {
           let openToken = _get(openRes, 'data.data.token')
           localStorage.setItem('OPEN_ACCESS_TOKEN', openToken)
           if (openCode == 200) {
-            this.$Toast('登录成功！', () => {
-              callback && callback ()
-            })
+            callback && callback ()
           }
         }
       }else {
@@ -57,13 +55,13 @@ export default {
     hideRedPacket () {
       /** 有token 直接进首页 **/
       if(this.ACCESS_TOKEN) {
-        this.$router.push({
+        this.$router.replace({
           name: 'index'
         })
       }else {
         /** 关闭红包弹框注册游客用户 **/
         this._visitorLogin(() => {
-          this.$router.push({
+          this.$router.replace({
             name: 'index'
           })
         })
@@ -74,14 +72,14 @@ export default {
       /** 有token发送奖品数据到后端并且进入首页 **/
       if(this.ACCESS_TOKEN) {
         sendRedPacketToServer()
-        this.$router.push({
+        this.$router.replace({
           name: 'index'
         })
       }else {
         /** 领取红包完毕注册游客用户并且发送奖品数据到后端 **/
         this._visitorLogin(()=> {
           sendRedPacketToServer()
-          this.$router.push({
+          this.$router.replace({
             name: 'index'
           })
         })
@@ -98,14 +96,14 @@ export default {
           if(showRedPacket) {
             this.showRedPacket = true
           } else {
-            this.$router.push({
+            this.$router.replace({
               name: 'index'
             })
           }
         }
         /** 用户token过期,跳转到登录页 **/
         if(code == 102) {
-          this.$router.push({
+          this.$router.replace({
             name: 'loginPage'
           })
         }

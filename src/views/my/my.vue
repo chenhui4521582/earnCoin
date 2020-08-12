@@ -75,8 +75,6 @@ export default {
         const {code, data, message} = _get(res, 'data')
         if(code == 200) {
           this.userInfo = data
-          this.userInfo.bindWechat = false
-          this.userInfo.bindPhone = true
         }
       })
     },
@@ -86,12 +84,15 @@ export default {
       })
     },
     inApp () {
-      this.showLogout = true
+      this.isApp = true
     },
     logout () {
       localStorage.removeItem('ACCESS_TOKEN')
       this.$router.push({
-        
+        name: 'loginPage',
+        query: {
+          logout: true
+        }
       })
     }
   },

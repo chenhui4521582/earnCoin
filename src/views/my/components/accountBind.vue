@@ -5,7 +5,7 @@
       <i :class="{active: bind}">为保障资金安全，提现前需要绑定以下信息</i>
     </div>
     <div class="wrap">
-      <div class="wechat-bind" @click="bindWechat">
+      <div class="wechat-bind" @click="_wechatLogin">
         <div class="icon"></div>
         <div class="name">微信号</div>
         <div class="option" v-if="!userInfo.bindWechat">去绑定<span class="iconfont icon-next"></span></div>
@@ -75,8 +75,29 @@ export default {
         this.goBindPhone()
       }
     },
-    bindWechat () {
-      
+    /** 微信登录 **/
+    _wechatLogin () {
+      /** window层创建微信登录回调方法 **/
+      this.wechatCallback()
+      /** 调用APP方法微信登录 **/
+      AppCall.WXLogin()
+    },
+    /** 微信登录回调 **/
+    wechatCallback () {
+      window.WXMessage = (callback) => {
+        // callback = JSON.parse(callback)
+        wechatLogin({
+          code: callback.Code,
+          appId: callback.AppId
+        }).then (res => {
+          const {code, data, message} = _get(res, 'data')
+          if (code == 200) {
+            this._getAccessToken(data)
+          } else {
+            this.$Toast( message )
+          }
+        })
+      }
     }
   }
 }

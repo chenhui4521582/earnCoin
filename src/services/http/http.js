@@ -18,11 +18,12 @@ axios.interceptors.request.use(
   config => {
     let ACCESS_TOKEN = getUrlParams('token') || localStorage.getItem('ACCESS_TOKEN')
     let APP_CHANNEL = getUrlParams('channel') || localStorage.getItem('APP_CHANNEL')
+    let APP_VERSION = localStorage.getItem('APP_VERSION') || '1.0.0'
     ACCESS_TOKEN && (config.headers['Authorization'] = ACCESS_TOKEN)
     if (!config.headers['App-Channel']) {
       APP_CHANNEL && (config.headers['App-Channel'] = APP_CHANNEL)
     }
-    config.headers['App-Version'] = '1.0.0'
+    config.headers['App-Version'] = APP_VERSION
     return config
   },
   error => {
@@ -61,7 +62,7 @@ axios.interceptors.response.use(
           if (noCheckToken) return
           Vue.prototype.$Toast('登录失效')
           setTimeout(() => {
-            window.location.href = 'https://wap.beeplaying.com/loginPages/failureLogon.html'
+            window.location.href='https://wap.beeplaying.com/earnCoin/#/loginPage?logout=true'
           }, 1500)
         }
       } else {

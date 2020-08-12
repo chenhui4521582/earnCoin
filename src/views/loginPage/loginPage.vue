@@ -7,6 +7,10 @@
       <img src="./img/wechat-icon.png" alt="">
       微信授权登录
     </div>
+    <div class="tips" v-if="showTips">
+      <p>登录失效</p>
+      <p>该账号已在其他设备登录</p>
+    </div>
     <div class="phone-login" @click="goFastLogin">
       <div class="title">
         <div class="text">手机号登录</div>
@@ -28,7 +32,8 @@ import _get from 'lodash.get'
 export default {
   name: 'loginPage',
   data: () => ({
-    showService: false
+    showService: false,
+    showTips: false
   }),
   components: {
     Service
@@ -55,7 +60,6 @@ export default {
         let openRes = await getOpenToken()
         let openCode = _get(openRes, 'data.code')
         let openToken = _get(openRes, 'data.data.token')
-        alert(openToken)
         localStorage.setItem('OPEN_ACCESS_TOKEN', openToken)
         this.$Toast('登录成功！', () => {
           this.$router.push({
@@ -80,7 +84,6 @@ export default {
           appId: callback.AppId
         }).then (res => {
           const {code, data, message} = _get(res, 'data')
-          alert(data)
           if (code == 200) {
             this._getAccessToken(data)
           } else {
@@ -88,10 +91,16 @@ export default {
           }
         })
       }
+    },
+    init () {
+      const { logout } = this.$route.query
+      if(logout) {
+        this.showTips = true
+      }
     }
   },
   mounted () {
-
+    this.init()
   }
 }
 </script>
@@ -158,6 +167,14 @@ export default {
         width: .8rem;
         height: .8rem;
       }
+    }
+    .tips {
+      position: absolute;
+      bottom: 3.6rem;
+      text-align: center;
+      width: 100%;
+      font-size: .2rem;
+      color: #E8382B;
     }
     .user-agreement {
       position: absolute;
