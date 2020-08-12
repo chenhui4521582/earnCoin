@@ -4,39 +4,41 @@
     <div class="bind-wrap">
       <div class="bind-box">
         <div class="content-wrap">
-          <template v-if="!bind">
+          <template v-if="!bind && show">
             <p v-if="!bind">手机号<input type="tel" v-model="phone" maxlength="11" placeholder="请与游戏内绑定的手机号一致"></p>
             <p>验证码
-              <input type="text" class="code" v-model="code" maxlength="6"placeholder="请输入验证码">
+              <input type="text" class="code" v-model="code" maxlength="6" placeholder="请输入验证码">
               <span class="count-down" v-if="showSendCode" @click="_sendCode">获取验证码</span>
               <span class="count-down" v-else>{{leftTime}}s</span>
             </p>
           </template>
-          <p v-else>手机号绑定成功：{{phone}}</p>
+          <p v-if="bind && show">手机号绑定成功：{{phone}}</p>
         </div>
+        <p class="bind-btn" v-if="!bind && show"  @click="bindPhone">立即绑定</p>
       </div>
-      <p class="bind-btn" v-if="!bind"  @click="bindPhone">立即绑定</p>
+      
     </div>
     <div class="rule">
         <div class="rule-content">
             <p>说明：</p>
             <p>1.绑定的手机号必须与游戏内绑定的手机号一致才能提现。</p>
             <p>2.如果绑定账号与游戏内不一致，请在游戏内联系客服处理。</p>
-            <p>3.兑换成功后，请到游戏内“兑换”-“兑奖纪录”页面查看进度，奖励会在1个工作日内到账。</p>
-            <p>4.如果采用恶意手段获取奖励，奖励不予发放。</p>
-            <p>5.绑定成功后，请在游戏内兑换红包，红包将通过微信发放给您，请留意零钱到账信息。</p>
+            <p>3. 绑定成功后，请到游戏内”金币收益“页 面提现。</p>
+            <p>4. 提现申请提交后，奖励将在1-3个工作日内审核通过并发放至当前微信账户，请留意零钱到账提醒。</p>
+            <p>5. 如果采用恶意手段获取奖励，平台将不予发放奖励。</p>
         </div>
     </div>
   </div>
 </template>
 <script>
 import { getUrlParams } from '@/utils/utils'
-import { gzhBindPhone, sendCode } from '@/services/withdraw'
+import { gzhBindPhone, sendCode, isBindPhone } from '@/services/withdraw'
 import _get from 'lodash.get'
 export default {
   name: 'App',
   data() {
     return {
+      show: false,
       phone: '',
       code: '',
       bind: false,
@@ -97,6 +99,23 @@ export default {
           }, 1000);
       }
     },
+    isBind () {
+      const openId = getUrlParams('openId')
+      isBindPhone(openId).then(res => {
+        const {code, data, message} = _get(res, 'data')
+        if(code == 200) {
+          this.bind = data.flag
+          this.phone = data.phone 
+          this.show = true
+        }
+      }).catch( () => {
+        this.show = true
+        this.bind = false
+      })
+    }
+  },
+  mounted () {
+    this.isBind()
   }
 }
 </script>

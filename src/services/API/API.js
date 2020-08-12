@@ -34,6 +34,7 @@ const API = {
   getAward : `${HOST.PLATFORM_API}/point/api/task/drawAward/{configId}`, //开始任务
   bindPhone: `${HOST.UIC_API}/uic/api/user/center/bindMobilePhone`, // 绑定手机提交
   getPhoneCode: `${HOST.UIC_API}/uic/api/user/center/sendPhoneBindCode`, // 获取短信验证
+  isBindPhone: `${HOST.PLATFORM_API}/point/api/user/userBindStatus`, //获取用户是否绑定手机号
   getWithdrawList: `${HOST.PLATFORM_API}/point/withdraw/config`, // 获取提现列表
   getWithdrawLog: `${HOST.PLATFORM_API}/point/withdraw/user/log`, // 获取提现记录
   userWithDraw: `${HOST.PLATFORM_API}/point/withdraw/cash/{level}`, // 用户提现

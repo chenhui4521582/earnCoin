@@ -127,8 +127,8 @@ class utils {
       : Request
   }
   openGame (url, SDK, params) {
-    let APP_CHANNEL = this.localStorage().getString('APP_CHANNEL')
-    let baseUrl = `https:${state.HOST_PLATFORM}/${url}${url.includes('?') ? '&' : '?'}channel=${APP_CHANNEL}&time=${new Date().getTime()}${params || ''}`
+    let APP_CHANNEL = localStorage.getItem('APP_CHANNEL')
+    let baseUrl = `https://wap.beeplaying.com/${url}${url.includes('?') ? '&' : '?'}channel=${APP_CHANNEL}&time=${new Date().getTime()}${params || ''}`
     if (SDK) {
       parent.location.href = baseUrl
     } else {
@@ -161,10 +161,8 @@ class utils {
     let OPEN_TOKEN = localStorage.getItem('OPEN_ACCESS_TOKEN')
     let WJ_GAMETYPE = item.gameId || ''
     if (URL.indexOf('external=1') != -1 || URL.indexOf('?external=1') != -1) {
-      let url = `${URL}&channel=${APP_CHANNEL}&token=${OPEN_TOKEN}&gurl=${base64url.encode(
-        URL.replace('?external=1', '').replace('&external=1', '')
-      )}&pf=xmWap&gameType=${WJ_GAMETYPE}`
-
+      let url = 
+      `${URL}&channel=${APP_CHANNEL}&token=${OPEN_TOKEN}&gurl=${base64url.encode(URL.replace('?external=1', '').replace('&external=1', ''))}&pf=xmWap&gameType=${WJ_GAMETYPE}`
       if (WJ_GAMETYPE) {
         localStorage.setItem('wj_gameType', WJ_GAMETYPE)
         axios.post(
@@ -184,9 +182,9 @@ class utils {
     /** 跳转绝对路劲**/
     if (URL.indexOf('//') != -1) {
       if (SDK) {
-        parent.location.href = URL
+        parent.location.href = `${URL}`
       } else {
-        window.location.href = URL
+        window.location.href = `${URL}`
       }
       return
     }
