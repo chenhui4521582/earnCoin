@@ -114,6 +114,44 @@ const sendRedPacketToServer = function () {
   return $axios.post(Api.sendRedPacketToServer)
 }
 
+/**
+ * @description 换绑发送验证码校验
+ */
+const changeUpdatePhoneCode = async (smsCode) => {
+  const { data } = await $axios.post(Api.checkUpdatePhoneSmsUrl, { smsCode })
+  return data
+}
+
+/**
+ * @description 用户原手机号校验
+ */
+const checkOriginalPhoneNo = async phoneNo => {
+  const { data } = await $axios.post(Api.checkOriginalPhoneNo, { phoneNo })
+  return data
+}
+
+/**
+ * @description 换绑发送验证码
+ */
+const updatePhoneCode = async () => {
+  const { data } = await $axios.post(Api.sendUpdatePhoneSmsUrl)
+  return data
+}
+
+/**
+ * @description 用户原手机号校验
+ */
+const getAppVersion = function () {
+  return $axios.post(Api.getAppVersion)
+}
+
+/**
+ * @description 用户  获取用户信息
+ */
+const getUserCenter = function () {
+  return $axios.post(Api.getUserCenter)
+}
+
 export { 
   getAccountInfo,
   getUserInfo,
@@ -130,7 +168,12 @@ export {
   visitorLogin,
   userIsReceive,
   getRedPacketAward,
-  sendRedPacketToServer
+  sendRedPacketToServer,
+  getUserCenter,
+  updatePhoneCode,
+  changeUpdatePhoneCode,
+  checkOriginalPhoneNo,
+  getAppVersion
 }
 
 const Services = {
@@ -149,6 +192,11 @@ const Services = {
   visitorLogin,
   userIsReceive,
   getRedPacketAward,
-  sendRedPacketToServer
+  sendRedPacketToServer,
+  getUserCenter,
+  updatePhoneCode,
+  changeUpdatePhoneCode,
+  checkOriginalPhoneNo,
+  getAppVersion
 }
 export default Services

@@ -106,7 +106,52 @@ export default new Router({
       meta: {
         title: '高额赚'
       }
+    },    
+    {
+      path: '/my',
+      component: () => import('./baseRoute'),
+      children: [
+        {
+          path: '/',
+          name: 'my',
+          component: () => import(/* webpackChunName: "my" */ '../views/my/my'),
+          meta: {
+            title: '高额赚'
+          }
+        },
+        {
+          path: 'phoneBinding',
+          name: 'phoneBinding',
+          component: () => import(/* webpackChunName: "phoneBinding" */ '../views/my/children/phoneBinding'),
+          meta: {
+            title: '绑定手机号'
+          }
+        },
+        {
+          path: 'bindPhone',
+          name: 'bindPhone',
+          component: () => import(/* webpackChunName: "bindPhone" */ '../views/my/children/bindPhone'),
+          meta: {
+            title: '绑定手机号'
+          }
+        },
+        {
+          path: 'modifyPhone',
+          name: 'modifyPhone',
+          component: () => import(/* webpackChunName: "modifyPhone" */ '../views/my/children/modifyPhone'),
+          meta: {
+            title: '修改手机号'
+          }
+        },
+        {
+          path: 'bindNewPhone',
+          name: 'bindNewPhone',
+          component: () => import(/* webpackChunName: "bindNewPhone" */ '../views/my/children/bindNewPhone'),
+          meta: {
+            title: '绑定手机号'
+          }
+        }
+      ]
     }
-
   ]
 })

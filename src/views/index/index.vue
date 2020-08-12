@@ -1,18 +1,5 @@
 <template>
   <div class="index">
-    <!-- userInfo -->
-    <div class="user-info" >
-      <div class="avatar" @click="AvatarClick">
-        <img class="inner-img" :src="(userInfo.headImg || avatar) | filter" alt="">
-      </div>
-      <div class="info" @click="AvatarClick">
-        <div class="name">{{userInfo.nickname}}</div>
-        <div class="id">用户ID:{{userInfo.userId}}</div>
-      </div>
-      <div class="service" @click="openService">
-        <img src="./img/service-icon.png" alt="">联系客服
-      </div>
-    </div>
     <!-- coin-info -->
     <div class="coin-info">
       <div class="coin item" @click="goWithdraw">
@@ -48,11 +35,11 @@
     <div class="task-nav">
       <div class="item" 
         v-for="(item, index) in iconList" 
-        :class="{'animation': !showUserGuide}"
         :key="index" 
         @click="jump(item.link, index)"
       >
-        <img :src="item.img | filter" class="inner-img" alt="">
+        <img :src="item.img | filter" class="inner-img" :class="{'animation': !showUserGuide}" alt="">
+        <p>{{item.name}}</p>
       </div>
     </div>
     <!-- ranking -->
@@ -67,38 +54,36 @@
     </div>
     <!-- footer -->
     <base-footer></base-footer>
-    <!-- 客服弹框 -->
-    <Service v-model="showService" />
     <!-- 新手引导 -->
     <user-guide v-if="showUserGuide" @hideUserGuide="hideUserGuide"/>
+    <!-- APP强更新弹框 -->
+    <app-update />
   </div>
 </template>
 <script>
 import BaseFooter from '@/components/baseFooter/baseFooter'
-import Service from '@/components/servicePop/service'
 import UserGuide from './components/userGuide'
 import RankInfo from './components/rankInfo'
+import AppUpdate from './components/AppUpdate'
 import Services from '@/services/index'
-import { getAccountInfo, getUserInfo, getTaskInfo } from '@/services/user'
+import { getAccountInfo, getTaskInfo } from '@/services/user'
 import _get from 'lodash.get'
 import { getUrlParams } from '@/utils/utils'
 export default {
   name: 'Index',
   data: () => ({
-    userInfo: {},
     accountInfo: {},
     taskInfo: {},
     avatar: '/cdn/common/images/common/img_photo.png',
-    showService: false,
     iconList: [],
     showUserGuide: false,
     list: []
   }),
   components: {
     BaseFooter,
-    Service,
     UserGuide,
-    RankInfo
+    RankInfo,
+    AppUpdate
   },
   methods: {
     openService () {
@@ -117,23 +102,14 @@ export default {
     goTask () {
       this.$router.push({
         name: 'task',
-        query: {
-          currentIndex: '2'
+        params: {
+          'taskCurrent': 2
         }
       })
       this.$marchSetsPoint('A_H5PT0303003632')
     },
     goUserAgreement () {
       window.location.href = 'https://wap.beeplaying.com/xmWap/#/my/userAgreement'
-    },
-    /** 获取用户信息 **/
-    _getUserInfo () {
-      getUserInfo().then(res => {
-        const {code, data, message} = _get(res, 'data')
-        if(code == 200) {
-          this.userInfo = data
-        }
-      })
     },
     /** 用户账户信息 **/
     _getAccountInfo () {
@@ -194,7 +170,6 @@ export default {
     }
   },
   mounted () {
-    this._getUserInfo()
     this._getAccountInfo()
     this._getTaskInfo()
     this._getIconList()
@@ -208,9 +183,9 @@ export default {
 </script>
 <style lang="less" scoped>
 .index {
-  padding: 0 .3rem 1.2rem;
+  padding: .3rem .3rem 1.2rem;
   min-height: 100vh;
-  background: url(./img/banner.png) no-repeat center top #F2F2F2;
+  background: #F2F2F2;
   background-size: 7.2rem 6.74rem;
   .user-info {
     position: relative;
@@ -260,6 +235,7 @@ export default {
     }
   }
   .coin-info {
+    margin-bottom: .38rem;
     position: relative;
     display: flex;
     justify-content: center;
@@ -294,10 +270,12 @@ export default {
           font-style: normal;
           font-size: .48rem;
           font-weight: bold;
+          color: #E8382B;
         }
         span {
           line-height: .5rem;
           font-size: .20rem;
+          color: #E8382B;
         }
         .check {
           position: absolute;
@@ -320,18 +298,27 @@ export default {
       transform: translate(-50%, -50%);
       width: 1px;
       height: 1rem;
-      background: #D9D9D9;
+      background: #F2F2F2;
     }
   }
   .task-nav {
-    margin: .2rem 0 .57rem;
+    margin: 0 0 .57rem;
     display: flex;
     justify-content: flex-start;
     .item {
       margin-right: .2rem;
-      height: 1.4rem;
-      &.animation:nth-child(1) {
-        animation: scale infinite 2s;
+      img {
+        margin-bottom: .1rem;
+        height: 1.4rem;
+      }
+      p {
+        text-align: center;
+        color: #000000;
+      }
+      &:nth-child(1) {
+        .animation {
+          animation: scale infinite 2s;
+        }
       }
       &:nth-child(1) {
         width: 2.6rem;

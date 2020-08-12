@@ -15,6 +15,7 @@ export const HOST = {
 const API = {
   marchBuriedPoint: 'https://log-center.beeplaying.com/am/log/v1/json',
   getUserInfo: `${HOST.UIC_API}/uic/api/user/center/getPersonalInfo`, //获取用户信息
+  getUserCenter: `${HOST.PLATFORM_API}/point/api/user/center`, //获取用户信息
   getAccountInfo: `${HOST.PLATFORM_API}/point/api/account/info`, // 用户账户信息
   getUserPhone: `${HOST.PLATFORM_API}/point/api/user/getUserPhone`, // 获取用户手机号
   getCoinLog: `${HOST.PLATFORM_API}/point/api/account/point-history`, // 金币明细记录
@@ -49,6 +50,10 @@ const API = {
   userIsReceive: `${HOST.PLATFORM_API}/point/api/new/user/red/pack/popup`, //判断用户是否领取过红包
   getRedPacketAward: `${HOST.PLATFORM_API}/point/api/new/user/red/pack/award`, //领取红包
   sendRedPacketToServer: `${HOST.PLATFORM_API}/point/api/new/user/red/pack/send`, //告知后端领取了多少红包
+  sendUpdatePhoneSmsUrl: `${HOST.UIC_API}/uic/api/user/center/sendUpdatePhoneSms`, // 换绑发送验证码
+  checkUpdatePhoneSmsUrl: `${HOST.UIC_API}/uic/api/user/center/checkUpdatePhoneSms`, // 验证换绑短信
+  checkOriginalPhoneNo: `${HOST.UIC_API}/uic/api/user/center/checkOriginalPhoneNo`,
+  getAppVersion: `${HOST.PLATFORM_API}/app/api/version/appVersionUpdate.do`, //获取APP版本
 }
 
 export default API

@@ -61,7 +61,7 @@ export default {
 }
 .tips {
   position: fixed;
-  top: 6.06rem;
+  top: 5.06rem;
   left: 50%;
   transform: translate(-50%, 0);
   z-index: 12;
@@ -101,7 +101,7 @@ export default {
   }
 }
 .step1 {
-  top: 3.7rem;
+  top: 2.7rem;
   left: .3rem;
   width: 2.6rem;
   height: 1.4rem;
@@ -114,7 +114,7 @@ export default {
   }
 }
 .step2 {
-  top: 3.7rem;
+  top: 2.7rem;
   right: .3rem;
   width: 1.8rem;
   height: 1.4rem;
@@ -126,7 +126,7 @@ export default {
   }
 }
 .step3 {
-  top: 1.5rem;
+  top: .3rem;
   left: .3rem;
   width: 3.3rem;
   height: 2rem;
@@ -138,7 +138,7 @@ export default {
     height: .8rem;
   }
   .tips {
-    top: 4.56rem;
+    top: 3.56rem;
     height: 1.8rem;
     .title {
       margin-bottom: .14rem;
