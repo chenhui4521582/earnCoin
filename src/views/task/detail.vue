@@ -319,6 +319,7 @@ export default {
         }else {
           this.$Toast( message )
         }
+        this.showLoginConfirm = false
       })
       this.$marchSetsPoint('A_H5PT0303003643', {
         task_id: this.taskDetail.id,
@@ -397,7 +398,6 @@ export default {
     },
     /** 判断用户是否是游客 **/
     _userIsVisitor (item) {
-      console.log(item)
       userIsVisitor().then(res => {
         const {code, data, message} = _get(res, 'data')
         if(code == 200) {
