@@ -49,8 +49,14 @@ export default {
         }else {
           this.$Toast(message)
         }
+      }else if(vCode == 104) {
+        this.$Toast(vMessage, () => {
+          this.$router.replace({
+            name: 'loginPage'
+          })
+        })
       }else {
-        this.Toast(vMessage)
+        this.$Toast(vMessage)
       }
     },
     /** 红包弹框关闭回调方法 **/

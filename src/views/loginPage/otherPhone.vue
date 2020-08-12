@@ -104,7 +104,7 @@ export default {
     /** 获取requestToken **/
     async _getRequestToken () {
       let url = '//uic-api.beeplaying.com/uic/api/user/login/sms/requestToken'
-      let deviceNum = getUrlParams('divice') || await AppCall.getDeviceID()
+      let deviceNum = await AppCall.getDeviceID()
       let params = {
         smsCode: this.validate.code,
         username: this.validate.mobile,
