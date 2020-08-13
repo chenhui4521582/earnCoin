@@ -5,7 +5,7 @@
       <div class="title">1.游戏内绑定手机号</div>
       <div class="bind-moblie">
         <div class="mobile">
-          <input type="number" placeholder="请输入手机号" v-model.trim="phone" maxlength="11">
+          <input type="tel" placeholder="请输入手机号" v-model.trim="phone" maxlength="11">
         </div>
         <div class="code">
           <input type="number" placeholder="请输入验证码" v-model.trim="code" maxlength="6">

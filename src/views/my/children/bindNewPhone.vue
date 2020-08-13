@@ -5,7 +5,7 @@
       <div class="group">
         <div class="label">新的手机号</div>
         <div class="input">
-          <input type="number" placeholder="请输入手机号码" maxlength="11" v-model="phone">
+          <input type="tel" placeholder="请输入手机号码" maxlength="11" v-model="phone">
           <div class="clear" v-if="showClear" @click="clearPhone" >
             <img class="inner-img" src="../img/clear-icon.png" alt="">
           </div>

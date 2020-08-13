@@ -5,7 +5,7 @@
     </div>
     <div class="form-group">
       <div class="label">手机号</div>
-      <input v-model="validate.mobile" type="number" maxlength="11" placeholder="请输入手机号码" >
+      <input v-model="validate.mobile" type="tel" maxlength="11" placeholder="请输入手机号码" >
     </div>
     <div class="form-group">
       <div class="label">验证码</div>
