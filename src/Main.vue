@@ -34,11 +34,9 @@ export default {
   },
   mounted () {
     /**
-     * 获取用户是否是游客
      * 获取设备id
      * 获取app版本
      **/
-    this.userIsVisitor()
     this._getDeviceId()
     this._getAppVersion()
   },  

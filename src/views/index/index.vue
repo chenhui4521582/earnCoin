@@ -67,8 +67,9 @@ import RankInfo from './components/rankInfo'
 import AppUpdate from './components/AppUpdate'
 import Services from '@/services/index'
 import { getAccountInfo, getTaskInfo } from '@/services/user'
-import _get from 'lodash.get'
 import { getUrlParams } from '@/utils/utils'
+import { mapActions } from 'vuex'
+import _get from 'lodash.get'
 export default {
   name: 'Index',
   data: () => ({
@@ -86,6 +87,9 @@ export default {
     AppUpdate
   },
   methods: {
+    ...mapActions({
+      userIsVisitor: 'USER_IS_VISITOR'
+    }),
     openService () {
       this.showService = true
       this.$marchSetsPoint('A_H5PT0303003633')
@@ -175,6 +179,7 @@ export default {
     this._getIconList()
     this._getRankList()
     this.isUserGuide()
+    this.userIsVisitor()
     this.$marchSetsPoint('P_H5PT0303', {
       source_address: document.referrer
     })
