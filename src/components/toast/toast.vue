@@ -23,18 +23,19 @@ export default {
 .notify-tips {
 	position: fixed;
 	z-index: 9999;
-	width: 100%;
-	left: 10%;
+	max-width: 80%;
+	left: 50%;
 	top:50%;
-	margin-top: -.4rem;
+	transform: translate(-50%, -50%);
 	box-sizing: border-box;
-	min-height: .7rem;
-	width: 80%;
 	text-align: center;
 	background-color: rgba(80, 80, 80, 0.9);
 	border-radius: .16rem;
 	line-height: .4rem;
 	padding: .2rem .3rem;
+	word-wrap:break-word;
+	word-break:break-all;
+	overflow: hidden;
 	.notify-tips-text{
 		color: #ffffff;
 		font-size: .24rem;
