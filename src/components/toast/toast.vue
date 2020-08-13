@@ -24,22 +24,20 @@ export default {
 	position: fixed;
 	z-index: 9999;
 	width: 100%;
-	white-space: nowrap;
 	left: 10%;
 	top:50%;
 	margin-top: -.4rem;
 	box-sizing: border-box;
-	color: #ffffff;
 	min-height: .7rem;
 	width: 80%;
 	text-align: center;
+	background-color: rgba(80, 80, 80, 0.9);
+	border-radius: .16rem;
+	line-height: .4rem;
+	padding: .2rem .3rem;
 	.notify-tips-text{
-		background-color: rgba(80, 80, 80, 0.9);
-		padding: .2rem .3rem;
+		color: #ffffff;
 		font-size: .24rem;
-		line-height: .3rem;
-		border-radius: .16rem;
-		display: inline;
 	}
 }
 </style>
