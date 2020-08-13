@@ -35,8 +35,8 @@
   </div>
 </template>
 <script>
-import AppCall from '@/utils/native/'
 import { getAppVersion } from '@/services/user'
+import { mapState } from 'vuex'
 import _get from 'lodash.get'
 export default {
   name: 'list',
@@ -68,6 +68,9 @@ export default {
       }
     ]
   }),
+  computed: {
+    ...mapState(['APP_VERSION'])
+  },
   methods: {
     goTask () {
       this.$router.push({
@@ -80,12 +83,12 @@ export default {
     handClick (item) {
       item.fun && item.fun.call(this)
     },
-    _getNewAppVersion (appVersion) {
+    _getNewAppVersion () {
       getAppVersion().then(res => {
         const {code, data, message} = _get(res, 'data')
         if(code == 200) {
           this.version = data
-          if(appVersion == data.version) {
+          if(this.APP_VERSION == data.version) {
             this.$Toast('当前为最新版本')
             return 
           }
@@ -96,24 +99,18 @@ export default {
         }
       })
     },
-    async _getCurrAppVersion () {
-      try {
-        let product = await AppCall.getProductData()
-        product && ( product = JSON.parse(product) )
-        if(product.appVersion) {
-          localStorage.setItem('APP_VERSION', product.appVersion)
-          this.list.push({
-            id: 'version',
-            name: '版本更新',
-            desc: product.appVersion,
-            icon: require('../img/version-icon.png'),
-            fun: function () {
-              this._getNewAppVersion(product.appVersion)
-            }
-          })
-          this.$emit('inApp')
-        }
-      } catch {}
+    _getCurrAppVersion () {
+      if(this.APP_VERSION) {
+        this.list.push({
+          id: 'version',
+          name: '版本更新',
+          desc: this.APP_VERSION,
+          icon: require('../img/version-icon.png'),
+          fun: function () {
+            this._getNewAppVersion()
+          }
+        })
+      }
     },
     downLoad () {
       window.location.href = this.version.url

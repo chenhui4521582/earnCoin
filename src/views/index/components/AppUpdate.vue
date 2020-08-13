@@ -10,8 +10,8 @@
     </Modal>
 </template>
 <script>
-import AppCall from '@/utils/native/'
 import { getAppVersion } from '@/services/user'
+import { mapState } from 'vuex'
 import _get from 'lodash.get'
 export default {
   name: 'AppUpdate',
@@ -19,24 +19,15 @@ export default {
     version: {},
     showVersion: false
   }),
+  computed: {
+    ...mapState(['APP_VERSION'])
+  },
   methods: {
     downLoad () {
       window.location.href = this.version.url
     },
     hideModal () {
       this.showVersion = false
-    },
-    async _getCurrAppVersion () {
-      try {
-        let product = await AppCall.getProductData()
-        product && ( product = JSON.parse(product) )
-        if(product.appVersion) {
-          localStorage.setItem('APP_VERSION', product.appVersion)
-          this._getNewAppVersion()
-        }
-      } catch {
-
-      }
     },
     _getNewAppVersion () {
       getAppVersion().then(res => {
@@ -52,7 +43,9 @@ export default {
     },
   },
   mounted () {
-    this._getCurrAppVersion()
+    if(this.APP_VERSION) {
+      this._getNewAppVersion()
+    }
   }
 }
 </script>

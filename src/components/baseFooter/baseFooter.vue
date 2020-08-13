@@ -45,7 +45,7 @@ export default {
     }
   },
   methods: {
-    async changeRouter (item) {
+    changeRouter (item) {
       if(item.routerName == 'task') {
         this.$marchSetsPoint('A_H5PT0303003627')
         this.$router.push({ 

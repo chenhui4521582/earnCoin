@@ -53,7 +53,7 @@ export default {
   },
   methods: {
     // 跳转页面
-    async goPage () {
+    goPage () {
       const { name } = this.$route
       if (name === 'mall') {
         this.$marchSetsPoint('A_H5PT0020001299')

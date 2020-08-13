@@ -24,7 +24,6 @@
   </div>
 </template>
 <script>
-import AppCall from '@/utils/native'
 import { sendCode, getRequestToken, getAccessToken, getOpenToken } from '@/services/user'
 import _get from 'lodash.get'
 export default {
@@ -38,6 +37,7 @@ export default {
     }
   }),
   computed: {
+    ...mapState(['deviceId']),
     isSubmit () {
       let mobileReg = /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/
       if (this.validate.mobile && mobileReg.test(this.validate.mobile) && this.validate.code && this.validate.code.length == 6 ) {
@@ -102,14 +102,13 @@ export default {
       }
     },
     /** 获取requestToken **/
-    async _getRequestToken () {
+    _getRequestToken () {
       let url = '//uic-api.beeplaying.com/uic/api/user/login/sms/requestToken'
-      let deviceNum = await AppCall.getDeviceID()
       let params = {
         smsCode: this.validate.code,
         username: this.validate.mobile,
-        visitorToken: deviceNum,
-        deviceNum
+        visitorToken: this.deviceId,
+        deviceNum: this.deviceId
       }
       getRequestToken(params).then(res=> {
         let {code, data, message} = _get(res, 'data', {})

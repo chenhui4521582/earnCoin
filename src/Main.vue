@@ -10,6 +10,7 @@
 <script>
 import Login from '@/components/login/login'
 import { newUtils } from '@/utils/utils'
+import { mapState, mapActions } from 'vuex'
 export default {
   name: 'APP',
   data: () => ({
@@ -19,10 +20,28 @@ export default {
     Login
   },
   computed: {
+    ...mapState(['APP_VERSION', 'isVisitory', 'deviceId']),
     keepAlive () {
       return !!(this.$route.meta && this.$route.meta.keepAlive)
     },
   },
+  methods: {
+    ...mapActions({
+      userIsVisitor: 'USER_IS_VISITOR',
+      _getDeviceId: 'GET_DEVICEID',
+      _getAppVersion: 'GET_APP_VERSION'
+    })
+  },
+  mounted () {
+    /**
+     * 获取用户是否是游客
+     * 获取设备id
+     * 获取app版本
+     **/
+    this.userIsVisitor()
+    this._getDeviceId()
+    this._getAppVersion()
+  },  
   watch: {
     $route (to, from) {
       /**

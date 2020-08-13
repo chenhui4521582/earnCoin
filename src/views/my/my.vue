@@ -29,11 +29,11 @@
       <div class="btn" @click="goWithdraw">提现</div>
     </div>
     <!-- 账号绑定 -->
-    <account-bind :userInfo="userInfo" v-if="isApp"/>
+    <account-bind :userInfo="userInfo" v-if="isShowAccount"/>
     <!-- 个人中心List -->
-    <my-list :userInfo="userInfo" @openService="openService" @inApp="inApp"/>
+    <my-list :userInfo="userInfo" @openService="openService"/>
     <!-- 退出登录 -->
-    <div class="logout" v-if="isApp" @click="logout"> 退出登录</div>
+    <div class="logout" v-if="isShowLogout" @click="logout"> 退出登录</div>
     <!-- 客服弹框 -->
     <Service v-model="showService" />
     <!-- footer -->
@@ -46,6 +46,7 @@ import Service from '@/components/servicePop/service'
 import AccountBind from './components/accountBind'
 import MyList from './components/list'
 import { getUserCenter } from '@/services/user'
+import { mapState } from 'vuex'
 import _get from 'lodash.get'
 export default {
   name: 'my',
@@ -60,6 +61,22 @@ export default {
     BaseFooter,
     AccountBind,
     MyList
+  },
+  computed: {
+    ...mapState(['APP_VERSION', 'isVisitory']),
+    isShowLogout () {
+      if(!this.isVisitory && this.APP_VERSION) {
+        return true
+      }
+      return false
+    },
+    isShowAccount () {
+      if(this.APP_VERSION) {
+        return true
+      } else {
+        return false
+      }
+    }
   },
   methods: {
     AvatarClick () {
@@ -82,9 +99,6 @@ export default {
       this.$router.push({
         name: 'withdraw'
       })
-    },
-    inApp () {
-      this.isApp = true
     },
     logout () {
       localStorage.removeItem('ACCESS_TOKEN')

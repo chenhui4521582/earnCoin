@@ -12,22 +12,24 @@
 import { getUrlParams } from '@/utils/utils'
 import RedPacket from './components/redPacket'
 import { visitorLogin, userIsReceive, getRedPacketAward, sendRedPacketToServer, getAccessToken, getOpenToken} from '@/services/user'
-import AppCall from '@/utils/native/index'
+import { mapState } from 'vuex'
 import _get from 'lodash.get'
 export default {
   name: 'loadingPage',
   data: () => ({
-    DEVICE_TOKEN: '',
     showRedPacket: false,
     redPacketData: {}
   }),
   components: {
     RedPacket
   },
+  computed: {
+    ...mapState(['deviceId'])
+  },
   methods: {
     async _visitorLogin (callback) {
       /** 游客登录 **/
-      const vRes = await visitorLogin({ source: 1,visitorToken: this.DEVICE_TOKEN })
+      const vRes = await visitorLogin({ source: 1,visitorToken: this.deviceId })
       let vCode = _get(vRes, 'data.code')
       let vData = _get(vRes, 'data.data')
       let vMessage = _get(vRes, 'data.message')
@@ -117,8 +119,7 @@ export default {
         }
       })
     },
-    async init () {
-      this.DEVICE_TOKEN = getUrlParams('divice') || await AppCall.getDeviceID()
+    init () {
       this.ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN')
       this._userIsReceive()
     }

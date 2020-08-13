@@ -155,6 +155,7 @@ import UserGuide from './components/userGuide/userGuide'
 import { getTaskDetail, startTask, getAward, getCard } from '@/services/task'
 import { userIsVisitor } from '@/services/user'
 import { jumpUrl } from '@/utils/utils'
+import { mapState } from 'vuex'
 import _get from 'lodash.get'
 export default {
   name: 'taskDetail',
@@ -188,6 +189,7 @@ export default {
     }
   },
   computed: {
+    ...mapState(['isVisitory']),
     activeStyle () {
       return {
         position: `relative`,
@@ -398,17 +400,12 @@ export default {
     },
     /** 判断用户是否是游客 **/
     _userIsVisitor (item) {
-      userIsVisitor().then(res => {
-        const {code, data, message} = _get(res, 'data')
-        if(code == 200) {
-          if(data == true) {
-            this.confirmItem = item
-            this.showLoginConfirm = true
-          }else {
-            this._getAward(item)
-          }
-        }
-      })
+      if(this.isVisitory) {
+        this.confirmItem = item
+        this.showLoginConfirm = true
+      }else {
+        this._getAward(item)
+      }
     },
     /** 跳转手机绑定页 **/
     goPhoneBind () {
