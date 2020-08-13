@@ -25,6 +25,7 @@
 </template>
 <script>
 import { sendCode, getRequestToken, getAccessToken, getOpenToken } from '@/services/user'
+import { mapState } from 'vuex'
 import _get from 'lodash.get'
 export default {
   name: 'other-phone',
