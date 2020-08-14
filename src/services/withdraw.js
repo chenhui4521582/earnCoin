@@ -48,7 +48,7 @@ const getCoinLog = function (params) {
  * @description 首页  发送验证码
  */
 const sendCode = function (phone) {
-  return $axios.post(`${Api.sendCode}/${phone}`)
+  return $axios.post(`${Api.withdrawSendCode}/${phone}`)
 }
 
 
