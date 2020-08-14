@@ -67,9 +67,9 @@ export default {
       this.$marchSetsPoint('A_H5PT0303003786')
     },
     goRanking ({ type }) {
+      localStorage.setItem('rankingCurrent', type)
       this.$router.push({
-        name: 'ranking',
-        query: { type }
+        name: 'ranking'
       })
       switch (type) {
         case 1: 

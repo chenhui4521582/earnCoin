@@ -87,6 +87,7 @@ export default {
     /** nav 点击**/
     navClick ({ type }, index) {
       this.currentIndex = type
+      localStorage.setItem('rankingCurrent', this.currentIndex)
       this._getRankList(type)
       this.navAnimation(index)
       switch (type) {
@@ -114,13 +115,10 @@ export default {
     },
     /** 初始化 **/
     init () {
-      let {type = 1} = this.$route.query 
-      if(type) {
-        setTimeout(() => {
-          this.currentIndex = type
-          this.navClick({type}, type-1)
-        }, 500)
-      }
+      setTimeout(() => {
+        this.currentIndex = localStorage.getItem('rankingCurrent') || 1
+        this.navClick({type: this.currentIndex}, this.currentIndex-1)
+      }, 500)
       this._getRankTab()
     }
   },

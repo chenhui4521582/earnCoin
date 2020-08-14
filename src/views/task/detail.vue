@@ -18,6 +18,8 @@
       <div class="refresh" ref="refreshBtn" @click="refershTask"><img class="inner-img" src="./img/refresh.png" alt=""></div>
       <div class="total">全部任务完成后<span>+{{taskDetail.award}}</span><span class="unit">元</span></div>
     </div>
+    <!-- 游戏banner -->
+    <game-banner :gameBannerImg="gameBannerImg"/>
     <div class="task-desc" :class="{'active': pullDown}">
       <div class="wrap" v-html="remark" ref="box"></div>
       <div class="count-wrap" ref="wrap" v-html="remark"></div>
@@ -99,7 +101,7 @@
     <modal v-model="showAward" title="恭喜你获得" saveText="去赚更多" :type="2" @on-save="awardCallback">
       <div class="award-content">
         <img src="./img/big-coin.png" alt="">
-        <p class="p1">金币 +{{award.award || 0}}个</p>
+        <p class="p1">金币 +{{award.award}}个</p>
         <p v-if="award.balance == 0" class="p2">可以提现了，快去提现吧！</p>
         <p v-else class="p2">再赚{{ award.balance }}金币马上提现</p>
       </div>
@@ -152,6 +154,7 @@
 <script>
 import Service from '@/components/servicePop/service'
 import UserGuide from './components/userGuide/userGuide'
+import GameBanner from './components/gameBanner/gameBanner'
 import { getTaskDetail, startTask, getAward, getCard } from '@/services/task'
 import { userIsVisitor } from '@/services/user'
 import { jumpUrl } from '@/utils/utils'
@@ -176,7 +179,8 @@ export default {
   }),
   components: {
     UserGuide,
-    Service
+    Service,
+    GameBanner
   },
   filters: {
     amountComputen1 (val) {
@@ -218,11 +222,17 @@ export default {
       // }
       return this.taskDetail.remark || ''
     },
-    showResetDownLoad() {
+    showResetDownLoad () {
       if(this.taskDetail.status == 0 && !this.taskDetail.tUserId && this.taskDetail.gameType == 1) {
         return true
       }
       return false
+    },
+    gameBannerImg () {
+      if(this.taskDetail.img) {
+        return this.taskDetail.img.split(',')
+      }
+      return []
     }
   },
   methods: {
