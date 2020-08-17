@@ -846,7 +846,7 @@ export default {
     }
   }
   .confirm-content {
-    text-align: center;
+    text-align: left;
     color: #252525;
     line-height: .4rem;
   }
