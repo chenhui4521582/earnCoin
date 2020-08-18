@@ -175,10 +175,8 @@ export default {
     /** 判断是否有openToken **/
     isOpenToken () {
       const openToken = localStorage.getItem('OPEN_ACCESS_TOKEN')
-      console.log(openToken)
       if(!openToken || openToken == 'undefined') {
         getOpenToken().then(res => {
-          console.log(111)
           const {code, data, message} = _get(res, 'data')
           if(code == 200) {
             localStorage.setItem('OPEN_ACCESS_TOKEN', data.token)
