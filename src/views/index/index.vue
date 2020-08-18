@@ -66,7 +66,7 @@ import UserGuide from './components/userGuide'
 import RankInfo from './components/rankInfo'
 import AppUpdate from './components/AppUpdate'
 import Services from '@/services/index'
-import { getAccountInfo, getTaskInfo } from '@/services/user'
+import { getAccountInfo, getTaskInfo, getOpenToken } from '@/services/user'
 import { getUrlParams } from '@/utils/utils'
 import { mapActions } from 'vuex'
 import _get from 'lodash.get'
@@ -171,6 +171,20 @@ export default {
     /** 新手引导回调函数 **/
     hideUserGuide () {
       this.showUserGuide = false
+    },
+    /** 判断是否有openToken **/
+    isOpenToken () {
+      const openToken = localStorage.getItem('OPEN_ACCESS_TOKEN')
+      console.log(openToken)
+      if(!openToken || openToken == 'undefined') {
+        getOpenToken().then(res => {
+          console.log(111)
+          const {code, data, message} = _get(res, 'data')
+          if(code == 200) {
+            localStorage.setItem('OPEN_ACCESS_TOKEN', data.token)
+          }
+        })
+      }
     }
   },
   mounted () {
@@ -180,6 +194,7 @@ export default {
     this._getRankList()
     this.isUserGuide()
     this.userIsVisitor()
+    this.isOpenToken()
     this.$marchSetsPoint('P_H5PT0303', {
       source_address: document.referrer
     })
