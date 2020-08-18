@@ -32,6 +32,9 @@
   </div>
 </template>
 <script>
+import AppCall from '@/utils/native/index'
+import { getAccessToken, wechatLogin, getOpenToken } from '@/services/user'
+import { mapState } from 'vuex'
 export default {
   name: 'accountBind',
   props: {
@@ -41,6 +44,7 @@ export default {
     }
   },
   computed: {
+    ...mapState(['deviceId']),
     bind () {
       if(this.userInfo.bindWechat || this.userInfo.bindPhone) {
         return true
@@ -75,6 +79,25 @@ export default {
         this.goBindPhone()
       }
     },
+    /** 获取ACCESS_TOKEN **/
+    async _getAccessToken (requestToken) {
+      let accessRes = await getAccessToken({ token: requestToken, type: 1 })
+      let accessCode = _get(accessRes, 'data.code')
+      let accessData = _get(accessRes, 'data.data')
+      if(accessCode == 200) {
+        localStorage.setItem('ACCESS_TOKEN', accessData.accessToken)
+        /** 获取OPEN_TOKEN **/
+        let openRes = await getOpenToken()
+        let openCode = _get(openRes, 'data.code')
+        let openToken = _get(openRes, 'data.data.token')
+        localStorage.setItem('OPEN_ACCESS_TOKEN', openToken)
+        this.$Toast('登录成功！', () => {
+          this.$router.push({
+            name: 'index'
+          })
+        })
+      }
+    },
     /** 微信登录 **/
     _wechatLogin () {
       /** window层创建微信登录回调方法 **/
@@ -85,13 +108,14 @@ export default {
     /** 微信登录回调 **/
     wechatCallback () {
       window.WXMessage = (callback) => {
-        // callback = JSON.parse(callback)
         wechatLogin({
           code: callback.Code,
-          appId: callback.AppId
+          appId: callback.AppId,
+          deviceNum: this.deviceId
         }).then (res => {
           const {code, data, message} = _get(res, 'data')
           if (code == 200) {
+            alert(data)
             this._getAccessToken(data)
           } else {
             this.$Toast( message )

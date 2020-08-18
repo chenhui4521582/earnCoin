@@ -28,6 +28,7 @@ import Service from '@/components/servicePop/service'
 import AppCall from '@/utils/native/index'
 import { getUrlParams} from '@/utils/utils'
 import { getAccessToken, wechatLogin, getOpenToken } from '@/services/user'
+import { mapState } from 'vuex'
 import _get from 'lodash.get'
 export default {
   name: 'loginPage',
@@ -37,6 +38,9 @@ export default {
   }),
   components: {
     Service
+  },
+  computed: {
+    ...mapState(['deviceId'])
   },
   methods: {
     goUserAgreement () {
@@ -51,10 +55,9 @@ export default {
     /** 获取ACCESS_TOKEN **/
     async _getAccessToken (requestToken) {
       let accessRes = await getAccessToken({ token: requestToken, type: 1 })
-      const {code, data, message} = _get(accessRes, 'data')
       let accessCode = _get(accessRes, 'data.code')
       let accessData = _get(accessRes, 'data.data')
-      if(code == 200) {
+      if(accessCode == 200) {
         localStorage.setItem('ACCESS_TOKEN', accessData.accessToken)
         /** 获取OPEN_TOKEN **/
         let openRes = await getOpenToken()
@@ -78,14 +81,14 @@ export default {
     /** 微信登录回调 **/
     wechatCallback () {
       window.WXMessage = (callback) => {
-        // callback = JSON.parse(callback)
         wechatLogin({
           code: callback.Code,
-          appId: callback.AppId
+          appId: callback.AppId,
+          deviceNum: this.deviceId
         }).then (res => {
           const {code, data, message} = _get(res, 'data')
           if (code == 200) {
-            this._getAccessToken(data)
+            this._getAccessToken(data) 
           } else {
             this.$Toast( message )
           }

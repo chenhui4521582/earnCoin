@@ -161,8 +161,7 @@ class utils {
     let OPEN_TOKEN = localStorage.getItem('OPEN_ACCESS_TOKEN')
     let WJ_GAMETYPE = item.gameId || ''
     if (URL.indexOf('external=1') != -1 || URL.indexOf('?external=1') != -1) {
-      let url = 
-      `${URL}&channel=${APP_CHANNEL}&token=${OPEN_TOKEN}&gurl=${base64url.encode(URL.replace('?external=1', '').replace('&external=1', ''))}&pf=xmWap&gameType=${WJ_GAMETYPE}`
+      let url = `${URL}&channel=${APP_CHANNEL}&token=${OPEN_TOKEN}&gurl=${base64url.encode(URL.replace('?external=1', '').replace('&external=1', ''))}&pf=xmWap&gameType=${WJ_GAMETYPE}`
       if (WJ_GAMETYPE) {
         localStorage.setItem('wj_gameType', WJ_GAMETYPE)
         axios.post(
