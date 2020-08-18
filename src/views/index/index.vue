@@ -174,8 +174,8 @@ export default {
     },
     /** 判断是否有openToken **/
     isOpenToken () {
-      const openToken = localStorage.getItem('OPEN_ACCESS_TOKEN')
-      if(!openToken || openToken == 'undefined') {
+      const isQuickLogin = getUrlParams('quicklogin')
+      if(isQuickLogin) {
         getOpenToken().then(res => {
           const {code, data, message} = _get(res, 'data')
           if(code == 200) {
