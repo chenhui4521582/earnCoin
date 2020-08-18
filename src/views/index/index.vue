@@ -156,7 +156,6 @@ export default {
       this.$marchSetsPoint('H5PT0303003628', {
         task_name: index
       })
-      
       window.location.href = url
     },
     /** 判断是否显示新手引导 **/
@@ -174,8 +173,8 @@ export default {
     },
     /** 判断是否有openToken **/
     isOpenToken () {
-      const openToken = localStorage.getItem('OPEN_ACCESS_TOKEN')
-      if(!openToken || openToken == 'undefined') {
+      const isQuickLogin = getUrlParams('quicklogin')
+      if(isQuickLogin) {
         getOpenToken().then(res => {
           const {code, data, message} = _get(res, 'data')
           if(code == 200) {
