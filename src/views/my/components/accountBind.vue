@@ -115,7 +115,6 @@ export default {
         }).then (res => {
           const {code, data, message} = _get(res, 'data')
           if (code == 200) {
-            alert(data)
             this._getAccessToken(data)
           } else {
             this.$Toast( message )
