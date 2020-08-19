@@ -58,6 +58,8 @@
     <user-guide v-if="showUserGuide" @hideUserGuide="hideUserGuide"/>
     <!-- APP强更新弹框 -->
     <app-update />
+    <!-- 时长活动入口 -->
+    <duration-entry />
   </div>
 </template>
 <script>
@@ -65,6 +67,7 @@ import BaseFooter from '@/components/baseFooter/baseFooter'
 import UserGuide from './components/userGuide'
 import RankInfo from './components/rankInfo'
 import AppUpdate from './components/AppUpdate'
+import DurationEntry from '@/components/durationEntry/durationEntry'
 import Services from '@/services/index'
 import { getAccountInfo, getTaskInfo, getOpenToken } from '@/services/user'
 import { getUrlParams } from '@/utils/utils'
@@ -84,7 +87,8 @@ export default {
     BaseFooter,
     UserGuide,
     RankInfo,
-    AppUpdate
+    AppUpdate,
+    DurationEntry
   },
   methods: {
     ...mapActions({
@@ -156,7 +160,6 @@ export default {
       this.$marchSetsPoint('H5PT0303003628', {
         task_name: index
       })
-      
       window.location.href = url
     },
     /** 判断是否显示新手引导 **/
