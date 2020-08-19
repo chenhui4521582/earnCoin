@@ -36,6 +36,8 @@
     <div class="logout" v-if="isShowLogout" @click="logout"> 退出登录</div>
     <!-- 客服弹框 -->
     <Service v-model="showService" />
+    <!-- 时长活动入口 -->
+    <duration-entry />
     <!-- footer -->
     <base-footer></base-footer>
   </div>
@@ -45,6 +47,7 @@ import BaseFooter from '@/components/baseFooter/baseFooter'
 import Service from '@/components/servicePop/service'
 import AccountBind from './components/accountBind'
 import MyList from './components/list'
+import DurationEntry from '@/components/durationEntry/durationEntry'
 import { getUserCenter } from '@/services/user'
 import { mapState } from 'vuex'
 import _get from 'lodash.get'
@@ -60,7 +63,8 @@ export default {
     Service,
     BaseFooter,
     AccountBind,
-    MyList
+    MyList,
+    DurationEntry
   },
   computed: {
     ...mapState(['APP_VERSION', 'isVisitory']),

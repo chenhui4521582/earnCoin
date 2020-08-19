@@ -4,10 +4,13 @@
     <sign />
     <task-info />
     <base-footer />
+    <!-- 时长活动入口 -->
+    <duration-entry />
   </div>
 </template>
 <script>
 import BaseFooter from '@/components/baseFooter/baseFooter'
+import DurationEntry from '@/components/durationEntry/durationEntry'
 import Sign from './components/sign/sign'
 import TaskInfo from './components/taskInfo/taskInfo'
 export default {
@@ -15,7 +18,8 @@ export default {
   components: {
     BaseFooter,
     Sign,
-    TaskInfo
+    TaskInfo,
+    DurationEntry
   },
   mounted () {
     this.$marchSetsPoint('A_H5PT0303003635')
