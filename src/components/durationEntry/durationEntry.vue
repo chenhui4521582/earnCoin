@@ -30,7 +30,6 @@ export default {
         const {code, data, message} = _get(res, 'data')
         if( code == 200) {
           this.activitiesInfo = data
-          this.activitiesInfo.firstEnter = true
         }
       })
     },
