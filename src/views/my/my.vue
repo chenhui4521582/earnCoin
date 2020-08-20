@@ -29,7 +29,7 @@
       <div class="btn" @click="goWithdraw">提现</div>
     </div>
     <!-- 账号绑定 -->
-    <account-bind :userInfo="userInfo" v-if="isShowAccount"/>
+    <account-bind :userInfo="userInfo" v-if="isShowAccount" @wechatBindSuccess="wechatBindSuccess"/>
     <!-- 个人中心List -->
     <my-list :userInfo="userInfo" @openService="openService"/>
     <!-- 退出登录 -->
@@ -49,7 +49,7 @@ import AccountBind from './components/accountBind'
 import MyList from './components/list'
 import DurationEntry from '@/components/durationEntry/durationEntry'
 import { getUserCenter } from '@/services/user'
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import _get from 'lodash.get'
 export default {
   name: 'my',
@@ -83,6 +83,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      _userIsVisitor: 'USER_IS_VISITOR'
+    }),
     AvatarClick () {
       this.$marchSetsPoint('A_H5PT0303003634')
     },
@@ -98,6 +101,11 @@ export default {
           this.userInfo = data
         }
       })
+    },
+    wechatBindSuccess () {
+      this.userInfo.bindWechat = true
+      // this._getUserCenter()
+      this._userIsVisitor()
     },
     goWithdraw () {
       this.$router.push({
