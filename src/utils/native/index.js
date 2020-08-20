@@ -172,6 +172,10 @@ AppCall.extend({
   //IOS显示0，隐藏1，浮点
   isFloatButton: function (params) {
     return this.call("isFloatButton", params)
+  },
+  //关闭APP
+  closeApp: function () {
+    return this.call("closeApp")
   }
 })
 
