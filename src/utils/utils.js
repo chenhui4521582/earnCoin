@@ -244,7 +244,7 @@ class utils {
       }
       /** 创建formDate 对象 并把数据插入formDate **/
       let formData = new FormData()
-      formData.append('appName', 'wf_game')
+      formData.append('appName', 'wf_jfq')
       formData.append('json', JSON.stringify(sendMessage))
       /** 发送formDate 数据 **/
       axios.post(API.marchBuriedPoint, formData, { timeout: 500 })
