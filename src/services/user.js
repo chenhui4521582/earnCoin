@@ -159,6 +159,13 @@ const userIsVisitor = function () {
   return $axios.post(Api.userIsVisitor)
 }
 
+/**
+ * @description 用户  正式用户绑定微信
+ */
+const userBindWechat = function (params) {
+  return $axios.post(Api.userBindWechat, params)
+}
+
 export { 
   getAccountInfo,
   getUserInfo,
@@ -181,7 +188,8 @@ export {
   changeUpdatePhoneCode,
   checkOriginalPhoneNo,
   getAppVersion,
-  userIsVisitor
+  userIsVisitor,
+  userBindWechat
 }
 
 const Services = {
@@ -206,6 +214,7 @@ const Services = {
   changeUpdatePhoneCode,
   checkOriginalPhoneNo,
   getAppVersion,
-  userIsVisitor
+  userIsVisitor,
+  userBindWechat
 }
 export default Services

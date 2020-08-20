@@ -55,7 +55,8 @@ const API = {
   checkUpdatePhoneSmsUrl: `${HOST.UIC_API}/uic/api/user/center/checkUpdatePhoneSms`, // 验证换绑短信
   checkOriginalPhoneNo: `${HOST.UIC_API}/uic/api/user/center/checkOriginalPhoneNo`,
   getAppVersion: `${HOST.PLATFORM_API}/app/api/version/appVersionUpdate.do`, //获取APP版本
-  userIsVisitor: `${HOST.PLATFORM_API}/point/api/user/visitor` //判断用户是否是游客
+  userIsVisitor: `${HOST.PLATFORM_API}/point/api/user/visitor`, //判断用户是否是游客
+  userBindWechat: `${HOST.UIC_API}/uic/api/user/center/bindWechat`
 }
 
 export default API

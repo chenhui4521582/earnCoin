@@ -21,7 +21,7 @@
     </div>
   </div>
   <div class="all-bind" v-else>
-    <div class="item wechat">
+    <div class="item wechat" @click="wechatLogin">
       <div class="name">微信绑定</div>
       <div class="staus">已绑定</div>
     </div>
@@ -33,8 +33,9 @@
 </template>
 <script>
 import AppCall from '@/utils/native/index'
-import { getAccessToken, wechatLogin, getOpenToken } from '@/services/user'
+import { getAccessToken, wechatLogin, getOpenToken, userBindWechat } from '@/services/user'
 import { mapState } from 'vuex'
+import _get from 'lodash.get'
 export default {
   name: 'accountBind',
   props: {
@@ -44,7 +45,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['deviceId']),
+    ...mapState(['deviceId', 'isVisitory']),
     bind () {
       if(this.userInfo.bindWechat || this.userInfo.bindPhone) {
         return true
@@ -98,6 +99,21 @@ export default {
         })
       }
     },
+    /** 非游客绑定微信 **/
+    _userBindWechat (callback) {
+      userBindWechat({
+        code: callback.Code,
+        appId: callback.AppId,
+        deviceNum: this.deviceId
+      }).then(res => {
+        const { code, data, message } = _get(res, 'data')
+        if( code == 200 ) {
+          this.$Toast('绑定成功', () => {
+            this.$emit('wechatBindSuccess')
+          })
+        }
+      })
+    },
     /** 微信登录 **/
     _wechatLogin () {
       /** window层创建微信登录回调方法 **/
@@ -108,14 +124,21 @@ export default {
     /** 微信登录回调 **/
     wechatCallback () {
       window.WXMessage = (callback) => {
+        if(!this.isVisitory) {
+          this._userBindWechat(callback)
+          return 
+        }
         wechatLogin({
-          code: callback.Code,
+          code: callback.Code,  
           appId: callback.AppId,
-          deviceNum: this.deviceId
-        }).then (res => {
+          deviceNum: this.deviceId,
+          visitorToken: this.deviceId
+        }).then(res => {
           const {code, data, message} = _get(res, 'data')
           if (code == 200) {
-            this._getAccessToken(data)
+            this.$Toast('绑定成功', () => {
+              this.$emit('wechatBindSuccess')
+            })
           } else {
             this.$Toast( message )
           }
