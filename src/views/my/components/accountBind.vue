@@ -111,6 +111,8 @@ export default {
           this.$Toast('绑定成功', () => {
             this.$emit('wechatBindSuccess')
           })
+        } else {
+          this.$Toast( message )
         }
       })
     },
