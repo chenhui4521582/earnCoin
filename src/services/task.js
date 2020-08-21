@@ -63,7 +63,34 @@ const getCard = function (id) {
   return $axios.post(Api.getCard.replace('{batchId}', id))
 }
 
-export { getSignList, sign, getTodaySign, getGreatTaskList, getTaskDetail, getMyTaskList, startTask, getAward, getCard }
+/**
+ * @description 任务详情  游戏第一次登陆上报
+ */
+const firstReport = function (params) {
+  return $axios.post(Api.firstReport, params)
+}
+
+/**
+ * @description 任务详情  游戏时长上报
+ */
+const durationReport = function (params) {
+  return $axios.post(Api.durationReport, params)
+}
+
+
+export { 
+  getSignList,
+  sign,
+  getTodaySign, 
+  getGreatTaskList,
+  getTaskDetail, 
+  getMyTaskList, 
+  startTask, 
+  getAward, 
+  getCard,
+  firstReport,
+  durationReport
+}
 
 const Services = {
   getSignList,
@@ -74,6 +101,8 @@ const Services = {
   getMyTaskList,
   startTask,
   getAward,
-  getCard
+  getCard,
+  firstReport,
+  durationReport
 }
 export default Services

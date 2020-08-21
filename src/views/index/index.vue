@@ -68,6 +68,7 @@ import UserGuide from './components/userGuide'
 import RankInfo from './components/rankInfo'
 import AppUpdate from './components/AppUpdate'
 import { getAccountInfo, getTaskInfo, getOpenToken, getUserCenter } from '@/services/user'
+import { durationReport } from '@/services/task'
 import { getUrlParams } from '@/utils/utils'
 import { mapActions } from 'vuex'
 import _get from 'lodash.get'
@@ -122,7 +123,6 @@ export default {
         const {code, data, message} = _get(res, 'data')
         if(code == 200) {
           this.accountInfo = data
-
         }
       })
     },
@@ -185,22 +185,42 @@ export default {
         })
       }
     },
+    /** 梦工厂游戏时长上报 **/
+    _durationReport ({gameId, time}) {
+      const sign = localStorage.getItem('MGC_SIGN')
+      if(gameId && time && sign) {
+        durationReport({
+          duration: time,
+          gameId,
+          sign
+        })
+      }
+    },
     /** 梦工厂初始化 **/
-    async MGC_gameInit (userId, nickname) {
-      if(userId && nickname) {
+    async MGC_gameInit () {
+      const appFirstInit = localStorage.getItem('appFirstInit')
+      const userCenter = await getUserCenter()
+      const { userId, nickname } = _get(userCenter, 'data.data')
+      if(appFirstInit == 1 && userId && nickname) {
+        localStorage.setItem('appFirstInit', 0)
         AppCall.initMGCGame(userId, nickname, this.MGC_duration)
       }
     },
     /** 梦工厂时长回调 **/
     MGC_duration () {
-      window.MGCGameCallback = function(d){
-        //返回游戏id和操作时长（毫秒）
-        //{'gameId':'123','time':12323}
-        alert(JSON.stringify(d));
+      window.MGCGameCallback = (data) => {
+        if(window.isOpenMGCGame) {
+          window.isOpenMGCGame = false
+          alert(data.gameId)
+          alert(data.time)
+          alert(JSON.stringify(data))
+          this._durationReport(data)
+        }
       }
     }
   },
   mounted () {
+    this.MGC_gameInit()
     this._getAccountInfo()
     this._getTaskInfo()
     this._getIconList()
@@ -211,6 +231,7 @@ export default {
     this.$marchSetsPoint('P_H5PT0303', {
       source_address: document.referrer
     })
+
   }
 }
 </script>

@@ -153,7 +153,7 @@
 import Service from '@/components/servicePop/service'
 import AppCall from '@/utils/native'
 import UserGuide from './components/userGuide/userGuide'
-import { getTaskDetail, startTask, getAward, getCard } from '@/services/task'
+import { getTaskDetail, startTask, getAward, getCard, firstReport } from '@/services/task'
 import { userIsVisitor } from '@/services/user'
 import { jumpUrl } from '@/utils/utils'
 import { mapState } from 'vuex'
@@ -269,8 +269,41 @@ export default {
         this.$refs.refreshBtn.classList.remove('animation')
       },1000)
     },
+    /** 打开H5游戏**/
+    open_h5_game () {
+      firstReport({
+        value: this.taskDetail.gameId
+      }).then(res => {
+        const {code, data, message} = _get(res, 'data')
+        if(code == 200 && data) {
+          if(this.taskDetail.duration) {
+            localStorage.setItem('earnCoinDuration', 'true')
+          }else {
+            localStorage.removeItem('earnCoinDuration')
+          }
+          localStorage.setItem('H5_SIGN', data)
+          jumpUrl({
+            url: this.taskDetail.download,
+            gameId: this.taskDetail.gameId
+          })
+        }
+      })
+    },
+    /** 打开梦工厂游戏 **/
+    open_MGC_game () {
+      localStorage.removeItem('earnCoinDuration')
+      firstReport({
+        value: this.taskDetail.gameId
+      }).then(res => {
+        const {code, data, message} = _get(res, 'data')
+        if(code == 200 && data) {
+          localStorage.setItem('MGC_SIGN', data)
+          this.taskDetail.gameId && AppCall.openMGCGame(this.taskDetail.gameId)
+        }
+      })
+    },
     /** 开始任务 **/
-    _startTask () {
+    async _startTask () {
       const id = this.$route.query.id
       startTask(id).then(res => {
         const {code, data, message} = _get(res, 'data')
@@ -284,19 +317,11 @@ export default {
           } 
           /** 梦工厂游戏 **/
           else if (this.taskDetail.gameSource == 1) {
-            localStorage.removeItem('earnCoinDuration')
-            this.taskDetail.gameId && AppCall.openMGCGame(this.taskDetail.gameId)
+            this.open_MGC_game()
           }
+          /** h5游戏 **/
           else {
-            if(this.taskDetail.duration) {
-              localStorage.setItem('earnCoinDuration', 'true')
-            }else {
-              localStorage.removeItem('earnCoinDuration')
-            }
-            jumpUrl({
-              url: this.taskDetail.download,
-              gameId: this.taskDetail.gameId
-            })
+            this.open_h5_game()
           }
         }
       })
@@ -347,19 +372,11 @@ export default {
       }
       /** 梦工厂游戏 **/
       else if (this.taskDetail.gameSource == 1) {
-        localStorage.removeItem('earnCoinDuration')
-        this.taskDetail.gameId && AppCall.openMGCGame(this.taskDetail.gameId)
+        this.open_MGC_game()
       }
+      /** h5游戏 **/
       else{
-        if(this.taskDetail.duration) {
-          localStorage.setItem('earnCoinDuration', 'true')
-        }else {
-          localStorage.removeItem('earnCoinDuration')
-        }
-        jumpUrl({
-          url: this.taskDetail.download,
-          gameId: this.taskDetail.gameId
-        })
+        this.open_h5_game()
       }
     },
     /** 任务列表点击 **/
