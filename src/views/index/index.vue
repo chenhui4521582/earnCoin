@@ -201,7 +201,6 @@ export default {
     }
   },
   mounted () {
-    this._getUserCenter()
     this._getAccountInfo()
     this._getTaskInfo()
     this._getIconList()
