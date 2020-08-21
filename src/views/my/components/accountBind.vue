@@ -21,7 +21,7 @@
     </div>
   </div>
   <div class="all-bind" v-else>
-    <div class="item wechat" @click="wechatLogin">
+    <div class="item wechat">
       <div class="name">微信绑定</div>
       <div class="staus">已绑定</div>
     </div>
