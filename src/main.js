@@ -15,3 +15,9 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount('#app')
+
+/** 梦工厂游戏初始化 **/
+window.earnCoinAppInit = function () {
+  alert(111111)
+}
+

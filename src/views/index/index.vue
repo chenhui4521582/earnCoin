@@ -116,16 +116,6 @@ export default {
     goUserAgreement () {
       window.location.href = 'https://wap.beeplaying.com/xmWap/#/my/userAgreement'
     },
-    /** 用户账号信息 **/
-    _getUserCenter () {
-      getUserCenter().then(res => {
-        const {code, data, message} = _get(res, 'data')
-        if(code == 200) {
-          const {userId, nickname} = _get(res, 'data.data')
-          this.MGC_gameInit(userId, nickname)
-        }
-      })
-    },
     /** 用户账户信息 **/
     _getAccountInfo () {
       getAccountInfo().then(res => {
@@ -196,7 +186,7 @@ export default {
       }
     },
     /** 梦工厂初始化 **/
-    MGC_gameInit (userId, nickname) {
+    async MGC_gameInit (userId, nickname) {
       if(userId && nickname) {
         AppCall.initMGCGame(userId, nickname, this.MGC_duration)
       }
