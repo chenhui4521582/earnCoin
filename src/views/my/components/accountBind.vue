@@ -118,6 +118,7 @@ export default {
     },
     /** 微信登录 **/
     _wechatLogin () {
+      if(this.userInfo.bindWechat) return
       /** window层创建微信登录回调方法 **/
       this.wechatCallback()
       /** 调用APP方法微信登录 **/
