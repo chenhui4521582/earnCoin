@@ -61,12 +61,13 @@
   </div>
 </template>
 <script>
+import Services from '@/services/index'
+import AppCall from '@/utils/native'
 import BaseFooter from '@/components/baseFooter/baseFooter'
 import UserGuide from './components/userGuide'
 import RankInfo from './components/rankInfo'
 import AppUpdate from './components/AppUpdate'
-import Services from '@/services/index'
-import { getAccountInfo, getTaskInfo, getOpenToken } from '@/services/user'
+import { getAccountInfo, getTaskInfo, getOpenToken, getUserCenter } from '@/services/user'
 import { getUrlParams } from '@/utils/utils'
 import { mapActions } from 'vuex'
 import _get from 'lodash.get'
@@ -115,12 +116,23 @@ export default {
     goUserAgreement () {
       window.location.href = 'https://wap.beeplaying.com/xmWap/#/my/userAgreement'
     },
+    /** 用户账号信息 **/
+    _getUserCenter () {
+      getUserCenter().then(res => {
+        const {code, data, message} = _get(res, 'data')
+        if(code == 200) {
+          const {userId, nickname} = _get(res, 'data.data')
+          this.MGC_gameInit(userId, nickname)
+        }
+      })
+    },
     /** 用户账户信息 **/
     _getAccountInfo () {
       getAccountInfo().then(res => {
         const {code, data, message} = _get(res, 'data')
         if(code == 200) {
           this.accountInfo = data
+
         }
       })
     },
@@ -182,9 +194,24 @@ export default {
           }
         })
       }
+    },
+    /** 梦工厂初始化 **/
+    MGC_gameInit (userId, nickname) {
+      if(userId && nickname) {
+        AppCall.initMGCGame(userId, nickname, this.MGC_duration)
+      }
+    },
+    /** 梦工厂时长回调 **/
+    MGC_duration () {
+      window.MGCGameCallback = function(d){
+        //返回游戏id和操作时长（毫秒）
+        //{'gameId':'123','time':12323}
+        alert(JSON.stringify(d));
+      }
     }
   },
   mounted () {
+    this._getUserCenter()
     this._getAccountInfo()
     this._getTaskInfo()
     this._getIconList()

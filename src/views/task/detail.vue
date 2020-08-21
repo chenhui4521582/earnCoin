@@ -151,6 +151,7 @@
 </template>
 <script>
 import Service from '@/components/servicePop/service'
+import AppCall from '@/utils/native'
 import UserGuide from './components/userGuide/userGuide'
 import { getTaskDetail, startTask, getAward, getCard } from '@/services/task'
 import { userIsVisitor } from '@/services/user'
@@ -280,7 +281,13 @@ export default {
             this.copy(() => {
               location.href = this.taskDetail.download.split('?')[0]
             })
-          } else {
+          } 
+          /** 梦工厂游戏 **/
+          else if (this.taskDetail.gameSource == 1) {
+            localStorage.removeItem('earnCoinDuration')
+            this.taskDetail.gameId && AppCall.openMGCGame(this.taskDetail.gameId)
+          }
+          else {
             if(this.taskDetail.duration) {
               localStorage.setItem('earnCoinDuration', 'true')
             }else {
@@ -337,7 +344,13 @@ export default {
       /** gameType == 1 下载app处理逻辑 **/
       if(this.taskDetail.gameType == 1) {
         this.$Toast('任务已领取,打开app试玩吧')
-      }else{
+      }
+      /** 梦工厂游戏 **/
+      else if (this.taskDetail.gameSource == 1) {
+        localStorage.removeItem('earnCoinDuration')
+        this.taskDetail.gameId && AppCall.openMGCGame(this.taskDetail.gameId)
+      }
+      else{
         if(this.taskDetail.duration) {
           localStorage.setItem('earnCoinDuration', 'true')
         }else {

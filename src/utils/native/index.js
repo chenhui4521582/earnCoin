@@ -382,4 +382,24 @@ AppCall.extend({
   }
 })
 
+// 梦工厂接口
+AppCall.extend({
+  //初始化孟工厂用户ID，手机号，用户昵称
+  initMGCGame: function (userId, nickName, callback) {
+    try {
+      alert(userId)
+      alert(nickName)
+      callback && callback()
+      AppCall.call("initMGCGame", userId, '', nickName)
+    } catch {}
+  },
+  // 登录
+  openMGCGame: function (gameId) {
+    try {
+      alert(gameId)
+      AppCall.call("openMGCGame", gameId)
+    } catch {}
+  }
+})
+
 export default AppCall
