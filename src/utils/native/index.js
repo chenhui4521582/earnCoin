@@ -179,7 +179,8 @@ AppCall.extend({
   },
   //下载进度
   downloadApk: function (url) {
-    this.call('downloadApk', url)
+    console.log(url)
+    return this.call('downloadApk', url)
   }
 })
 

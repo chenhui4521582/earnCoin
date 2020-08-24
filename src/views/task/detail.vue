@@ -217,10 +217,6 @@ export default {
       return this.taskDetail && this.taskDetail.configInfo && this.taskDetail.configInfo[index] || []
     },
     remark () {
-      // if(this.taskDetail.tUserId || this.taskDetail.tUserName) {
-      //   let name = this.taskDetail.gameType == 1 ? this.taskDetail.tUserId : this.taskDetail.tUserName
-      //   return `账号：${name}<br>${this.taskDetail.remark}`
-      // }
       return this.taskDetail.remark || ''
     },
     showResetDownLoad () {
@@ -323,7 +319,6 @@ export default {
           if(this.taskDetail.gameType == 1) {
             this.copy(() => {
               const url = this.taskDetail.download.split('?')[0]
-              console.log(url)
               AppCall.downloadApk(url)
             })
           } 
@@ -411,14 +406,18 @@ export default {
     /** 重新下载 **/
     resetDownload () {
       this.copy(() => {
-        switch (this.taskDetail.appId) {
-          case 40000: 
-            location.href = 'https://wap.beeplaying.com/ddwgame/'
-          break;
-          case 10000:
-            location.href = 'https://fish.665e.com/fish/fishdown/'
-            break;
-        }
+        // const url = this.taskDetail.download.split('?')[0]
+        const url = 'https://wap.beeplaying.com/m/apk/hk_ddw_100097.apk'
+        
+        AppCall.downloadApk(url)
+        // switch (this.taskDetail.appId) {
+        //   case 40000: 
+        //     location.href = 'https://wap.beeplaying.com/ddwgame/'
+        //   break;
+        //   case 10000:
+        //     location.href = 'https://fish.665e.com/fish/fishdown/'
+        //     break;
+        // }
       })
     },
     /** 获取礼包码 **/
