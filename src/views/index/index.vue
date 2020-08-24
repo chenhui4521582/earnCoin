@@ -205,6 +205,7 @@ export default {
       const appFirstInit = localStorage.getItem('appFirstInit')
       const userCenter = await getUserCenter()
       const { userId, nickname } = _get(userCenter, 'data.data')
+      localStorage.setItem('user_Info', _get(userCenter, 'data.data', {}))
       if(appFirstInit == 1 && userId && nickname) {
         localStorage.setItem('appFirstInit', 0)
         AppCall.initMGCGame(userId, nickname, this.MGC_duration)

@@ -322,7 +322,9 @@ export default {
           /** gameType == 1 下载app处理逻辑 **/
           if(this.taskDetail.gameType == 1) {
             this.copy(() => {
-              location.href = this.taskDetail.download.split('?')[0]
+              const url = this.taskDetail.download.split('?')[0]
+              console.log(url)
+              AppCall.downloadApk(url)
             })
           } 
           /** 梦工厂游戏 **/
@@ -455,10 +457,24 @@ export default {
     },
     onSuccess () {
       this.$Toast('复制成功，请前往游戏兑换礼包')
+    },
+    /** 向window插入下载监听方法 **/
+    insertDownloadFn () {
+      window.downloadApkCallback = (d) => {
+        alert(JSON.stringify(d));
+      }
+    },
+    /** 离开页面的时候删除window对象的下载监听方法 **/
+    removeDownloadFn () {
+      window.downloadApkCallback = null
     }
   },
   mounted () {
     this._getTaskDetail()
+    this.insertDownloadFn()
+  },
+  beforeDestroy () {
+    this.removeDownloadFn()
   }
 }
 </script>
