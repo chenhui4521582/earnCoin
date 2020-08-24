@@ -153,8 +153,8 @@
 import Service from '@/components/servicePop/service'
 import AppCall from '@/utils/native'
 import UserGuide from './components/userGuide/userGuide'
-import { getTaskDetail, startTask, getAward, getCard, firstReport } from '@/services/task'
-import { userIsVisitor } from '@/services/user'
+import { getTaskDetail, startTask, getAward, getCard, firstReport, durationReport } from '@/services/task'
+import { userIsVisitor, getUserCenter } from '@/services/user'
 import { jumpUrl } from '@/utils/utils'
 import { mapState } from 'vuex'
 import _get from 'lodash.get'
@@ -443,12 +443,60 @@ export default {
         name: 'bindPhone'
       })
     },
+    /** 复制回调 **/
     onSuccess () {
       this.$Toast('复制成功，请前往游戏兑换礼包')
+    },
+    /** 梦工厂游戏时长上报 **/
+    _durationReport ({gameId, time}) {
+      const sign = localStorage.getItem('MGC_SIGN')
+      if(gameId && time && sign) {
+        durationReport({
+          duration: time,
+          gameId,
+          sign
+        })
+      }
+    },
+    /** 梦工厂初始化 **/
+    async MGC_gameInit () {
+      const userCenter = await getUserCenter()
+      const { userId, nickname } = _get(userCenter, 'data.data')
+      if(userId && nickname) {
+        AppCall.initMGCGame(userId, nickname, this.MGC_duration)
+      }
+    },
+    /** 梦工厂时长回调 **/
+    MGC_duration () {
+      window.MGCGameCallback = (data) => {
+        if(window.isOpenMGCGame) {
+          window.isOpenMGCGame = false
+          alert(data.gameId)
+          alert(data.time)
+          alert(JSON.stringify(data))
+          this._durationReport(data)
+          this._getTaskDetail()
+        }
+      }
+    },
+    /** 向window插入下载监听方法 **/
+    insertDownloadFn () {
+      window.downloadApkCallback = (d) => {
+        alert(JSON.stringify(d));
+      }
+    },
+    /** 离开页面的时候删除window对象的下载监听方法 **/
+    removeDownloadFn () {
+      window.downloadApkCallback = null
     }
   },
   mounted () {
     this._getTaskDetail()
+    this.MGC_gameInit()
+    this.insertDownloadFn()
+  },
+  beforeDestroy () {
+    this.removeDownloadFn()
   }
 }
 </script>

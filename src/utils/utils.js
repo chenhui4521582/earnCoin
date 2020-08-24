@@ -2,7 +2,6 @@ import axios from 'axios'
 import base64url from 'base64-url'
 import _get from 'lodash.get'
 import API from '@/services/API/API'
-import state from '@/store/state'
 class utils {
   constructor() {
     this.jumpUrl = this.jumpUrl.bind(this)
@@ -197,7 +196,7 @@ class utils {
       /** 获取用户信息 **/
       let userInfo = JSON.parse(localStorage.getItem('user_Info'))
       if (!userInfo) {
-        let r = await axios.post(API.getTransInfo)
+        let r = await axios.post(API.getUserCenter)
         userInfo = r.data.data
         localStorage.setItem('user_Info', userInfo)
       }
