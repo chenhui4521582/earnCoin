@@ -481,9 +481,6 @@ export default {
       window.MGCGameCallback = (data) => {
         if(window.isOpenMGCGame) {
           window.isOpenMGCGame = false
-          alert(data.gameId)
-          alert(data.time)
-          alert(JSON.stringify(data))
           this._durationReport(data)
           this._getTaskDetail()
         }
