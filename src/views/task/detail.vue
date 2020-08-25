@@ -91,7 +91,15 @@
       <div class="task-btn yellow1" v-if="taskDetail.status == 2" @click="startTaskConfirm">开始任务</div>
       <div class="task-btn gray" v-if="taskDetail.status == 1" >任务已完成</div>
       <div class="task-btn yellow" v-if="taskDetail.status == 0 && taskDetail.gameType == 2" @click="taskUnderway">任务进行中</div>
-      <div class="task-btn red" v-if="taskDetail.status == 0 && taskDetail.gameType == 1" @click="resetDownload">如安装包下载失败，点此重新下载</div>
+      <div class="task-btn" v-if="taskDetail.status == 0 && taskDetail.gameType == 1">
+        <!-- 下载进度条 -->
+        <div class="download-progress" v-if="downloadedProgress">
+          <div class="text">正在下载 {{downloadedProgress}}</div>
+          <div class="progress" :style="{width: downloadedProgress}"></div>
+        </div>
+        <!-- 下载按钮 -->
+        <div class="task-btn red" @click="resetDownload" v-else>如安装包下载失败，点此重新下载</div>
+      </div>
     </div>
     <!-- 客服弹框 -->
     <Service v-model="showService" />
@@ -176,7 +184,9 @@ export default {
     showExchangeCard: false,
     showLoginConfirm: false,
     confirmItem: '',
-    cardAward: {}
+    cardAward: {},
+    download: {}
+    // download: {downloaded: 50, length: 500}
   }),
   components: {
     UserGuide,
@@ -230,6 +240,17 @@ export default {
         return this.taskDetail.img.split(',')
       }
       return []
+    },
+    downloadedProgress () {
+      let {downloaded = 0, length = 0} = this.download
+      if(downloaded && length) {
+        if(downloaded>= length) {
+          this.download = {}
+          return
+        }
+        return (downloaded / length * 100).toFixed(1)  + '%'
+      }
+      return false
     }
   },
   methods: {
@@ -406,9 +427,10 @@ export default {
     /** 重新下载 **/
     resetDownload () {
       this.copy(() => {
+        if(this.lock) return
+        this.lock = true
         // const url = this.taskDetail.download.split('?')[0]
         const url = 'https://wap.beeplaying.com/m/apk/hk_ddw_100097.apk'
-        
         AppCall.downloadApk(url)
         // switch (this.taskDetail.appId) {
         //   case 40000: 
@@ -460,7 +482,12 @@ export default {
     /** 向window插入下载监听方法 **/
     insertDownloadFn () {
       window.downloadApkCallback = (d) => {
-        alert(JSON.stringify(d));
+        const url = 'https://wap.beeplaying.com/m/apk/hk_ddw_100097.apk'
+        // if(d.url == this.taskDetail.download.split('?')[1]) {
+        if(d.url == url) {
+          this.download = d
+        }
+        this.lock = false
       }
     },
     /** 离开页面的时候删除window对象的下载监听方法 **/
@@ -857,6 +884,38 @@ export default {
       &.yellow1 {
         background: #FFCA00;
         color: #000000;
+      }
+      .download-progress {
+        overflow: hidden;
+        border-radius: .4rem;
+        position: relative;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        border: 1px solid #D39436;
+        background: #fff;
+        .progress {
+          position: absolute;
+          left: 0;
+          top: 0;
+          z-index: 1;
+          width: 100%;
+          height: 100%;
+          background: #FFE790;
+        }
+        .text {
+          position: absolute;
+          left: 0;
+          top: 0;
+          z-index: 2;
+          width: 100%;
+          height: 100%;
+          text-align: center;
+          line-height: .8rem;
+          font-weight: bold;
+          font-size: .26rem;
+          color: #D39436;
+        }
       }
     }
   }
