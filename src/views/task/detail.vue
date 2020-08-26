@@ -281,32 +281,11 @@ export default {
     },
     /** 打开H5游戏**/
     open_h5_game () {
-      let APP_CHANNEL = localStorage.getItem('APP_CHANNEL')
-      if(APP_CHANNEL.indexOf('100200') == -1) {
-        localStorage.removeItem('earnCoinDuration')
-        jumpUrl({
-          url: this.taskDetail.download,
-          gameId: this.taskDetail.gameId
-        })
-      }else {
-        firstReport({
-          value: this.taskDetail.gameId
-        }).then(res => {
-          const {code, data, message} = _get(res, 'data')
-          if(code == 200 && data) {
-            if(this.taskDetail.duration) {
-              localStorage.setItem('earnCoinDuration', 'true')
-            }else {
-              localStorage.removeItem('earnCoinDuration')
-            }
-            localStorage.setItem('H5_SIGN', data)
-            jumpUrl({
-              url: this.taskDetail.download,
-              gameId: this.taskDetail.gameId
-            })
-          }
-        })
-      }
+      localStorage.removeItem('earnCoinDuration')
+      jumpUrl({
+        url: this.taskDetail.download,
+        gameId: this.taskDetail.gameId
+      })
     },
     /** 打开梦工厂游戏 **/
     open_MGC_game () {
@@ -315,8 +294,8 @@ export default {
         value: this.taskDetail.gameId
       }).then(res => {
         const {code, data, message} = _get(res, 'data')
-        if(code == 200 && data) {
-          localStorage.setItem('MGC_SIGN', data)
+        if(code == 200 && data.sign) {
+          localStorage.setItem('MGC_SIGN', data.sign)
           this.taskDetail.gameId && AppCall.openMGCGame(this.taskDetail.gameId)
         }
       })
