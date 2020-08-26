@@ -187,6 +187,12 @@ export default {
     },
     /** 用户提现 **/
     _userWithDraw () {
+      /** app版本不让用户提现 **/
+      const APP_CHANNEL = localStorage.getItem('APP_CHANNEL')
+      if(APP_CHANNEL == '100200') {
+        this.$Toast('提现功能正在维护中,敬请期待')
+        return 
+      }
       const accountCoin = _get(this.accountInfo, 'currPoint', 0)
       const listCoin = _get(this.withdrawList[this.currentIndex], 'coinNum', 0)
       const { level } = this.withdrawList[this.currentIndex]
