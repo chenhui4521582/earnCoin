@@ -142,6 +142,7 @@ export default {
       height: .9rem;
       border-radius: 50%;
       overflow: hidden;
+      border: .02rem solid #D66400;
     }
     .info {
       display: flex;
