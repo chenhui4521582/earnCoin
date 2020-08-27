@@ -21,7 +21,10 @@
   </div>
 </template>
 <script>
+import AppCall from '@/utils/native/index'
+import { wechatLogin, userBindWechat } from '@/services/user'
 import { mapState } from 'vuex'
+import _get from 'lodash.get'
 export default {
   name: 'withdrawType',
   props: {
@@ -30,11 +33,8 @@ export default {
       default: false
     }
   },
-  data: () => ({
-    
-  }),
   computed: {
-    ...mapState(['isVisitory', 'APP_VERSION']),
+    ...mapState(['isVisitory', 'APP_VERSION', 'deviceId']),
   }, 
   methods: {
     /** 绑定微信 **/
@@ -71,9 +71,26 @@ export default {
         }
       })
     },
+    /** 游客绑定微信 **/
+    _visitorBindWechat (callback) {
+      wechatLogin({
+        code: callback.Code,  
+        appId: callback.AppId,
+        deviceNum: this.deviceId,
+        visitorToken: this.deviceId
+      }).then(res => {
+        const {code, data, message} = _get(res, 'data')
+        if (code == 200) {
+          this.$Toast('绑定成功', () => {
+            this.$emit('wechatBindSuccess')
+          })
+        } else {
+          this.$Toast( message )
+        }
+      })
+    },
     /** 微信登录 **/
     _wechatLogin () {
-      if(this.userInfo.bindWechat) return
       /** window层创建微信登录回调方法 **/
       this.wechatCallback()
       /** 调用APP方法微信登录 **/
@@ -83,24 +100,10 @@ export default {
     wechatCallback () {
       window.WXMessage = (callback) => {
         if(!this.isVisitory) {
-          this._userBindWechat(callback)
-          return 
+          this._userBindWechat(callback) 
+        }else {
+          this._visitorBindWechat(callback)
         }
-        wechatLogin({
-          code: callback.Code,  
-          appId: callback.AppId,
-          deviceNum: this.deviceId,
-          visitorToken: this.deviceId
-        }).then(res => {
-          const {code, data, message} = _get(res, 'data')
-          if (code == 200) {
-            this.$Toast('绑定成功', () => {
-              this.$emit('wechatBindSuccess')
-            })
-          } else {
-            this.$Toast( message )
-          }
-        })
       }
     }
   }

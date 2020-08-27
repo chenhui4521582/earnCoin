@@ -97,6 +97,24 @@ export default {
         }
       })
     },
+    /** 游客绑定微信 **/
+    _visitorBindWechat (callback) {
+      wechatLogin({
+        code: callback.Code,  
+        appId: callback.AppId,
+        deviceNum: this.deviceId,
+        visitorToken: this.deviceId
+      }).then(res => {
+        const {code, data, message} = _get(res, 'data')
+        if (code == 200) {
+          this.$Toast('绑定成功', () => {
+            this.$emit('wechatBindSuccess')
+          })
+        } else {
+          this.$Toast( message )
+        }
+      })
+    },
     /** 微信登录 **/
     _wechatLogin () {
       if(this.userInfo.bindWechat) return
@@ -110,23 +128,9 @@ export default {
       window.WXMessage = (callback) => {
         if(!this.isVisitory) {
           this._userBindWechat(callback)
-          return 
+        } else {
+          this._visitorBindWechat(callback)
         }
-        wechatLogin({
-          code: callback.Code,  
-          appId: callback.AppId,
-          deviceNum: this.deviceId,
-          visitorToken: this.deviceId
-        }).then(res => {
-          const {code, data, message} = _get(res, 'data')
-          if (code == 200) {
-            this.$Toast('绑定成功', () => {
-              this.$emit('wechatBindSuccess')
-            })
-          } else {
-            this.$Toast( message )
-          }
-        })
       }
     }
   }

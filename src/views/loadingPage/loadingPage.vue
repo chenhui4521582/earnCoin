@@ -129,7 +129,10 @@ export default {
     },
     /** 判断用户是否领取过红包 **/
     _userIsReceive () { 
-      userIsReceive().then(res => {
+      userIsReceive({
+        userSource: 1,
+        deviceNum: this.deviceId
+      }).then(res => {
         const {code, data, message} = _get(res, 'data')
         if(code == 200) {
           const showRedPacket = _get(data, 'popup', false)
