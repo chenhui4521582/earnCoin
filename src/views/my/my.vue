@@ -140,6 +140,8 @@ export default {
       margin-right: .2rem;
       width: .9rem;
       height: .9rem;
+      border-radius: 50%;
+      overflow: hidden;
     }
     .info {
       display: flex;
