@@ -5,7 +5,7 @@
       <div class="coin item" @click="goWithdraw">
         <div class="name">
           <img src="./img/coin-icon.png" alt="">
-          金币收益
+          我的金币
         </div>
         <div class="number">
           <em>{{ accountInfo.currPoint }}</em><span>个</span>

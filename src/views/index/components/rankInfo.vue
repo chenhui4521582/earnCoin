@@ -3,10 +3,12 @@
     <div class="header">
       <div class="title">{{info.name}}</div>
       <div class="more" @click="goRanking(info)">
-        更多
+        <span>更多</span>
+        <img src="../img/more-icon.png" alt="">
+        <img src="../img/more-icon.png" alt="">
       </div>
     </div>
-    <div class="list" v-for="(item, index) in info.list" :key="index">
+    <div class="list" v-for="(item, index) in info.list" :key="index"  @click="goDetail(item)">
       <div class="wrap">
         <div class="rank">
           {{index + 1}}
@@ -18,7 +20,7 @@
           <div class="name">{{item.name}}</div>
           <div class="desc">{{item.recommendRemark}} <span v-if="info.type == 1">得{{item.award}}元</span> </div>
         </div>
-        <div class="btn" @click="goDetail(item)">去看看</div>
+        <div class="btn">去看看</div>
       </div>
       <div class="game-banner" v-if="item.gameBanner">
         <img class="inner-img" :src="item.gameBanner | filter" alt="">
@@ -97,24 +99,34 @@ export default {
     background-size: 100% auto;
     background-color: #fff;
     .header {
-      padding: 0 .2rem;
-      margin-bottom: .33rem;
+      padding: 0 .2rem .17rem;
+      margin-bottom: .2rem;
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
-      height: .84rem;
+      height: 1rem;
       .title {
         font-size: .42rem;
         color: #000;
         font-weight:800;
       }
       .more {
-        padding-right: .22rem;
-        font-size: .24rem;
-        color: #E8382B;
-        font-weight:bold;
-        background: url(../img/right-icon.png) no-repeat right center;
-        background-size: .12rem .2rem;
+        display: flex;  
+        justify-content: center;
+        align-items: center;
+        width: 1.3rem;
+        height: .5rem;
+        background: #FF7800;
+        border-radius: .35rem;
+        span{
+          font-size: .26rem;
+          color: #FFFFFF;
+          font-weight: bold;
+        }
+        img {
+          width: .116rem;
+          height: .2rem;
+        }
       }
     }
     .list {
