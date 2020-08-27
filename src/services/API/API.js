@@ -9,7 +9,7 @@ export const HOST = {
   QUOITS_API: '//quoits-api.beeplaying.com',
   SMARTEYES_API: '//smarteyes-api.beeplaying.com',
   MARCH_BURIED_POINT: 'https://log-center.beeplaying.com/am/log/v1/json',
-  TEST: 'http://rap2.taobao.org:38080/app/mock/250821',
+  TEST: 'http://rap2.taobao.org:38080/app/mock/264196/',
   local: 'http://10.33.80.16:7080'
 }
 const API = {

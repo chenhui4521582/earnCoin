@@ -18,7 +18,8 @@
     <div class="account-info">
       <div class="title">
         金币总额
-        <span>再赚{{userInfo.balance}}金币就能提现了</span>
+        <i v-if="userInfo.balance==0">可以提现了</i>
+        <span v-else>再赚{{userInfo.balance}}金币就能提现了</span>
       </div>
       <div class="coin">
         {{userInfo.currPoint}}<span>个</span>
@@ -198,6 +199,14 @@ export default {
         color: #D39436;
         font-size: .2rem;
       }
+      i {
+        font-weight: normal;
+        font-style: normal;
+        color: #E8382B;
+        font-size: .2rem;
+        line-height: .4rem;
+      }
+      
     }
     .coin {
       margin-bottom: .1rem;
