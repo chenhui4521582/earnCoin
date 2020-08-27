@@ -325,6 +325,13 @@ export default {
           height: .53rem;
         }
       }
+      &:nth-child(5) {
+        .icon {
+          margin: .14rem auto .08rem;
+          width: .56rem;
+          height: .53rem;
+        }
+      }
       &:last-child {
         position: relative;
         width: 2.9rem;
