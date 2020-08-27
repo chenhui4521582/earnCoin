@@ -699,7 +699,6 @@ export default {
           width: .7rem;
           line-height: 1.2rem;
           text-align: center;
-          color: #DCDCDC;
         }
         .desc {
           display: flex;
