@@ -80,25 +80,6 @@ export default {
         this.goBindPhone()
       }
     },
-    /** 获取ACCESS_TOKEN **/
-    async _getAccessToken (requestToken) {
-      let accessRes = await getAccessToken({ token: requestToken, type: 1 })
-      let accessCode = _get(accessRes, 'data.code')
-      let accessData = _get(accessRes, 'data.data')
-      if(accessCode == 200) {
-        localStorage.setItem('ACCESS_TOKEN', accessData.accessToken)
-        /** 获取OPEN_TOKEN **/
-        let openRes = await getOpenToken()
-        let openCode = _get(openRes, 'data.code')
-        let openToken = _get(openRes, 'data.data.token')
-        localStorage.setItem('OPEN_ACCESS_TOKEN', openToken)
-        this.$Toast('登录成功！', () => {
-          this.$router.push({
-            name: 'index'
-          })
-        })
-      }
-    },
     /** 非游客绑定微信 **/
     _userBindWechat (callback) {
       userBindWechat({
