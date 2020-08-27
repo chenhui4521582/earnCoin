@@ -78,7 +78,7 @@ export default {
           let openToken = _get(openRes, 'data.data.token')
           localStorage.setItem('OPEN_ACCESS_TOKEN', openToken)
           if (openCode == 200) {
-            callback && callback ()
+            callback && callback()
           }
         }else {
           this.$Toast(message)
@@ -142,12 +142,26 @@ export default {
             this.showRedPacket = true
           } else {
             this.$router.replace({
-              name: 'index'
+              name: 'loginPage'
             })
           }
         }
         /** 用户token过期,跳转到登录页 **/
         if(code == 102) {
+          this.$router.replace({
+            name: 'loginPage'
+          })
+        }
+        /** 用户已经领取过红包并且是游客 **/
+        if(code == 103) {
+          this._visitorLogin(() => {
+            this.$router.replace({
+              name: 'index'
+            })
+          })
+        }
+        /** 用户已经领取过红包并且不是游客 **/
+        if(code == 104) {
           this.$router.replace({
             name: 'loginPage'
           })
