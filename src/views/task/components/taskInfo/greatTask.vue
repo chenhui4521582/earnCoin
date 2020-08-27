@@ -50,6 +50,8 @@ export default {
       margin-right: .2rem;
       width: .8rem;
       height: .8rem;
+      border-radius: .15rem;
+      overflow: hidden;
     }
     .task-desc {
       display: flex;

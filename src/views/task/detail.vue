@@ -510,6 +510,8 @@ export default {
       margin-right: .2rem;
       width: 1.04rem;
       height: 1.04rem;
+      border-radius: .18rem;
+      overflow: hidden;
     }
     .info {
       display: flex;

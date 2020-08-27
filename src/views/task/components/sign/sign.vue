@@ -27,7 +27,9 @@
             <!-- icon -->
             <div class="icon">
               <!-- 当天签到过的icon -->
-              <img class="inner-img" src="../../img/sign/sign-curr.png" v-if="item.day == currDay && isSign"/>
+              <img class="inner-img" src="../../img/sign/sign-curr-7.png" v-if="item.day == currDay && isSign && item.day == 7"/>
+              <!-- 当天签到过的icon -->
+              <img class="inner-img" src="../../img/sign/sign-curr.png" v-else-if="item.day == currDay && isSign"/>
               <!-- 签到过的icon -->
               <img class="inner-img" :src="item.showSignedIcon | filter"  v-else-if="item.status == 1"/>
               <!-- 没有签到的icon -->

@@ -148,6 +148,8 @@ export default {
           flex-shrink: 0;
           width: .8rem;
           height: .8rem;
+          border-radius: .15rem;
+          overflow: hidden;
         }
         .text {
           overflow: hidden;

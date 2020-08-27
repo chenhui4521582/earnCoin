@@ -23,7 +23,7 @@ const API = {
   getYesterdayRank: `${HOST.PLATFORM_API}/point/api/account/yesterday-rank`, // 昨日金币排行
   getRankTab: `${HOST.PLATFORM_API}/point/api/task/recommendTab`, // 获取排行Tab
   getRankList: `${HOST.PLATFORM_API}/point/api/task/recommendTaskList`, // 获取排行数据排行
-  getSignList : `${HOST.PLATFORM_API}/point/api/signIn/list`, //签到列表
+  getSignList : `${HOST.TEST}/point/api/signIn/list`, //签到列表
   sign : `${HOST.PLATFORM_API}/point/api/signIn/sign`, //签到
   getTodaySign : `${HOST.PLATFORM_API}/point/api/signIn/todayStatus`, //今天是否签到
   getTaskInfo : `${HOST.PLATFORM_API}/point/api/task/info`, //获取用户任务信息
