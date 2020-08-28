@@ -118,10 +118,8 @@
     <!-- 开始h5任务询问 -->
     <modal v-model="showH5taskConfirm" title="温馨提示" saveText="进入游戏" @on-save="_startTask">
       <div class="confirm-content">
-        任务已领取。<br>
-        小提示：进入游戏，创建账号后任务<br>
-        将自动开始记录。可随时返回任务页<br>
-        查看任务进度。
+        任务已领取<br>
+        快去玩游戏吧
       </div>
     </modal>
     <!-- 用户领取兑换码 -->
@@ -512,6 +510,8 @@ export default {
       margin-right: .2rem;
       width: 1.04rem;
       height: 1.04rem;
+      border-radius: .18rem;
+      overflow: hidden;
     }
     .info {
       display: flex;
@@ -678,7 +678,6 @@ export default {
           width: .7rem;
           line-height: 1.2rem;
           text-align: center;
-          color: #DCDCDC;
         }
         .desc {
           display: flex;
@@ -909,9 +908,10 @@ export default {
     }
   }
   .confirm-content {
-    text-align: left;
+    padding-top: .3rem;
+    text-align: center;
     color: #252525;
-    line-height: .4rem;
+    line-height: .5rem;
   }
   .exchange-content {
     padding-top: .1rem;

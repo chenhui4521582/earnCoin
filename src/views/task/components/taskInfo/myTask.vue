@@ -21,7 +21,7 @@
             <div class="finish-num">+{{innerItem.award}}</div>
           </div>
         </div>
-        <div class="btn underway " v-if="item.status == 0" >进行中</div>
+        <div class="btn underway " v-if="item.status == 0" >继续任务</div>
         <div class="btn finish" v-if="item.status == 1">已完成</div>
       </div>
     </template>
@@ -106,6 +106,8 @@ export default {
       margin-right: .2rem;
       width: .8rem;
       height: .8rem;
+      border-radius: .15rem;
+      overflow: hidden;
     }
     .task-desc {
       display: flex;
@@ -142,7 +144,6 @@ export default {
         margin-bottom: 0;
       }
       .finish-name {
-        width: 3rem;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -178,8 +179,8 @@ export default {
       border-radius: .4rem;
       background: #FFE790;
       &.underway {
-        color: #000000;
-        background: #FFCA00;
+        color: #D39436;
+        background: #FFE790;
       }
       &.finish {
         background: #DCDCDC;

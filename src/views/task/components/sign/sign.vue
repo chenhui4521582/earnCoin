@@ -10,7 +10,7 @@
             <i>已连续签到</i><span>{{ signEndDay }}</span><i>天</i><img src="../../img/sign/rule-icon.png" alt="" class="rule-icon" @click="openRule">
           </div>
           <div class="tips">
-            连续签到7天额外获得 <span>2000个金币</span>
+            连续签到7天额外获得 <span>1000个金币</span>
           </div>
   
         </div>
@@ -27,13 +27,13 @@
             <!-- icon -->
             <div class="icon">
               <!-- 当天签到过的icon -->
-              <img class="inner-img" src="../../img/sign/sign-curr.png" v-if="item.day == currDay && isSign"/>
-              <!-- 第七天icon -->
-              <img class="inner-img" src="../../img/sign/sign-day7.png" v-else-if="item.day == 7"/>
+              <img class="inner-img" src="../../img/sign/sign-curr-7.png" v-if="item.day == currDay && isSign && item.day == 7"/>
+              <!-- 当天签到过的icon -->
+              <img class="inner-img" src="../../img/sign/sign-curr.png" v-else-if="item.day == currDay && isSign"/>
               <!-- 签到过的icon -->
-              <img class="inner-img" src="../../img/sign/sign-end.png"  v-else-if="item.status == 1"/>
+              <img class="inner-img" :src="item.showSignedIcon | filter"  v-else-if="item.status == 1"/>
               <!-- 没有签到的icon -->
-              <img class="inner-img" src="../../img/sign/sign-no.png" v-else-if="item.status == 0"/>
+              <img class="inner-img" :src="item.showIcon | filter" v-else-if="item.status == 0"/>
             </div>
             <!-- award -->
             <div class="award">+{{item.showName}}个</div>
@@ -53,8 +53,8 @@
           <img v-if="item.awardIcon" :src="item.awardIcon | filter" class="award-img" />
           <p class="p1">金币 +{{ item.awardsNumDesc }}个<span>≈{{item.awardsNumDesc / 10000}}元</span> </p>
         </div>
-        <p v-if="award.balance == 0" class="p2">可以提现了，快去提现吧！</p>
-        <p v-else class="p2">再赚{{ award.balance }}金币马上提现</p>
+        <p v-if="award.day == 7" class="p2">成功签到一周，下一周可获得 <span>{{allAward}}</span> 金币</p>
+        <p v-else class="p2">明天再来，可以获得<span>{{nextAward}}</span>金币</p>
       </Modal>
       <!-- 规则弹框 -->
       <Modal v-model="showRule" title="说明" saveText="知道了" @on-save="ruleCallback">
@@ -101,6 +101,27 @@ export default {
     },
     is7Day () {
       return this.currDay == 7
+    },
+    nextAward () {
+      if(this.award.day == 7) {
+        let award = 0
+        this.award.awardsDesc && this.award.awardsDesc.forEach(item => {
+          award += ~~item.awardsNumDesc
+        })
+        return award
+      }
+      if(this.award.day == 6) {
+        let award = _get(this.newList[this.award.day], 'showName', 0)
+        return ~~award + 1000
+      }
+      return _get(this.newList[this.award.day], 'showName', 0)
+    },
+    allAward () {
+      let award = 1000
+      this.newList.forEach(item => {
+        award += ~~item.showName
+      })
+      return award
     }
   },
   methods: {
@@ -127,7 +148,21 @@ export default {
       // if(this.isSign) return
       sign().then( res => {
         // res = {
-        //   "data":{"code":200,"data":{"showName":"3500","showIcon":"/group1/M00/42/80/CmcEHF7-1WiAYErIAAAJIlg5cTY122.png","showSignedIcon":"/group1/M00/43/66/CmcEHV7-1g6AVVD6AAAH4-9fIkc580.png","day":7,"status":1,"awardsType":null,"awardsName":"3500+2000","awardsDesc":[{"awardIcon":"/group1/M00/42/81/CmcEHF8D65-AUDFwAAAp4GWqT7s687.png","awardsNumDesc":"3500","awardsType":"1"},{"awardIcon":"/group1/M00/42/81/CmcEHF8D68WAOueNAAAp4GWqT7s706.png","awardsNumDesc":"2000","awardsType":"1"}],"balance":0},"message":null},
+        //   "data":{
+        //     "code":200,
+        //     "data":{
+        //       "showName":"3500",
+        //       "showIcon":"/group1/M00/42/80/CmcEHF7-1WiAYErIAAAJIlg5cTY122.png",
+        //       "showSignedIcon":"/group1/M00/43/66/CmcEHV7-1g6AVVD6AAAH4-9fIkc580.png",
+        //       "day":7,
+        //       "status":1,
+        //       "awardsType":null,
+        //       "awardsName":"3500+2000",
+        //       "awardsDesc":[
+        //         {"awardIcon":"/group1/M00/42/81/CmcEHF8D65-AUDFwAAAp4GWqT7s687.png","awardsNumDesc":"3500","awardsType":"1"},
+        //       ],
+        //         "balance":0},
+        //       "message":null},
         // }
         let {code, data, message} = _get(res, 'data')
         if(code == 200) {
@@ -136,7 +171,7 @@ export default {
           if(this.award.day == 7) {
             // let num = 0
             // this.award.awardsDesc.forEach(element => {
-            //   num +=  Number(element.awardsNumDesc)
+            //   num +=  Number(element.awardsNumD  esc)
             // });
             // this.award.awardsDesc.length = 1
             this.award.awardsDesc[1].awardIcon = null
@@ -285,6 +320,20 @@ export default {
         text-align: center;
         font-weight: bold;
       }
+      &:nth-child(2) {
+        .icon {
+          margin: .14rem auto .08rem;
+          width: .56rem;
+          height: .53rem;
+        }
+      }
+      &:nth-child(5) {
+        .icon {
+          margin: .14rem auto .08rem;
+          width: .56rem;
+          height: .53rem;
+        }
+      }
       &:last-child {
         position: relative;
         width: 2.9rem;
@@ -293,8 +342,8 @@ export default {
           margin: 0;
           right: .28rem;
           top: .54rem;
-          width: .89rem;
-          height: .84rem;
+          width: 1.16rem;
+          height: .94rem;
         }
         .award {
           margin-top: .68rem;
@@ -482,6 +531,9 @@ export default {
   text-align: center;
   color: #000000;
   font-size: .24rem;
+  span {
+    color: #D39436;
+  }
 }
 .rule-content {
   line-height: .42rem;
