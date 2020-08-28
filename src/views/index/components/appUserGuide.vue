@@ -8,8 +8,7 @@
         <div class="title"><img class="inner-img" src="../img/user-guide/title3.png" alt=""><img
             src="../img/user-guide/first-step.png" class="stepDisplay"></div>
         <div class="text">这边显示您获得金币数量<br>再赚1000金币就可以提现了</div>
-        <div class="btn" @click="handeClick(2)">知道了
-        </div>
+        <div class="btn" @click="handeClick(2)">知道了</div>
       </div>
     </div>
     <div class="step2" v-if="step==2">
@@ -19,16 +18,14 @@
         <div class="title"><img class="inner-img" src="../img/user-guide/title3.png" alt=""><img
             src="../img/user-guide/second-step.png" class="stepDisplay"></div>
         <div class="text">点击"去看看"查看如何赚钱吧</div>
-        <div class="btn">
-          <router-link to="task">好的</router-link>
-        </div>
+        <div class="btn" @click="hideUserGuide">好的</div>
       </div>
     </div>
   </div>
 </template>
 <script>
 export default {
-  name: 'newGuide2',
+  name: 'AppUserGuide',
   data: () => ({
     step: 1
   }),
@@ -37,6 +34,11 @@ export default {
       this.step = step
     },
     hideUserGuide () {
+      console.log(this.step)
+      if (this.step == 1) {
+        this.step = 2
+        return 
+      }
       if (this.step == 2) {
         this.$emit('hideUserGuide')
       }

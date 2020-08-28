@@ -31,7 +31,7 @@
 </template>
 <script>
 export default {
-  name: 'userGuide',
+  name: 'H5userGuide',
   data: () => ({
     step: 1
   }),
