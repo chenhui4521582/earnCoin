@@ -12,36 +12,18 @@
         </div>
       </div>
       <div class="coin">
-        <span>{{accountInfo.currPoint }}</span>个
+        <span>{{userCenter.currPoint }}</span>个
       </div>
       <div class="rmb">
-        <span>≈{{accountInfo.convertRmb }}</span>元
+        <span>≈{{userCenter.convertRmb }}</span>元
       </div>
       <div class="rule">
         <p>金币与现金兑换规则</p>
-        <p>{{accountInfo.rmbRatio}}个金币=1元</p>
+        <p>{{userCenter.rmbRatio}}个金币=1元</p>
       </div>
     </div>
-    <div class="withdraw-type">
-      <div class="title">
-        <span>
-          <i>提现方式</i>
-        </span>
-        <em>目前只支持微信提现</em>
-      </div>
-      <div class="is-bind">
-        <!-- 没有绑定微信 -->
-        <div class="unbind" v-if="!isBind" @click="goWithdrawCourse">
-          <img src="./img/unbind.png" alt="">
-          尚未绑定微信账户  立即绑定>>
-        </div>
-        <!-- 绑定过微信 -->
-        <div class="bind-end" v-if="isBind">
-          <img src="./img/bind-end.png" alt="">
-          微信提现
-        </div>
-      </div>
-    </div>
+    <!-- 提现方式 -->
+    <withdraw-type :isBindWechat="isBindWechat" @wechatBindSuccess="wechatBindSuccess"/>
     <div class="withdraw-num">
       <div class="title">
         <span>
@@ -109,28 +91,42 @@
   </div>
 </template>
 <script>
-import { getAccountInfo, isBindGZH } from '@/services/user'
+import WithdrawType from './components/withdrawType'
+import { getUserCenter, isBindGZH } from '@/services/user'
 import { getWithdrawList, userWithDraw } from '@/services/withdraw'
+import { mapState } from 'vuex'
 import _get from 'lodash.get'
 export default {
   name: 'withdraw',
   data: () => ({
     isBind: false,
     showRule: false,
-    accountInfo: {},
+    userCenter: {},
     withdrawList: [],
     currentIndex: 0,
     showModal: false
   }),
+  components: {
+    WithdrawType
+  },
   computed: {
+    ...mapState(['APP_VERSION']),
     canWithdraw () {
       /** 绑定过手机号  并且金币足够才能提现 **/
-      const accountCoin = _get(this.accountInfo, 'currPoint', 0)
+      const accountCoin = _get(this.userCenter, 'currPoint', 0)
       const listCoin = _get(this.withdrawList[this.currentIndex], 'coinNum', 0)
-      if(this.isBind && accountCoin >= listCoin){
+      if(this.isBindWechat && accountCoin >= listCoin){
         return true
       }
       return false
+    },
+    /** 判断用户微信绑定的状态 **/
+    isBindWechat () {
+      if(this.APP_VERSION) {
+        return this.userCenter.bindWechat
+      } else {
+        return this.isBind
+      }
     }
   },
   methods: {
@@ -138,12 +134,6 @@ export default {
       this.$router.push({
         name: 'withdrawLog'
       })
-    },
-    goWithdrawCourse () {
-      this.$router.push({
-        name: 'withdrawCourse'
-      })
-      this.$marchSetsPoint('A_H5PT0303003645')
     },
     openRule () {
       this.showRule = true
@@ -169,11 +159,11 @@ export default {
       })
     },
     /** 获取用户金币信息 **/
-    _getAccountInfo () {
-      getAccountInfo().then(res => {
+    _getUserCenter () {
+      getUserCenter().then(res => {
         const {code, data, message} = _get(res, 'data')
         if(code == 200) {
-          this.accountInfo = data
+          this.userCenter = data
         }
       })
     },
@@ -188,13 +178,13 @@ export default {
     },
     /** 用户提现 **/
     _userWithDraw () {
-      /** app版本不让用户提现 **/
-      const APP_CHANNEL = localStorage.getItem('APP_CHANNEL')
-      if(APP_CHANNEL == '100200') {
-        this.$Toast('提现功能正在维护中,敬请期待')
-        return 
-      }
-      const accountCoin = _get(this.accountInfo, 'currPoint', 0)
+      // /** app版本不让用户提现 **/
+      // const APP_CHANNEL = localStorage.getItem('APP_CHANNEL')
+      // if(APP_CHANNEL == '100200') {
+      //   this.$Toast('提现功能正在维护中,敬请期待')
+      //   return 
+      // }
+      const accountCoin = _get(this.userCenter, 'currPoint', 0)
       const listCoin = _get(this.withdrawList[this.currentIndex], 'coinNum', 0)
       const { level } = this.withdrawList[this.currentIndex]
       /** 金币不足 **/
@@ -211,8 +201,9 @@ export default {
       userWithDraw(level).then(res => {
         const {code, data, message} = _get(res, 'data')
         if(code == 200) {
-          this.$Toast('申请已提交，将通过公众号发放现金红包', () => {
-            this._getAccountInfo()
+          let text = this.APP_VERSION ? '申请已提交，将通过微信发放现金红包' : '申请已提交，将通过公众号发放现金红包'
+          this.$Toast(text, () => {
+            this._getUserCenter()
             this._getWithdrawList()
           })
           this.$marchSetsPoint('A_H5PT0303003646')
@@ -220,11 +211,16 @@ export default {
           this.$Toast( message )
         }
       })
+    },
+    /** 绑定成功回调 **/
+    wechatBindSuccess() {
+      this._isBindGZH()
+      this._getUserCenter()
     }
   },
   mounted () {
     this._isBindGZH()
-    this._getAccountInfo()
+    this._getUserCenter()
     this._getWithdrawList()
     this.$marchSetsPoint('A_H5PT0303003644')
   }
@@ -300,67 +296,7 @@ export default {
       line-height: .36rem;
     }
   }
-  .withdraw-type {
-    padding: 0 .3rem;
-    .title {
-      margin-bottom: .14rem;
-      display: flex;
-      align-items: flex-end;
-      span {
-        margin-right: .2rem;
-        position: relative;
-        line-height: 1.2;
-        &::after {
-          content: '';
-          position: absolute;
-          bottom: .06rem;
-          left: 0;
-          z-index: 1;
-          height: .1rem;
-          width: 100%;
-          background: #FFC300;
-        }
-        i {
-          position: relative;
-          z-index: 2;
-          font-size: .42rem;
-          font-style: normal;
-          color: #000;
-          font-weight: bold;
-        }
-      }
-      em {
-        font-style: normal;
-        color: #666;
-      }
-    }
-    .is-bind {
-      margin-bottom: .5rem;
-      height: 1rem;
-      background: #fff;
-      border: .03rem solid #FFCA00;
-      border-radius: .3rem;
-      .unbind,.bind-end {
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: .2rem;
-        img {
-          margin-right: .2rem;
-          width: .56rem;
-          height: .43rem;
-        }
-      }
-      .unbind {
-        color: #E8382B;
-      }
-      .bind-end {
-        color: #000000;
-        font-weight: bold;
-      }
-    }
-  }
+
   .withdraw-num {
     .title {
       padding: 0 .31rem;
