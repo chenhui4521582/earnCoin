@@ -33,29 +33,25 @@
     </div>
     <!-- task-nav -->
     <div class="task-nav">
-      <div class="item" 
-        v-for="(item, index) in iconList" 
-        :key="index" 
-        @click="jump(item.link, index)"
-      >
-        <img :src="item.img | filter" class="inner-img" :class="{'animation': !showUserGuide}" alt="">
+      <div class="item" v-for="(item, index) in iconList" :key="index"
+        @click="jump(item.link, index)">
+        <img :src="item.img | filter" class="inner-img" :class="{'animation': showAnimation}"
+          alt="">
         <p>{{item.name}}</p>
       </div>
     </div>
     <!-- ranking -->
-    <rank-info 
-      v-for="(item, index) in list"
-      :info="item"
-      :key="index"
-    />
+    <rank-info v-for="(item, index) in list" :info="item" :key="index" />
     <!-- agreement -->
     <div class="agreement">
       高额赚 <span @click="goUserAgreement">用户协议</span>
     </div>
     <!-- footer -->
     <base-footer></base-footer>
-    <!-- 新手引导 -->
-    <user-guide v-if="showUserGuide" @hideUserGuide="hideUserGuide"/>
+    <!-- H5新手引导 -->
+    <h5-user-guide v-if="showH5UserGuide" @hideUserGuide="hideUserGuide" />
+    <!-- APP新手引导 -->
+    <app-user-guide v-if="showAppNewUserGuide" @hideUserGuide="hideUserGuide" />
     <!-- APP强更新弹框 -->
     <app-update />
     <!-- 时长活动入口 -->
@@ -63,16 +59,18 @@
   </div>
 </template>
 <script>
-import Services from '@/services/index'
-import AppCall from '@/utils/native'
+
 import BaseFooter from '@/components/baseFooter/baseFooter'
-import UserGuide from './components/userGuide'
+import H5UserGuide from './components/h5UserGuide'
+import AppUserGuide from './components/appUserGuide'
 import RankInfo from './components/rankInfo'
 import AppUpdate from './components/AppUpdate'
 import DurationEntry from '@/components/durationEntry/durationEntry'
+import Services from '@/services/index'
+import AppCall from '@/utils/native'
 import { getAccountInfo, getTaskInfo, getOpenToken } from '@/services/user'
-import { getUrlParams } from '@/utils/utils'
-import { mapActions } from 'vuex'
+import { getUrlParams, newUtils } from '@/utils/utils'
+import { mapState, mapActions } from 'vuex'
 import _get from 'lodash.get'
 export default {
   name: 'Index',
@@ -81,15 +79,28 @@ export default {
     taskInfo: {},
     avatar: '/cdn/common/images/common/img_photo.png',
     iconList: [],
-    showUserGuide: false,
-    list: []
+    showH5UserGuide: false,
+    showAppNewUserGuide: false,
+    list: [],
+    isDisplay: true
   }),
   components: {
     BaseFooter,
-    UserGuide,
     RankInfo,
     AppUpdate,
-    DurationEntry
+    DurationEntry,
+    H5UserGuide,
+    AppUserGuide
+  },
+  computed: {
+    ...mapState(['APP_VERSION']),
+    showAnimation () {
+      if (this.APP_VERSION) {
+        return !this.showAppNewUserGuide
+      } else {
+        return !this.showH5UserGuide
+      }
+    }
   },
   methods: {
     ...mapActions({
@@ -123,8 +134,8 @@ export default {
     /** 用户账户信息 **/
     _getAccountInfo () {
       getAccountInfo().then(res => {
-        const {code, data, message} = _get(res, 'data')
-        if(code == 200) {
+        const { code, data, message } = _get(res, 'data')
+        if (code == 200) {
           this.accountInfo = data
         }
       })
@@ -132,17 +143,17 @@ export default {
     /** 用户任务信息 **/
     _getTaskInfo () {
       getTaskInfo().then(res => {
-        const {code, data, message} = _get(res, 'data')
-        if(code == 200) {
+        const { code, data, message } = _get(res, 'data')
+        if (code == 200) {
           this.taskInfo = data
         }
       })
     },
     /** 获取推荐排行榜 **/
     _getRankList () {
-      Services.getRankList(0).then( res => {
-        const {code, data, message} = _get(res, 'data')
-        if(code == 200) {
+      Services.getRankList(0).then(res => {
+        const { code, data, message } = _get(res, 'data')
+        if (code == 200) {
           this.list = data
         }
       })
@@ -150,8 +161,8 @@ export default {
     /** 获取iconList **/
     _getIconList () {
       Services.getIconList().then(res => {
-        const {code, data, message} = _get(res, 'data')
-        if(code == 200) {
+        const { code, data, message } = _get(res, 'data')
+        if (code == 200) {
           this.iconList = data
         }
       })
@@ -163,29 +174,49 @@ export default {
       })
       window.location.href = url
     },
-    /** 判断是否显示新手引导 **/
-    isUserGuide () {
+    /** 判断是否显示H5新手引导 **/
+    isH5UserGuide () {
       let userLabel = getUrlParams('userlabel')
-      let cacheNewUser = localStorage.getItem('cacheNewUser')
-      if(userLabel && !cacheNewUser) {
-        this.showUserGuide = true
-        localStorage.setItem('cacheNewUser', Date.now())
+      let cacheNewUser = localStorage.getItem('cacheH5NewUser')
+      if (userLabel && !cacheNewUser) {
+        this.showH5UserGuide = true
+        newUtils.ScrollNoMove()
+        localStorage.setItem('cacheH5NewUser', Date.now())
+      }
+    },
+    /** 判断是否显示app新手引导 **/
+    isAppUserGuide () {
+      let cacheNewUser = localStorage.getItem('cacheAppNewUser')
+      if (!cacheNewUser) {
+        this.showAppNewUserGuide = true
+        newUtils.ScrollNoMove()
+        localStorage.setItem('cacheAppNewUser', Date.now())
       }
     },
     /** 新手引导回调函数 **/
     hideUserGuide () {
-      this.showUserGuide = false
+      newUtils.ScrollMove()
+      this.showH5UserGuide = false
+      this.showAppNewUserGuide = false
     },
     /** 判断是否有openToken **/
     isOpenToken () {
       const isQuickLogin = getUrlParams('quicklogin')
-      if(isQuickLogin) {
+      if (isQuickLogin) {
         getOpenToken().then(res => {
-          const {code, data, message} = _get(res, 'data')
-          if(code == 200) {
+          const { code, data, message } = _get(res, 'data')
+          if (code == 200) {
             localStorage.setItem('OPEN_ACCESS_TOKEN', data.token)
           }
         })
+      }
+    },
+    /** 判断不同平台的新手引导 **/
+    plantUserGuide () {
+      if (this.APP_VERSION) {
+        this.isAppUserGuide()
+      } else {
+        this.isH5UserGuide()
       }
     }
   },
@@ -194,8 +225,7 @@ export default {
     this._getTaskInfo()
     this._getIconList()
     this._getRankList()
-    this.isUserGuide()
-    this.userIsVisitor()
+    this.plantUserGuide()
     this.isOpenToken()
     this.$marchSetsPoint('P_H5PT0303', {
       source_address: document.referrer
@@ -205,63 +235,63 @@ export default {
 </script>
 <style lang="less" scoped>
 .index {
-  padding: .3rem .3rem 1.2rem;
+  padding: 0.3rem 0.3rem 1.2rem;
   min-height: 100vh;
-  background: #F2F2F2;
+  background: #f2f2f2;
   background-size: 7.2rem 6.74rem;
   .user-info {
     position: relative;
-    padding: .3rem 0;
+    padding: 0.3rem 0;
     display: flex;
     justify-content: flex-start;
     .avatar {
-      margin-right: .2rem;
-      width: .9rem;
-      height: .9rem;
+      margin-right: 0.2rem;
+      width: 0.9rem;
+      height: 0.9rem;
     }
     .info {
       display: flex;
       flex-direction: column;
       justify-content: center;
-      height: .9rem;
+      height: 0.9rem;
       .name {
-        margin-bottom: .1rem;
-        font-size: .28rem;
-        font-weight:800;
+        margin-bottom: 0.1rem;
+        font-size: 0.28rem;
+        font-weight: 800;
         color: #000;
       }
       .id {
-        font-size: .24rem;
+        font-size: 0.24rem;
         color: #000;
       }
     }
     .service {
       position: absolute;
       right: 0;
-      top: .5rem;
+      top: 0.5rem;
       width: 1.8rem;
-      height: .5rem;
-      background: #FFCA00;
-      border-radius: .35rem;
+      height: 0.5rem;
+      background: #ffca00;
+      border-radius: 0.35rem;
       display: flex;
       justify-content: center;
       align-items: center;
-      color: #D39436;
-      font-size: .26rem;
+      color: #d39436;
+      font-size: 0.26rem;
       font-weight: bold;
       img {
-        margin-right: .05rem;
-        width: .3rem;
-        height: .3rem;
+        margin-right: 0.05rem;
+        width: 0.3rem;
+        height: 0.3rem;
       }
     }
   }
   .coin-info {
-    margin-bottom: .38rem;
+    margin-bottom: 0.38rem;
     position: relative;
     display: flex;
     justify-content: center;
-    border-radius: .3rem;
+    border-radius: 0.3rem;
     background: #fff;
     .item {
       flex: 1;
@@ -274,30 +304,30 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size: .24rem;
+        font-size: 0.24rem;
         color: #000;
         img {
-          margin-right: .05rem;
-          width: .3rem;
-          height: .3rem;
+          margin-right: 0.05rem;
+          width: 0.3rem;
+          height: 0.3rem;
         }
       }
       .number {
         position: relative;
-        padding: .05rem 0;
+        padding: 0.05rem 0;
         display: flex;
         align-items: flex-end;
         em {
-          margin-right: .05rem;
+          margin-right: 0.05rem;
           font-style: normal;
-          font-size: .48rem;
+          font-size: 0.48rem;
           font-weight: bold;
-          color: #E8382B;
+          color: #e8382b;
         }
         span {
-          line-height: .5rem;
-          font-size: .20rem;
-          color: #E8382B;
+          line-height: 0.5rem;
+          font-size: 0.2rem;
+          color: #e8382b;
         }
         .check {
           position: absolute;
@@ -305,12 +335,12 @@ export default {
           top: 0;
           z-index: 1;
           width: 1rem;
-          height: .38rem;
+          height: 0.38rem;
         }
       }
       .add {
-        font-size: .2rem;
-        color: #ACACAC;
+        font-size: 0.2rem;
+        color: #acacac;
       }
     }
     .line {
@@ -320,17 +350,17 @@ export default {
       transform: translate(-50%, -50%);
       width: 1px;
       height: 1rem;
-      background: #F2F2F2;
+      background: #f2f2f2;
     }
   }
   .task-nav {
-    margin: 0 0 .57rem;
+    margin: 0 0 0.57rem;
     display: flex;
     justify-content: flex-start;
     .item {
-      margin-right: .2rem;
+      margin-right: 0.2rem;
       img {
-        margin-bottom: .1rem;
+        margin-bottom: 0.1rem;
         height: 1.4rem;
       }
       p {
@@ -359,13 +389,13 @@ export default {
   }
 
   .agreement {
-    height: .56rem;
-    line-height: .56rem;
+    height: 0.56rem;
+    line-height: 0.56rem;
     text-align: center;
-    font-size: .2rem;
-    color: #ACACAC;
+    font-size: 0.2rem;
+    color: #acacac;
     span {
-      color: #5186CA;
+      color: #5186ca;
       text-decoration: underline;
     }
   }
