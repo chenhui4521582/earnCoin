@@ -132,6 +132,9 @@ export default {
   min-height: 100vh;
   background: #F2F2F2;
   background-size: 100% 2.5rem;
+  input {
+    color: #000;
+  }
   .group {
     .label {
       color: #000;
@@ -152,6 +155,7 @@ export default {
         width: .28rem;
         height: .28rem;
       }
+
     }
     .code {
       padding: 0 .37rem 0 .24rem;

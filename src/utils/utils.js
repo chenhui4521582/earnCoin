@@ -197,7 +197,7 @@ class utils {
       if (!userInfo) {
         let r = await axios.post(API.getUserCenter)
         userInfo = r.data.data
-        localStorage.setItem('user_Info', userInfo)
+        localStorage.setItem('user_Info', JSON.stringify(userInfo))
       }
       /** 平台数据 **/
       let _beginTime = Date.now()

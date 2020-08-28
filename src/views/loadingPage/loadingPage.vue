@@ -50,7 +50,7 @@ export default {
   data: () => ({
     showRedPacket: false,
     redPacketData: {},
-    showPrivacy: true
+    showPrivacy: false
   }),
   components: {
     RedPacket
@@ -170,6 +170,7 @@ export default {
     },
     confirmClick () {
       this.showPrivacy = false
+      localStorage.setItem('userPrivacy', Date.now())
     },
     cancelClick () {
       AppCall.closeApp()
@@ -177,6 +178,12 @@ export default {
     init () {
       this.ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN')
       this._userIsReceive()
+      let userPrivacy = localStorage.getItem('userPrivacy')
+      if(userPrivacy) {
+        this.showPrivacy = false
+      }else {
+        this.showPrivacy = true
+      }
     }
   },
   mounted () {
