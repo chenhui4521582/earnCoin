@@ -65,7 +65,8 @@
       </div>
     </div>
     <div class="withdraw-btn" @click="_userWithDraw">
-      <div class="btn" :class="{'disable': !canWithdraw}">立即提现</div>
+      <div v-if="!canWithdraw" class="btn disable">金币不足</div>
+      <div v-else class="btn" :class="{'disable': !canWithdraw}">立即提现</div>
     </div>
     <!-- rule 弹框 -->
     <modal v-model="showRule" title="说明" saveText="知道了" @on-save="saveCallback">
