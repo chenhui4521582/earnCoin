@@ -3,7 +3,7 @@
     <transition v-if="keepAlive" :name="transitionName">
       <router-view v-if="keepAlive"></router-view>
     </transition>
-    <router-view v-if="!keepAlive"/>
+    <router-view v-if="!keepAlive" />
     <login />
   </div>
 </template>
@@ -14,7 +14,7 @@ import { mapState, mapActions } from 'vuex'
 export default {
   name: 'APP',
   data: () => ({
-    transitionName: '',
+    transitionName: ''
   }),
   components: {
     Login
@@ -23,7 +23,7 @@ export default {
     ...mapState(['APP_VERSION', 'isVisitory', 'deviceId']),
     keepAlive () {
       return !!(this.$route.meta && this.$route.meta.keepAlive)
-    },
+    }
   },
   methods: {
     ...mapActions({
@@ -39,7 +39,7 @@ export default {
      **/
     this._getDeviceId()
     this._getAppVersion()
-  },  
+  },
   watch: {
     $route (to, from) {
       /**
@@ -71,8 +71,8 @@ export default {
 <style lang="less">
 @import url('./assets/less/base.less');
 @import url('./assets/iconfont/iconfont.css');
-#app{
-  font-size: .24rem;
+#app {
+  font-size: 0.24rem;
   color: #333333;
 }
 .slide-right-enter-active,
