@@ -89,7 +89,7 @@
         <span>联系客服</span>
       </div>
       <div class="task-btn yellow1" v-if="taskDetail.status == 2" @click="startTaskConfirm">开始任务</div>
-      <div class="task-btn gray" v-if="taskDetail.status == 1" >任务已完成</div>
+      <div class="task-btn continue" v-if="taskDetail.status == 1" @click="taskUnderway">去玩游戏</div>
       <div class="task-btn yellow" v-if="taskDetail.status == 0 && taskDetail.gameType == 2" @click="taskUnderway">任务进行中</div>
       <div class="task-btn red" v-if="taskDetail.status == 0 && taskDetail.gameType == 1" @click="resetDownload">如安装包下载失败，点此重新下载</div>
     </div>
@@ -874,6 +874,10 @@ export default {
       &.yellow1 {
         background: #FFCA00;
         color: #000000;
+      }
+      &.continue {
+        background: #FF7800;
+        color: #FFFFFF;
       }
     }
   }
