@@ -98,7 +98,7 @@
     <!-- 新手引导 -->
     <user-guide />
     <!-- 领取奖励 -->
-    <modal v-model="showAward" title="恭喜你获得" saveText="去赚更多" :type="2" @on-save="awardCallback">
+    <modal v-model="showAward" title="恭喜你获得" saveText="去赚更多" :type="4" @on-save="awardCallback">
       <div class="award-content">
         <img src="./img/big-coin.png" alt="">
         <p class="p1">金币 +{{award.award}}个</p>
