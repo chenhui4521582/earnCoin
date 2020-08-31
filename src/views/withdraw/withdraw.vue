@@ -65,7 +65,8 @@
       </div>
     </div>
     <div class="withdraw-btn" @click="_userWithDraw">
-      <div v-if="!canWithdraw" class="btn disable">金币不足</div>
+      <div v-if="!isBindWechat" class="btn disable">请绑定微信</div>
+      <div v-else-if="!canWithdraw" class="btn disable">金币不足</div>
       <div v-else class="btn" :class="{'disable': !canWithdraw}">立即提现</div>
     </div>
     <!-- rule 弹框 -->
