@@ -737,7 +737,7 @@ export default {
               color: #FFFFFF;
             }
             &.gray {
-              background: #ACACAC;
+              background: #DCDCDC;
               color: #fff;
             }
             &.yellow1 {
