@@ -158,7 +158,7 @@ export default {
       height: .9rem;
       background: #fff;
       border-radius: .45rem;
-      color: #DCDCDC;
+      color: #000;
       &::-webkit-input-placeholder{
           color:#DCDCDC;
       }
