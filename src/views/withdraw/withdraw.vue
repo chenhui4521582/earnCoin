@@ -179,12 +179,6 @@ export default {
     },
     /** 用户提现 **/
     _userWithDraw () {
-      // /** app版本不让用户提现 **/
-      // const APP_CHANNEL = localStorage.getItem('APP_CHANNEL')
-      // if(APP_CHANNEL == '100200') {
-      //   this.$Toast('提现功能正在维护中,敬请期待')
-      //   return 
-      // }
       const accountCoin = _get(this.userCenter, 'currPoint', 0)
       const listCoin = _get(this.withdrawList[this.currentIndex], 'coinNum', 0)
       const { level } = this.withdrawList[this.currentIndex]
@@ -199,6 +193,9 @@ export default {
         this.$Toast('请先绑定微信账户')
         return
       }
+      /** 点击锁 **/
+      if(this.withdrawLock) return
+      this.withdrawLock = true
       userWithDraw(level).then(res => {
         const {code, data, message} = _get(res, 'data')
         if(code == 200) {
@@ -211,6 +208,10 @@ export default {
         }else {
           this.$Toast( message )
         }
+        this.withdrawLock = false
+      }).catch ( e => {
+        this.$Toast('服务繁忙，请稍候重试')
+        this.withdrawLock = false
       })
     },
     /** 绑定成功回调 **/
