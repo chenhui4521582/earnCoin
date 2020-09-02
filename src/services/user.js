@@ -166,6 +166,13 @@ const userBindWechat = function (params) {
   return $axios.post(Api.userBindWechat, params)
 }
 
+/**
+ * @description 用户  判断用户是否过期
+ */
+const tokenVerify = function (params) {
+  return $axios.post(Api.tokenVerify, params)
+}
+
 export { 
   getAccountInfo,
   getUserInfo,
@@ -189,7 +196,8 @@ export {
   checkOriginalPhoneNo,
   getAppVersion,
   userIsVisitor,
-  userBindWechat
+  userBindWechat,
+  tokenVerify
 }
 
 const Services = {

@@ -41,7 +41,7 @@
 <script>
 import { getUrlParams } from '@/utils/utils'
 import RedPacket from './components/redPacket'
-import { visitorLogin, userIsReceive, getRedPacketAward, sendRedPacketToServer, getAccessToken, getOpenToken} from '@/services/user'
+import { visitorLogin, userIsReceive, getRedPacketAward, sendRedPacketToServer, getAccessToken, getOpenToken, tokenVerify} from '@/services/user'
 import AppCall from '@/utils/native'
 import { mapState } from 'vuex'
 import _get from 'lodash.get'
@@ -183,7 +183,22 @@ export default {
     },
     init () {
       this.ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN')
-      this._userIsReceive()
+      if(this.ACCESS_TOKEN) {
+        tokenVerify().then(res => {
+          const {code, data, message} = _get(res, 'data')
+          if(code == 200 && data) {
+            this.$router.replace({
+              name: 'index'
+            })
+          }else {
+            this.$router.replace({
+              name: 'loginPage'
+            })
+          }
+        })
+      } else {
+        this._userIsReceive()
+      }
     }
   },
   mounted () {

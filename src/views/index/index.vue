@@ -103,9 +103,6 @@ export default {
     }
   },
   methods: {
-    ...mapActions({
-      userIsVisitor: 'USER_IS_VISITOR'
-    }),
     openService () {
       this.showService = true
       this.$marchSetsPoint('A_H5PT0303003633')

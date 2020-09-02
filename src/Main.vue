@@ -10,7 +10,7 @@
 <script>
 import Login from '@/components/login/login'
 import { newUtils } from '@/utils/utils'
-import { mapState, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
 export default {
   name: 'APP',
   data: () => ({
@@ -20,14 +20,12 @@ export default {
     Login
   },
   computed: {
-    ...mapState(['APP_VERSION', 'isVisitory', 'deviceId']),
     keepAlive () {
       return !!(this.$route.meta && this.$route.meta.keepAlive)
     }
   },
   methods: {
     ...mapActions({
-      _userIsVisitor: 'USER_IS_VISITOR',
       _getDeviceId: 'GET_DEVICEID',
       _getAppVersion: 'GET_APP_VERSION'
     })
@@ -39,7 +37,6 @@ export default {
      **/
     this._getDeviceId()
     this._getAppVersion()
-    this._userIsVisitor()
   },
   watch: {
     $route (to, from) {
