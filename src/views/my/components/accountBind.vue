@@ -33,7 +33,7 @@
 </template>
 <script>
 import AppCall from '@/utils/native/index'
-import { getAccessToken, wechatLogin, getOpenToken, userBindWechat } from '@/services/user'
+import { getAccessToken, wechatLogin, userBindWechat } from '@/services/user'
 import { mapState } from 'vuex'
 import _get from 'lodash.get'
 export default {

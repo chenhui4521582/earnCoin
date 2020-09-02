@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     ...mapActions({
-      userIsVisitor: 'USER_IS_VISITOR',
+      _userIsVisitor: 'USER_IS_VISITOR',
       _getDeviceId: 'GET_DEVICEID',
       _getAppVersion: 'GET_APP_VERSION'
     })
@@ -39,6 +39,7 @@ export default {
      **/
     this._getDeviceId()
     this._getAppVersion()
+    this._userIsVisitor()
   },
   watch: {
     $route (to, from) {

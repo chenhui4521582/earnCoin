@@ -84,7 +84,8 @@ export default {
         wechatLogin({
           code: callback.Code,
           appId: callback.AppId,
-          deviceNum: this.deviceId
+          deviceNum: this.deviceId,
+          visitorToken: this.deviceId
         }).then (res => {
           const {code, data, message} = _get(res, 'data')
           if (code == 200) {
