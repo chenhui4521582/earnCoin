@@ -140,6 +140,12 @@ export default {
           /** 领取过奖励的直接跳转首页，没领取的打开红包 **/
           if(showRedPacket) {
             this.showRedPacket = true
+            let userPrivacy = localStorage.getItem('userPrivacy')
+            if(userPrivacy) {
+              this.showPrivacy = false
+            }else {
+              this.showPrivacy = true
+            }
           } else {
             this.$router.replace({
               name: 'loginPage'
@@ -178,12 +184,6 @@ export default {
     init () {
       this.ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN')
       this._userIsReceive()
-      let userPrivacy = localStorage.getItem('userPrivacy')
-      if(userPrivacy) {
-        this.showPrivacy = false
-      }else {
-        this.showPrivacy = true
-      }
     }
   },
   mounted () {

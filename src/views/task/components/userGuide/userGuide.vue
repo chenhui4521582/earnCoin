@@ -1,7 +1,7 @@
 <template>
-  <div class="user-guide" v-if="show">
+  <div class="user-guide" v-if="show" @click="handClick()">>
     <!-- step1 -->
-    <template v-if="step == 1">
+    <template v-if="step == 1" >
       <div class="step"></div>
       <div class="step-arrow">
         <img class="inner-img" src="../../img/user-guide/guide-arrow1.png" alt="">
@@ -13,7 +13,7 @@
         <div class="title">
           <img class="title-img1" src="../../img/user-guide/guide-title.png" alt="">
           <img class="title-img2" src="../../img/user-guide/guide-step1.png" alt="">
-          <div class="btn" @click="handClick(2)">知道了</div>
+          <div class="btn">知道了</div>
         </div>
         <div class="text">
           <p>点击“开始任务”或“下载赚钱”下载应用，</p>
@@ -22,7 +22,7 @@
       </div>
     </template>
     <!-- step2 -->
-    <template v-if="step == 2">
+    <template v-if="step == 2" >
       <div class="step1"></div>
       <div class="step1-arrow">
         <img class="inner-img" src="../../img/user-guide/guide-arrow2.png" alt="">
@@ -34,7 +34,7 @@
         <div class="title">
           <img class="title-img1" src="../../img/user-guide/guide-title.png" alt="">
           <img class="title-img2" src="../../img/user-guide/guide-step2.png" alt="">
-          <div class="btn" @click="hide">好的</div>
+          <div class="btn">好的</div>
         </div>
         <div class="text">
           <p>按要求完成任务后，返回任务页面，</p>
@@ -52,8 +52,12 @@ export default {
     show: false
   }),
   methods: {
-    handClick (step) {
-      this.step = step
+    handClick () {
+      if(this.step == 1) {
+        this.step = 2
+      }else {
+        this.show = false
+      }
     },
     hide () {
       this.show = false

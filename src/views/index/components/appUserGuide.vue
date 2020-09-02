@@ -1,7 +1,7 @@
 <template>
   <div class="new-guide2">
     <div class="mask" @click="hideUserGuide"></div>
-    <div class="step1" v-if="step ==1">
+    <div class="step1" v-if="step ==1" @click="handeClick(2)">
       <div class="arrows"><img class="inner-img" src="../img/user-guide/arrows1.png" alt=""></div>
       <div class="tips">
         <div class="icon"><img class="inner-img" src="../img/user-guide/icon.png" alt=""></div>
@@ -11,7 +11,7 @@
         <div class="btn" @click="handeClick(2)">知道了</div>
       </div>
     </div>
-    <div class="step2" v-if="step==2">
+    <div class="step2" v-if="step==2" @click="hideUserGuide">
       <div class="arrows"><img class="inner-img" src="../img/user-guide/arrows3.png" alt=""></div>
       <div class="tips">
         <div class="icon"><img class="inner-img" src="../img/user-guide/icon.png" alt=""></div>
