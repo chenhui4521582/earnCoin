@@ -122,6 +122,7 @@ export default {
   },
   mounted () {
     this._getUserCenter()
+    this._userIsVisitor()
   }
 }
 </script>

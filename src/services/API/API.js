@@ -58,7 +58,8 @@ const API = {
   userIsVisitor: `${HOST.PLATFORM_API}/point/api/user/visitor`, //判断用户是否是游客
   userBindWechat: `${HOST.UIC_API}/uic/api/user/center/bindWechat`,
   firstReport: `${HOST.PLATFORM_API}/point/api/task/report`, //第一次进入游戏上报
-  durationReport: `${HOST.PLATFORM_API}/point/api/task/duration` //游戏时长上报
+  durationReport: `${HOST.PLATFORM_API}/point/api/task/duration`, //游戏时长上报
+  tokenVerify: `${HOST.UIC_API}/uic/api/user/login/tokenVerify` //验证token是否过期
 }
 
 export default API
