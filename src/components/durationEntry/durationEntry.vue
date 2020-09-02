@@ -1,13 +1,14 @@
 <template>
   <div class="duration-entry" 
-  v-if="activitiesInfo.show"
-  :class="{'rotate': animation=='rotate', 'scale': animation == 'scale'}" 
-  @click="goActivities"
-  >
-    <img class="inner-img" src="./egg.png" alt="">
+    v-if="activitiesInfo.show"
+    @click="goActivities"
+    ref="drationEntry"
+    >
+    <img class="inner-img" :class="{'rotate': animation=='rotate', 'scale': animation == 'scale'}"  src="./egg.png" alt="">
   </div>
 </template>
 <script>
+import Intertia from '@/utils/Inertia'
 import axios from 'axios'
 import _get from 'lodash.get'
 export default {
@@ -30,6 +31,11 @@ export default {
         const {code, data, message} = _get(res, 'data')
         if( code == 200) {
           this.activitiesInfo = data
+          this.$nextTick(() => {
+            let element = this.$refs.drationEntry
+            console.log(element)
+            Intertia(element)
+          })
         }
       })
     },
@@ -48,7 +54,6 @@ export default {
       }
       window.location.href = 'https://wap.beeplaying.com/activities/duration.html'
     }
-
   },
   mounted () {
     this._getInfo()
@@ -60,14 +65,16 @@ export default {
   position: fixed;
   z-index: 10;
   right: 0;
-  top: 5rem;
+  top: 7rem;
   width: 1.6rem;
   height: 1.54rem;
-  &.rotate {
+  img {
+    &.rotate {
     animation: rotate 1s infinite;
-  }
-  &.scale {
-    animation: scale 1s infinite;
+    }
+    &.scale {
+      animation: scale 1s infinite;
+    }
   }
 }
 @keyframes scale {
