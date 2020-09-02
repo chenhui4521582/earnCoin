@@ -451,6 +451,8 @@ export default {
           duration: time,
           gameId,
           sign
+        }).then( res => {
+          this._getTaskDetail()
         })
       }
     },
@@ -468,7 +470,6 @@ export default {
         if(window.isOpenMGCGame) {
           window.isOpenMGCGame = false
           this._durationReport(data)
-          this._getTaskDetail()
         }
       }
     },
