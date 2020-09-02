@@ -7,7 +7,7 @@
       @hideRedPacket="hideRedPacket"
     />
     <!-- 隐私协议 -->
-    <modal v-model="showPrivacy" title="六六五隐私协议" :closeIconShow="false">
+    <modal v-model="showPrivacy" title="六六五隐私协议" :closeIconShow="false" :centerScroll="true">
       <div class="privacy">
         <p class="title">六六五网络科技游戏用户个人信息及隐私保护政策</p>
           《六六五网络科技游戏用户个人信息及隐私保护政策》重要须知：为了贯彻执行相关法律法规的规定，成都六六五网络科技有限公司有限公司（以下称“六六五网络科技”）特此制定本《六六五网络科技游戏用户个人信息及隐私保护政策》。<br>
