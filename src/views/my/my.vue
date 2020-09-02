@@ -105,8 +105,10 @@ export default {
     },
     wechatBindSuccess () {
       this.userInfo.bindWechat = true
-      // this._getUserCenter()
-      this._userIsVisitor()
+      setTimeout(()=> {
+        this._getUserCenter()
+        this._userIsVisitor()
+      }, 2000)
     },
     goWithdraw () {
       this.$router.push({
