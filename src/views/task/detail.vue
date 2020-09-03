@@ -518,7 +518,7 @@ export default {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      height: 1.1rem;
+      min-height: 1.1rem;
       .name {
         font-size: .32rem;
         font-weight: bold;
