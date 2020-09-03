@@ -1,9 +1,17 @@
 <template>
   <div id="app">
-    <transition v-if="keepAlive" :name="transitionName">
-      <router-view v-if="keepAlive"></router-view>
-    </transition>
-    <router-view v-if="!keepAlive" />
+  <transition :name="transitionName">
+    <!-- 缓存页面 -->
+    <template v-if="keepAlive">
+      <keep-alive>
+        <router-view></router-view>
+      </keep-alive>
+    </template>
+    <template v-else>
+      <router-view />
+    </template>
+    <!-- 页面不缓存 -->
+  </transition>
     <login />
   </div>
 </template>
@@ -78,7 +86,7 @@ export default {
 .slide-left-enter-active,
 .slide-left-leave-active {
   will-change: transform;
-  transition: all 0.2s;
+  transition: all .2s;
   position: fixed;
   width: 100%;
   height: 100vh;

@@ -8,7 +8,8 @@ export default new Router({
       name: 'index',
       component: () => import(/* webpackChunkName: "index" */ '../views/index/index'),
       meta: {
-        title: '高额赚'
+        title: '高额赚',
+        index: 1
       }
     },
     {
@@ -17,7 +18,8 @@ export default new Router({
       component: () => import(/* webpackChunkName: "Task" */ '../views/task/task'),
       meta: {
         title: '高额赚',
-        keepAlive: true
+        keepAlive: true,
+        index: 1
       }
     },
     {
@@ -25,7 +27,8 @@ export default new Router({
       name: 'taskDetail',
       component: () => import(/* webpackChunkName: "taskDetail" */ '../views/task/detail'),
       meta: {
-        title: '任务详情'
+        title: '任务详情',
+        index: 3
       }
     },
     {
@@ -33,7 +36,8 @@ export default new Router({
       name: 'withdraw',
       component: () => import(/* webpackChunkName: "witchdraw" */ '../views/withdraw/withdraw'),
       meta: {
-        title: '提现'
+        title: '提现',
+        index: 2
       }
     },
     {
@@ -41,7 +45,8 @@ export default new Router({
       name: 'withdrawLog',
       component: () => import(/* webpackChunkName: "withdrawLog" */ '../views/withdraw/withdrawLog'),
       meta: {
-        title: '记录'
+        title: '记录',
+        index: 2
       }
     },
     {
@@ -49,7 +54,8 @@ export default new Router({
       name: 'withdrawCourse',
       component: () => import(/* webpackChunkName: "withdrawCourse" */ '../views/withdraw/withdrawCourse'),
       meta: {
-        title: '提现'
+        title: '提现',
+        index: 2
       }
     },
     {
@@ -65,7 +71,8 @@ export default new Router({
       name: 'ranking',
       component: () => import(/* webpackChunkName: "ranking" */ '../views/ranking/ranking'),
       meta: {
-        title: '赚金榜'
+        title: '赚金榜',
+        index: 2
       }
     },
     {
@@ -73,7 +80,8 @@ export default new Router({
       name: 'earnRanking',
       component: () => import(/* webpackChunkName: "earnRanking" */ '../views/ranking/earnRanking'),
       meta: {
-        title: '高额赚'
+        title: '高额赚',
+        index: 2
       }
     },
     {
@@ -81,7 +89,8 @@ export default new Router({
       name: 'loadingPage',
       component: () => import(/* webpackChunkName: "loadingPage" */ '../views/loadingPage/loadingPage'),
       meta: {
-        title: '高额赚'
+        title: '高额赚',
+        index: 2
       }
     },
     {
@@ -89,7 +98,8 @@ export default new Router({
       name: 'loginPage',
       component: () => import(/* webpackChunkName: "loginPage" */ '../views/loginPage/loginPage'),
       meta: {
-        title: '高额赚'
+        title: '高额赚',
+        index: 2
       }
     },
     {
@@ -97,7 +107,8 @@ export default new Router({
       name: 'fastLogin',
       component: () => import(/* webpackChunkName: "fastLogin" */ '../views/loginPage/fastLogin'),
       meta: {
-        title: '高额赚'
+        title: '高额赚',
+        index: 2
       }
     },
     {
@@ -105,7 +116,8 @@ export default new Router({
       name: 'otherPhone',
       component: () => import(/* webpackChunkName: "otherPhone" */ '../views/loginPage/otherPhone'),
       meta: {
-        title: '高额赚'
+        title: '高额赚',
+        index: 2
       }
     },    
     {
@@ -117,7 +129,8 @@ export default new Router({
           name: 'my',
           component: () => import(/* webpackChunName: "my" */ '../views/my/my'),
           meta: {
-            title: '高额赚'
+            title: '高额赚',
+            index: 1
           }
         },
         {
@@ -125,7 +138,8 @@ export default new Router({
           name: 'phoneBinding',
           component: () => import(/* webpackChunName: "phoneBinding" */ '../views/my/children/phoneBinding'),
           meta: {
-            title: '绑定手机号'
+            title: '绑定手机号',
+            index: 2
           }
         },
         {
@@ -133,7 +147,8 @@ export default new Router({
           name: 'bindPhone',
           component: () => import(/* webpackChunName: "bindPhone" */ '../views/my/children/bindPhone'),
           meta: {
-            title: '绑定手机号'
+            title: '绑定手机号',
+            index: 2
           }
         },
         {
@@ -141,7 +156,8 @@ export default new Router({
           name: 'modifyPhone',
           component: () => import(/* webpackChunName: "modifyPhone" */ '../views/my/children/modifyPhone'),
           meta: {
-            title: '修改手机号'
+            title: '修改手机号',
+            index: 2
           }
         },
         {
@@ -149,7 +165,8 @@ export default new Router({
           name: 'bindNewPhone',
           component: () => import(/* webpackChunName: "bindNewPhone" */ '../views/my/children/bindNewPhone'),
           meta: {
-            title: '绑定手机号'
+            title: '绑定手机号',
+            index: 2
           }
         }
       ]
