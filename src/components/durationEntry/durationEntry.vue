@@ -33,7 +33,6 @@ export default {
           this.activitiesInfo = data
           this.$nextTick(() => {
             let element = this.$refs.drationEntry
-            console.log(element)
             Intertia(element)
           })
         }
