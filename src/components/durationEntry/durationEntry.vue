@@ -62,7 +62,7 @@ export default {
 <style scoped lang="less">
 .duration-entry {
   position: fixed;
-  z-index: 10;
+  z-index: 11;
   right: 0;
   top: 7rem;
   width: 1.6rem;
