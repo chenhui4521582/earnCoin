@@ -90,7 +90,9 @@ export default {
           localStorage.setItem('ACCESS_TOKEN', data.accessToken)
           this.$router.replace({
             name: 'index',
-            query: 'quicklogin'
+            query: {
+              'quicklogin': 1
+            }
           })
         } else {
           this.$Toast( message )
@@ -104,7 +106,9 @@ export default {
         if(code == 200 && data) {
           this.$router.replace({
             name: 'index',
-            query: 'quicklogin'
+            query: {
+              'quicklogin': 1
+            }
           })
         }else {
           this.$router.replace({
