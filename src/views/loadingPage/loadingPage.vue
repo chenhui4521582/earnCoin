@@ -103,7 +103,8 @@ export default {
         const {code, data, message} = _get(res, 'data')
         if(code == 200 && data) {
           this.$router.replace({
-            name: 'index'
+            name: 'index',
+            query: 'quicklogin'
           })
         }else {
           this.$router.replace({
@@ -123,7 +124,6 @@ export default {
       AppCall.closeApp()
     },
     init () {
-
       /** 
        * 登录逻辑
        * 1. 用户隐私协议

@@ -7,6 +7,9 @@
       <div class="open-btn" @click="_getRedPacketAward">
         <img class="inner-img" src="../img/red-packet/open-btn.png" alt="">
       </div>
+      <div class="explain">
+        已有账号，<a @click="login">直接登录</a> 
+      </div>
       <div class="close" @click="hidePopup">
         <img class="inner-img" src="../img/red-packet/close.png" alt="">
       </div>
@@ -71,6 +74,12 @@ export default {
     /** 关闭弹框 **/
     hidePopup() {
       this.showRedPacket = false
+    },
+    /** 调用 **/
+    login () {
+      this.$router.push({
+        name: 'loginPage'
+      })
     }
   },
   mounted () {

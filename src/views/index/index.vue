@@ -51,13 +51,13 @@
     <!-- H5新手引导 -->
     <h5-user-guide v-if="showH5UserGuide" @hideUserGuide="hideUserGuide" />
     <!-- APP新手引导 -->
-    <app-user-guide v-if="showAppNewUserGuide" @hideUserGuide="hideUserGuide" />
+    <app-user-guide v-if="showAppNewUserGuide" @hideUserGuide="hideUserGuide" res="appUserGuide"/>
     <!-- APP强更新弹框 -->
     <app-update />
     <!-- 时长活动入口 -->
     <duration-entry />
     <!-- 红包 -->
-    <red-packet @hideRedPacket="_getAccountInfo"/>
+    <red-packet @hideRedPacket="_getAccountInfo" ref="redPacket"/>
   </div>
 </template>
 <script>
