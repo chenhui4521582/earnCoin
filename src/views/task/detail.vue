@@ -265,6 +265,10 @@ export default {
         if(code == 200) {
           this.taskDetail = data
           this.isShowPullDown()
+          this.$marchSetsPoint('A_H5PT0303000015', {
+            game_id: id,
+            game_name: this.taskDetail.name
+          })
         }
       })
     },
@@ -334,7 +338,7 @@ export default {
       }
       this.$marchSetsPoint('A_H5PT0303003642', {
         task_id: this.taskDetail.id,
-        task_name: this.taskDetail.id
+        task_name: this.taskDetail.name
       })
     },
     /** 领取奖励 **/
@@ -353,7 +357,7 @@ export default {
       })
       this.$marchSetsPoint('A_H5PT0303003643', {
         task_id: this.taskDetail.id,
-        task_name: this.taskDetail.id
+        task_name: this.taskDetail.name
       })
     },
     /** 领取奖励回调 **/
@@ -455,6 +459,12 @@ export default {
           this._getTaskDetail()
         })
       }
+      this.$marchSetsPoint('D_JFQ0001', {
+        out_gameplat: 1,
+        game_duration: time,
+        task_id: this.taskDetail.id,
+        task_name: this.taskDetail.name
+      })
     },
     /** 梦工厂初始化 **/
     async MGC_gameInit () {
@@ -476,7 +486,7 @@ export default {
     /** 向window插入下载监听方法 **/
     insertDownloadFn () {
       window.downloadApkCallback = (d) => {
-        alert(JSON.stringify(d));
+        // alert(JSON.stringify(d));
       }
     },
     /** 离开页面的时候删除window对象的下载监听方法 **/
