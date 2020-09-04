@@ -107,7 +107,7 @@
       </div>
     </modal>
     <!-- 开始APP任务询问 -->
-    <modal v-model="showApptaskConfirm" title="温馨提示" saveText="知道了" @on-save="_startTask">
+    <modal v-model="showApptaskConfirm" title="温馨提示" saveText="知道了" @on-save="_startTask" @on-close="hideConifrm">
       <div class="confirm-content">
         应用开始下载，请及时关注下载进度。<br><br>
         小提示：注册成功后请返回当前页面确认<br>
@@ -116,7 +116,7 @@
       </div>
     </modal>
     <!-- 开始h5任务询问 -->
-    <modal v-model="showH5taskConfirm" title="温馨提示" saveText="进入游戏" @on-save="_startTask">
+    <modal v-model="showH5taskConfirm" title="温馨提示" saveText="进入游戏" @on-save="_startTask" @on-close="hideConifrm">
       <div class="confirm-content">
         任务已领取<br>
         快去玩游戏吧
@@ -323,6 +323,10 @@ export default {
           else {
             this.open_h5_game()
           }
+          this.$marchSetsPoint('A_H5PT0303000017', {
+            task_id: this.taskDetail.id,
+            task_name: this.taskDetail.name
+          })
         }
       })
       this.showApptaskConfirm = false
@@ -336,7 +340,7 @@ export default {
       } else {
         this.showH5taskConfirm = true
       }
-      this.$marchSetsPoint('A_H5PT0303003642', {
+      this.$marchSetsPoint('A_H5PT0303000016', {
         task_id: this.taskDetail.id,
         task_name: this.taskDetail.name
       })
@@ -492,6 +496,13 @@ export default {
     /** 离开页面的时候删除window对象的下载监听方法 **/
     removeDownloadFn () {
       window.downloadApkCallback = null
+    },
+    /** 开始任务确认弹框关闭回调 **/
+    hideConifrm () {
+      this.$marchSetsPoint('A_H5PT0303000018', {
+        task_id: this.taskDetail.id,
+        task_name: this.taskDetail.name
+      })
     }
   },
   mounted () {
