@@ -1,11 +1,21 @@
 <template>
   <div class="loading">
-    <red-packet 
-      v-model="showRedPacket" 
-      :redPacketData="redPacketData" 
-      @redPacketFinish="redPacketFinish"
-      @hideRedPacket="hideRedPacket"
-    />
+    <div class="loading-container">
+      <div class="spinner">
+        <div class="bar1"></div>
+        <div class="bar2"></div>
+        <div class="bar3"></div>
+        <div class="bar4"></div>
+        <div class="bar5"></div>
+        <div class="bar6"></div>
+        <div class="bar7"></div>
+        <div class="bar8"></div>
+        <div class="bar9"></div>
+        <div class="bar10"></div>
+        <div class="bar11"></div>
+        <div class="bar12"></div>
+      </div>
+    </div>
     <!-- 隐私协议 -->
     <modal v-model="showPrivacy" title="六六五隐私协议" :closeIconShow="false" :centerScroll="true">
       <div class="privacy">
@@ -39,165 +49,108 @@
   </div>
 </template>
 <script>
-import { getUrlParams } from '@/utils/utils'
-import RedPacket from './components/redPacket'
-import { visitorLogin, userIsReceive, getRedPacketAward, sendRedPacketToServer, getAccessToken, getOpenToken, tokenVerify} from '@/services/user'
+import { visitorLogin, getAccessToken, tokenVerify } from '@/services/user'
 import AppCall from '@/utils/native'
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import _get from 'lodash.get'
 export default {
   name: 'loadingPage',
   data: () => ({
-    showRedPacket: false,
-    redPacketData: {},
     showPrivacy: false
   }),
-  components: {
-    RedPacket
-  },
   computed: {
     ...mapState(['deviceId'])
   },
   methods: {
-    async _visitorLogin (callback) {
-      /** 游客登录 **/
-      const vRes = await visitorLogin({ source: 1,visitorToken: this.deviceId })
-      let vCode = _get(vRes, 'data.code')
-      let vData = _get(vRes, 'data.data')
-      let vMessage = _get(vRes, 'data.message')
-      if(vCode == 200) {
-        /** 获取ACCESS_TOKEN **/
-        const ARes = await getAccessToken({ token: vData, type: 1 })
-        let aCode = _get(ARes, 'data.code')
-        let aData = _get(ARes, 'data.data')
-        if(aCode == 200) {
-          localStorage.setItem('ACCESS_TOKEN', aData.accessToken)
-          /** 获取OPEN_TOKEN **/
-          let openRes = await getOpenToken()
-          let openCode = _get(openRes, 'data.code')
-          let openToken = _get(openRes, 'data.data.token')
-          localStorage.setItem('OPEN_ACCESS_TOKEN', openToken)
-          if (openCode == 200) {
-            callback && callback()
-          }
-        }else {
-          this.$Toast(message)
-        }
-      }else if(vCode == 104) {
-        this.$Toast(vMessage, () => {
-          this.$router.replace({
-            name: 'loginPage'
-          })
-        })
-      }else {
-        this.$Toast(vMessage)
-      }
-    },
-    /** 红包弹框关闭回调方法 **/
-    hideRedPacket () {
-      /** 有token 直接进首页 **/
-      if(this.ACCESS_TOKEN) {
-        this.$router.replace({
-          name: 'index'
-        })
-      }else {
-        /** 关闭红包弹框注册游客用户 **/
-        this._visitorLogin(() => {
-          this.$router.replace({
-            name: 'index'
-          })
-        })
-      }
-    },
-    /** 红包弹框领取完毕回调方法 **/
-    redPacketFinish () {
-      /** 有token发送奖品数据到后端并且进入首页 **/
-      if(this.ACCESS_TOKEN) {
-        sendRedPacketToServer()
-        this.$router.replace({
-          name: 'index'
-        })
-      }else {
-        /** 领取红包完毕注册游客用户并且发送奖品数据到后端 **/
-        this._visitorLogin(()=> {
-          sendRedPacketToServer()
-          this.$router.replace({
-            name: 'index'
-          })
-        })
-      }
-    },
-    /** 判断用户是否领取过红包 **/
-    _userIsReceive () { 
-      userIsReceive({
-        userSource: 1,
-        deviceNum: this.deviceId
-      }).then(res => {
-        const {code, data, message} = _get(res, 'data')
+    ...mapActions({
+      userIsVisitor: "USER_IS_VISITOR"
+    }),
+    /** 游客登录 **/
+    _visitorLogin () {
+      visitorLogin({ source: 1, visitorToken: this.deviceId }).then( res => {
+        const { code, data, message } = _get(res, 'data')
         if(code == 200) {
-          const showRedPacket = _get(data, 'popup', false)
-          this.redPacketData = data
-          /** 领取过奖励的直接跳转首页，没领取的打开红包 **/
-          if(showRedPacket) {
-            this.showRedPacket = true
-            let userPrivacy = localStorage.getItem('userPrivacy')
-            if(userPrivacy) {
-              this.showPrivacy = false
-            }else {
-              this.showPrivacy = true
-            }
-          } else {
+          this._getAccessToken(data)
+        } else if (code == 104) {
+          this.$Toast( message, () => {
             this.$router.replace({
               name: 'loginPage'
             })
-          }
+          })
+        }else {
+          this.$Toast( message )
         }
-        /** 用户token过期,跳转到登录页 **/
-        if(code == 102) {
+      })
+    },
+    /** 获取ACCESS_TOKEN **/
+    _getAccessToken (requestToken) {
+      getAccessToken({ token: requestToken, type: 1 }).then( res => {
+        const { code, data, message } = _get(res, 'data')
+        if(code == 200) {
+          localStorage.setItem('ACCESS_TOKEN', data.accessToken)
           this.$router.replace({
-            name: 'loginPage'
+            name: 'index',
+            query: 'quicklogin'
           })
+        } else {
+          this.$Toast( message )
         }
-        /** 用户已经领取过红包并且是游客 **/
-        if(code == 103) {
-          this._visitorLogin(() => {
-            this.$router.replace({
-              name: 'index'
-            })
+      })
+    },
+    /** 判断Token 是否过期 **/
+    _tokenVerify () {
+      tokenVerify().then(res => {
+        const {code, data, message} = _get(res, 'data')
+        if(code == 200 && data) {
+          this.$router.replace({
+            name: 'index'
           })
-        }
-        /** 用户已经领取过红包并且不是游客 **/
-        if(code == 104) {
+        }else {
           this.$router.replace({
             name: 'loginPage'
           })
         }
       })
     },
+    /** 用户协议同意按钮回调 **/
     confirmClick () {
       this.showPrivacy = false
       localStorage.setItem('userPrivacy', Date.now())
+      this.init()
     },
+    /** 用户协议不同意按钮回调 **/
     cancelClick () {
       AppCall.closeApp()
     },
     init () {
+
+      /** 
+       * 登录逻辑
+       * 1. 用户隐私协议
+       * 2. 有token 保持登录
+       * 3. 判断是否是游客， 游客就帮他游客登录， 不是游客跳转登录页
+      **/
+      const userPrivacy = localStorage.getItem('userPrivacy')
       this.ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN')
-      if(this.ACCESS_TOKEN) {
-        tokenVerify().then(res => {
+      if(!userPrivacy) {
+        this.showPrivacy = true
+      }
+      else if (this.ACCESS_TOKEN) {
+        this._tokenVerify()
+      } else {
+        // 6b2dc0d2-7aa4-3d43-9811-4fb832b49e6f
+        this.userIsVisitor({deviceNum: this.deviceId}).then(res => {
           const {code, data, message} = _get(res, 'data')
-          if(code == 200 && data) {
-            this.$router.replace({
-              name: 'index'
-            })
-          }else {
-            this.$router.replace({
-              name: 'loginPage'
-            })
+          if (code == 200) {
+            if(data) {
+              this._visitorLogin()
+            }else {
+              this.$router.replace({
+                name: 'loginPage'
+              })
+            }
           }
         })
-      } else {
-        this._userIsReceive()
       }
     }
   },
@@ -209,8 +162,8 @@ export default {
 <style lang="less" scoped>
   .loading {
     height: 100vh;
-    background: url(./img/bg.png) no-repeat center top;
-    background-size: 100% auto;
+    background: url(./img/bg.png) no-repeat center bottom;
+    background-size: 3.12rem 8.13rem;
   }
   .privacy {
     height: 5rem;
@@ -243,4 +196,114 @@ export default {
       color: #ccc;
     }
   }
+
+  .loading-wrap {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 15;
+}
+
+.loading-container {
+  position: absolute;
+  bottom: 24%;
+  left: 50%;
+  z-index: 15;
+  transform: translate(-50%, 0);
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 0.28rem;
+}
+
+.spinner {
+  position: relative;
+  height: 40%;
+  width: 40%;
+  top: 0.45rem;
+  left: 0.02rem;
+  margin: 0 auto;
+}
+
+.spinner div {
+  width: 9%;
+  height: 26%;
+  background-color: #000;
+  position: absolute;
+  left: 44.5%;
+  top: 37%;
+  opacity: 0;
+  -webkit-border-radius: 30%;
+  -webkit-animation: fade 1s linear infinite;
+}
+
+.spinner div.bar1 {
+  -webkit-transform: rotate(0deg) translate(0, -142%);
+  -webkit-animation-delay: 0s;
+}
+
+.spinner div.bar2 {
+  -webkit-transform: rotate(30deg) translate(0, -142%);
+  -webkit-animation-delay: -0.9167s;
+}
+
+.spinner div.bar3 {
+  -webkit-transform: rotate(60deg) translate(0, -142%);
+  -webkit-animation-delay: -0.833s;
+}
+
+.spinner div.bar4 {
+  -webkit-transform: rotate(90deg) translate(0, -142%);
+  -webkit-animation-delay: -0.75s;
+}
+
+.spinner div.bar5 {
+  -webkit-transform: rotate(120deg) translate(0, -142%);
+  -webkit-animation-delay: -0.667s;
+}
+
+.spinner div.bar6 {
+  -webkit-transform: rotate(150deg) translate(0, -142%);
+  -webkit-animation-delay: -0.5833s;
+}
+
+.spinner div.bar7 {
+  -webkit-transform: rotate(180deg) translate(0, -142%);
+  -webkit-animation-delay: -0.5s;
+}
+
+.spinner div.bar8 {
+  -webkit-transform: rotate(210deg) translate(0, -142%);
+  -webkit-animation-delay: -0.41667s;
+}
+
+.spinner div.bar9 {
+  -webkit-transform: rotate(240deg) translate(0, -142%);
+  -webkit-animation-delay: -0.333s;
+}
+
+.spinner div.bar10 {
+  -webkit-transform: rotate(270deg) translate(0, -142%);
+  -webkit-animation-delay: -0.25s;
+}
+
+.spinner div.bar11 {
+  -webkit-transform: rotate(300deg) translate(0, -142%);
+  -webkit-animation-delay: -0.1667s;
+}
+
+.spinner div.bar12 {
+  -webkit-transform: rotate(330deg) translate(0, -142%);
+  -webkit-animation-delay: -0.0833s;
+}
+
+@-webkit-keyframes fade {
+  from {
+    opacity: 0.8;
+  }
+  to {
+    opacity: 0.25;
+  }
+}
 </style>>

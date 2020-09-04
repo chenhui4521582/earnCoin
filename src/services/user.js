@@ -94,27 +94,6 @@ const visitorLogin = function (params) {
 }
 
 /**
- * @description 判断用户是否领取过红包
- */
-const userIsReceive = function (params) {
-  return $axios.post(Api.userIsReceive, params)
-}
-
-/**
- * @description 领取红包
- */
-const getRedPacketAward = function (params) {
-  return $axios.post(Api.getRedPacketAward, params)
-}
-
-/**
- * @description 告知后端领取了多少红包
- */
-const sendRedPacketToServer = function () {
-  return $axios.post(Api.sendRedPacketToServer)
-}
-
-/**
  * @description 换绑发送验证码校验
  */
 const changeUpdatePhoneCode = async (smsCode) => {
@@ -155,8 +134,8 @@ const getUserCenter = function () {
 /**
  * @description 用户  判断用户是否是游客
  */
-const userIsVisitor = function () {
-  return $axios.post(Api.userIsVisitor)
+const userIsVisitor = function (params) {
+  return $axios.post(Api.userIsVisitor, params)
 }
 
 /**
@@ -187,9 +166,6 @@ export {
   getAccessToken,
   getOpenToken,
   visitorLogin,
-  userIsReceive,
-  getRedPacketAward,
-  sendRedPacketToServer,
   getUserCenter,
   updatePhoneCode,
   changeUpdatePhoneCode,
@@ -214,9 +190,6 @@ const Services = {
   getAccessToken,
   getOpenToken,
   visitorLogin,
-  userIsReceive,
-  getRedPacketAward,
-  sendRedPacketToServer,
   getUserCenter,
   updatePhoneCode,
   changeUpdatePhoneCode,

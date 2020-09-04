@@ -108,7 +108,7 @@ export default {
       setTimeout(()=> {
         this._getUserCenter()
         this._userIsVisitor()
-      }, 2000)
+      }, 1000)
     },
     goWithdraw () {
       this.$router.push({
@@ -116,7 +116,6 @@ export default {
       })
     },
     logout () {
-      localStorage.removeItem('ACCESS_TOKEN')
       this.$router.push({
         name: 'loginPage'
       })

@@ -56,6 +56,8 @@
     <app-update />
     <!-- 时长活动入口 -->
     <duration-entry />
+    <!-- 红包 -->
+    <red-packet @hideRedPacket="_getAccountInfo"/>
   </div>
 </template>
 <script>
@@ -65,6 +67,7 @@ import H5UserGuide from './components/h5UserGuide'
 import AppUserGuide from './components/appUserGuide'
 import RankInfo from './components/rankInfo'
 import AppUpdate from './components/AppUpdate'
+import RedPacket from './components/redPacket'
 import DurationEntry from '@/components/durationEntry/durationEntry'
 import Services from '@/services/index'
 import AppCall from '@/utils/native'
@@ -90,7 +93,8 @@ export default {
     AppUpdate,
     DurationEntry,
     H5UserGuide,
-    AppUserGuide
+    AppUserGuide,
+    RedPacket
   },
   computed: {
     ...mapState(['APP_VERSION']),
