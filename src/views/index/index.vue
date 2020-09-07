@@ -49,19 +49,18 @@
     <!-- footer -->
     <base-footer></base-footer>
     <!-- H5新手引导 -->
-    <h5-user-guide v-if="showH5UserGuide" @hideUserGuide="hideUserGuide" />
+    <h5-user-guide ref="h5UserGuide" @popupSortHide="popupSortHide" />
     <!-- APP新手引导 -->
-    <app-user-guide v-if="showAppNewUserGuide" @hideUserGuide="hideUserGuide" res="appUserGuide"/>
+    <app-user-guide ref="appUserGuide" @popupSortHide="popupSortHide" />
     <!-- APP强更新弹框 -->
-    <app-update />
+    <app-update ref="appUpdate" @popupSortHide="popupSortHide"/>
     <!-- 时长活动入口 -->
     <duration-entry />
     <!-- 红包 -->
-    <red-packet @hideRedPacket="_getAccountInfo" ref="redPacket"/>
+    <red-packet ref="redPacket" @refresh="_getAccountInfo" @popupSortHide="popupSortHide" />
   </div>
 </template>
 <script>
-
 import BaseFooter from '@/components/baseFooter/baseFooter'
 import H5UserGuide from './components/h5UserGuide'
 import AppUserGuide from './components/appUserGuide'
@@ -72,7 +71,7 @@ import DurationEntry from '@/components/durationEntry/durationEntry'
 import Services from '@/services/index'
 import AppCall from '@/utils/native'
 import { getUserCenter, getOpenToken } from '@/services/user'
-import { getUrlParams, newUtils } from '@/utils/utils'
+import { getUrlParams } from '@/utils/utils'
 import { mapState, mapActions } from 'vuex'
 import _get from 'lodash.get'
 export default {
@@ -82,10 +81,17 @@ export default {
     taskInfo: {},
     avatar: '/cdn/common/images/common/img_photo.png',
     iconList: [],
-    showH5UserGuide: false,
-    showAppNewUserGuide: false,
     list: [],
-    isDisplay: true
+    isDisplay: true,
+    popupSort: {
+      popup: {
+        1: 'appUpdate',
+        2: 'redPacket',
+        3: 'userGuide'
+      },
+      currentIndex: 0,
+      serverSort: []
+    }
   }),
   components: {
     BaseFooter,
@@ -167,31 +173,6 @@ export default {
       })
       window.location.href = url
     },
-    /** 判断是否显示H5新手引导 **/
-    isH5UserGuide () {
-      let userLabel = getUrlParams('userlabel')
-      let cacheNewUser = localStorage.getItem('cacheH5NewUser')
-      if (userLabel && !cacheNewUser) {
-        this.showH5UserGuide = true
-        newUtils.ScrollNoMove()
-        localStorage.setItem('cacheH5NewUser', Date.now())
-      }
-    },
-    /** 判断是否显示app新手引导 **/
-    isAppUserGuide () {
-      let cacheNewUser = localStorage.getItem('cacheAppNewUser')
-      if (!cacheNewUser) {
-        this.showAppNewUserGuide = true
-        newUtils.ScrollNoMove()
-        localStorage.setItem('cacheAppNewUser', Date.now())
-      }
-    },
-    /** 新手引导回调函数 **/
-    hideUserGuide () {
-      newUtils.ScrollMove()
-      this.showH5UserGuide = false
-      this.showAppNewUserGuide = false
-    },
     /** 判断是否有openToken **/
     isOpenToken () {
       const isQuickLogin = getUrlParams('quicklogin')
@@ -204,21 +185,46 @@ export default {
         })
       }
     },
-    /** 判断不同平台的新手引导 **/
-    plantUserGuide () {
-      if (this.APP_VERSION) {
-        this.isAppUserGuide()
-      } else {
-        this.isH5UserGuide()
+    /** 首页弹框排序Init **/
+    popupSortInit () {
+      /** 服务器返回来的3个弹框 **/
+      this.popupSort.serverSort = [1,2,3]
+      /** 打开第一个弹框 **/
+      let index = this.popupSort.serverSort[this.popupSort.currentIndex]
+      let popup = this.popupSort.popup[index] || ''
+      this.openPopup(popup)
+    },
+    /** 首页弹框排序->关闭弹框 **/
+    popupSortHide () {
+      this.popupSort.currentIndex ++
+      let index = this.popupSort.serverSort[this.popupSort.currentIndex]
+      let popup = this.popupSort.popup[index] || ''
+      this.openPopup(popup)
+    },
+    /** 首页弹框排序->打开弹框 **/
+    openPopup (popup) {
+      if(!popup) return 
+      // /** 判断不同平台的新手引导 **/
+      if (popup == 'userGuide' && this.APP_VERSION) {
+        popup = 'appUserGuide'
+      } 
+      /** 判断不同平台的新手引导 **/
+      if (popup == 'userGuide' && !this.APP_VERSION) {
+        popup = 'h5UserGuide'
       }
+      this.$refs[popup].init(isShow => {
+        if(!isShow) {
+          this.popupSortHide()
+        }
+      })
     }
   },
   mounted () {
     this._getUserCenter()
     this._getIconList()
     this._getRankList()
-    this.plantUserGuide()
     this.isOpenToken()
+    this.popupSortInit()
     this.$marchSetsPoint('P_H5PT0303', {
       source_address: document.referrer
     })

@@ -1,5 +1,5 @@
 <template>
-  <div class="user-guide">
+  <div class="user-guide" v-if="showH5UserGuide">
     <div class="step1" v-if="step == 1">
       <div class="arrows"><img class="inner-img" src="../img/user-guide/arrows1.png" alt=""></div>
       <div class="tips">
@@ -30,18 +30,31 @@
   </div>
 </template>
 <script>
+import { getUrlParams, newUtils } from '@/utils/utils'
 export default {
   name: 'H5userGuide',
   data: () => ({
-    step: 1
+    step: 1,
+    showH5UserGuide: false
   }),
   methods: {
     handeClick (index) {
       this.step = index
     },
     hideUserGuide () {
-      this.$emit('hideUserGuide')
+      this.$emit('popupSortHide')
+      this.showH5UserGuide = false
       this.step = 1
+    },
+    init (callback) {
+      let userLabel = getUrlParams('userlabel')
+      let cacheNewUser = localStorage.getItem('cacheH5NewUser')
+      if (userLabel && !cacheNewUser) {
+        this.showH5UserGuide = true
+        newUtils.ScrollNoMove()
+        localStorage.setItem('cacheH5NewUser', Date.now())
+      }
+      callback && callback(this.showH5UserGuide)
     }
   }
 }
