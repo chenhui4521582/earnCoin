@@ -1,5 +1,5 @@
 <template>
-  <div class="new-guide2">
+  <div class="new-guide2" v-if="showAppNewUserGuide">
     <div class="mask" @click="hideUserGuide"></div>
     <div class="step1" v-if="step ==1" @click="handeClick(2)">
       <div class="arrows"><img class="inner-img" src="../img/user-guide/arrows1.png" alt=""></div>
@@ -24,10 +24,12 @@
   </div>
 </template>
 <script>
+import { newUtils } from '@/utils/utils'
 export default {
   name: 'AppUserGuide',
   data: () => ({
-    step: 1
+    step: 1,
+    showAppNewUserGuide: false
   }),
   methods: {
     handeClick (step) {
@@ -40,8 +42,18 @@ export default {
         return 
       }
       if (this.step == 2) {
-        this.$emit('hideUserGuide')
+        this.showAppNewUserGuide = false
+        this.$emit('popupSortHide')
       }
+    },
+    init (callback) {
+      let cacheNewUser = localStorage.getItem('cacheAppNewUser')
+      if (!cacheNewUser) {
+        this.showAppNewUserGuide = true
+        newUtils.ScrollNoMove()
+        localStorage.setItem('cacheAppNewUser', Date.now())
+      }
+      callback && callback(this.showAppNewUserGuide)
     }
   }
 }

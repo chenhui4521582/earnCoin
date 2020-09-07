@@ -27,25 +27,26 @@ export default {
       window.location.href = this.version.url
     },
     hideModal () {
+      this.$emit('popupSortHide')
       this.showVersion = false
     },
-    _getNewAppVersion () {
-      getAppVersion().then(res => {
-        const {code, data, message} = _get(res, 'data')
-        if(code == 200) {
-          this.version = data
-          if(this.version.force == 1) {
-            this.version.title = `版本更新：${data.version}`
-            this.showVersion = true
+    init (callback) {
+      console.log(22222222)
+      if(this.APP_VERSION) {
+        getAppVersion().then(res => {
+          const {code, data, message} = _get(res, 'data')
+          if(code == 200) {
+            this.version = data
+            if(this.version.force == 1) {
+              this.version.title = `版本更新：${data.version}`
+              this.showVersion = true
+            }
           }
-        }
-      })
+          console.log(111111111)
+          callback && callback(this.showVersion)
+        })
+      }
     },
-  },
-  mounted () {
-    if(this.APP_VERSION) {
-      this._getNewAppVersion()
-    }
   }
 }
 </script>

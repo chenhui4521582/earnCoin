@@ -42,13 +42,16 @@ export default {
   }),
   methods: {
     /** 判断用户是否领取过红包 **/
-    _userIsReceive () {     
+    init (callback) {     
       userIsReceive().then(res => {
         const {code, data, message} = _get(res, 'data')
         if(code == 200) {
-          this.showRedPacket = _get(data, 'popup', false)
+          // this.showRedPacket = _get(data, 'popup', false)
+          this.showRedPacket = true
           this.redPacketData = data
         }
+        console.log('1111111111111111')
+        callback && callback(this.showRedPacket)
       })
     },
     /** 打开红包 **/
@@ -58,7 +61,7 @@ export default {
         if(code == 200) {
           this.step = 2
           this.awardData = data
-          this.$emit('hideRedPacket')
+          this.$emit('refresh')
         }else {
           this.$Toast(message, () => {
             this.hidePopup()
@@ -69,10 +72,11 @@ export default {
     /** 领取红包 = **/
     redPacketFinish () {
       this.$emit('input', false)
-      this.$emit('redPacketFinish')
+      this.$emit('popupSortHide')
     },
     /** 关闭弹框 **/
     hidePopup() {
+      this.$emit('popupSortHide')
       this.showRedPacket = false
     },
     /** 调用 **/
@@ -81,9 +85,6 @@ export default {
         name: 'loginPage'
       })
     }
-  },
-  mounted () {
-    this._userIsReceive()
   }
 }
 </script>
