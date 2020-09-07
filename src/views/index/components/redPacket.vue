@@ -42,7 +42,7 @@ export default {
   }),
   methods: {
     /** 判断用户是否领取过红包 **/
-    init (callback) {     
+    init (callback) {    
       userIsReceive().then(res => {
         const {code, data, message} = _get(res, 'data')
         if(code == 200) {
@@ -50,7 +50,6 @@ export default {
           this.showRedPacket = true
           this.redPacketData = data
         }
-        console.log('1111111111111111')
         callback && callback(this.showRedPacket)
       })
     },

@@ -31,7 +31,6 @@ export default {
       this.showVersion = false
     },
     init (callback) {
-      console.log(22222222)
       if(this.APP_VERSION) {
         getAppVersion().then(res => {
           const {code, data, message} = _get(res, 'data')
@@ -42,10 +41,10 @@ export default {
               this.showVersion = true
             }
           }
-          console.log(111111111)
           callback && callback(this.showVersion)
         })
       }
+      callback && callback(this.showVersion)
     },
   }
 }

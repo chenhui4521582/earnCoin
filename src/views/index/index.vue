@@ -57,7 +57,7 @@
     <!-- 时长活动入口 -->
     <duration-entry />
     <!-- 红包 -->
-    <red-packet @refresh="_getAccountInfo" @popupSortHide="popupSortHide" ref="redPacket"/>
+    <red-packet ref="redPacket" @refresh="_getAccountInfo" @popupSortHide="popupSortHide" />
   </div>
 </template>
 <script>
@@ -215,7 +215,9 @@ export default {
       /** 判断不同平台的新手引导 **/
       if (popup == 'userGuide' && this.APP_VERSION) {
         popup = 'appUserGuide'
-      } else {
+      } 
+      /** 判断不同平台的新手引导 **/
+      if (popup == 'userGuide' && !this.APP_VERSION) {
         popup = 'h5UserGuide'
       }
       this.$refs[popup].init(isShow => {
