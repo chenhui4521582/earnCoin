@@ -89,14 +89,13 @@ export default {
         if(code===200){
             this.$Toast('绑定成功');
             this.modalShow = false;
-            this.getUserInfo();
+            this._getUserPhone();
             this.$emit('on-success')
         }else{
             this.$Toast(message);
         }
       })
     },
-
     /** 获取短信验证吗 **/
     _getCode () {
       let phoneReg = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;

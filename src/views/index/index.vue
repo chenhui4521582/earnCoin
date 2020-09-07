@@ -23,10 +23,10 @@
           我的任务
         </div>
         <div class="number">
-          <em>{{taskInfo.num}}</em><span>个</span>
+          <em>{{accountInfo.num}}</em><span>个</span>
         </div>
         <div class="add">
-          已完成+{{taskInfo.finishNum}}
+          已完成+{{accountInfo.finishNum}}
         </div>
       </div>
       <div class="line"></div>
@@ -68,7 +68,7 @@ import AppUpdate from './components/AppUpdate'
 import DurationEntry from '@/components/durationEntry/durationEntry'
 import Services from '@/services/index'
 import AppCall from '@/utils/native'
-import { getAccountInfo, getTaskInfo, getOpenToken } from '@/services/user'
+import { getUserCenter, getOpenToken } from '@/services/user'
 import { getUrlParams, newUtils } from '@/utils/utils'
 import { mapState, mapActions } from 'vuex'
 import _get from 'lodash.get'
@@ -129,20 +129,12 @@ export default {
       window.location.href = 'https://wap.beeplaying.com/xmWap/#/my/userAgreement'
     },
     /** 用户账户信息 **/
-    _getAccountInfo () {
-      getAccountInfo().then(res => {
+    _getUserCenter () {
+      getUserCenter().then(res => {
         const { code, data, message } = _get(res, 'data')
         if (code == 200) {
           this.accountInfo = data
-        }
-      })
-    },
-    /** 用户任务信息 **/
-    _getTaskInfo () {
-      getTaskInfo().then(res => {
-        const { code, data, message } = _get(res, 'data')
-        if (code == 200) {
-          this.taskInfo = data
+          localStorage.setItem('user_Info', JSON.stringify(this.accountInfo))
         }
       })
     },
@@ -218,8 +210,7 @@ export default {
     }
   },
   mounted () {
-    this._getAccountInfo()
-    this._getTaskInfo()
+    this._getUserCenter()
     this._getIconList()
     this._getRankList()
     this.plantUserGuide()

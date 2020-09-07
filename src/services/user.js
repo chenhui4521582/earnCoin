@@ -1,25 +1,11 @@
 import $axios from './http/http'
 import Api from './API/API'
-/**
- * @description 用户  获取用户金币信息
- */
-const getAccountInfo = function () {
-  return $axios.post(Api.getAccountInfo)
-}
 
 /**
  * @description 用户  获取用户信息
  */
-const getUserInfo = function () {
-  return $axios.post(Api.getUserInfo)
-}
-
-/**
- * @description 用户  用户任务信息
- */
-
-const getTaskInfo = function () {
-  return $axios.post(Api.getTaskInfo)
+const getUserCenter = function () {
+  return $axios.post(Api.getUserCenter)
 }
 
 /**
@@ -146,13 +132,6 @@ const getAppVersion = function () {
 }
 
 /**
- * @description 用户  获取用户信息
- */
-const getUserCenter = function () {
-  return $axios.post(Api.getUserCenter)
-}
-
-/**
  * @description 用户  判断用户是否是游客
  */
 const userIsVisitor = function () {
@@ -174,9 +153,7 @@ const tokenVerify = function (params) {
 }
 
 export { 
-  getAccountInfo,
-  getUserInfo,
-  getTaskInfo,
+  getUserCenter,
   getPhoneCode,
   bindMobilePhone,
   isBindGZH,
@@ -190,7 +167,6 @@ export {
   userIsReceive,
   getRedPacketAward,
   sendRedPacketToServer,
-  getUserCenter,
   updatePhoneCode,
   changeUpdatePhoneCode,
   checkOriginalPhoneNo,
@@ -201,9 +177,7 @@ export {
 }
 
 const Services = {
-  getAccountInfo,
-  getUserInfo,
-  getTaskInfo,
+  getUserCenter,
   getPhoneCode,
   bindMobilePhone,
   isBindGZH,
@@ -217,7 +191,6 @@ const Services = {
   userIsReceive,
   getRedPacketAward,
   sendRedPacketToServer,
-  getUserCenter,
   updatePhoneCode,
   changeUpdatePhoneCode,
   checkOriginalPhoneNo,
