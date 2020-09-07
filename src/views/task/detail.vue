@@ -266,7 +266,7 @@ export default {
           this.taskDetail = data
           this.isShowPullDown()
           this.$marchSetsPoint('A_H5PT0303000015', {
-            game_id: id,
+            game_id: this.taskDetail.gameId,
             game_name: this.taskDetail.name
           })
         }
@@ -324,8 +324,8 @@ export default {
             this.open_h5_game()
           }
           this.$marchSetsPoint('A_H5PT0303000017', {
-            task_id: this.taskDetail.id,
-            task_name: this.taskDetail.name
+            game_id: this.taskDetail.gameId,
+            game_name: this.taskDetail.name
           })
         }
       })
@@ -341,13 +341,13 @@ export default {
         this.showH5taskConfirm = true
       }
       this.$marchSetsPoint('A_H5PT0303000016', {
-        task_id: this.taskDetail.id,
-        task_name: this.taskDetail.name
+        game_id: this.taskDetail.gameId,
+        game_name: this.taskDetail.name
       })
     },
     /** 领取奖励 **/
     _getAward (item) {
-      const id = item.id
+      const {id, remark} = item
       getAward(id).then(res => {
         const {code, data, message} = _get(res, 'data')
         if(code == 200) {
@@ -360,8 +360,8 @@ export default {
         this.showLoginConfirm = false
       })
       this.$marchSetsPoint('A_H5PT0303003643', {
-        task_id: this.taskDetail.id,
-        task_name: this.taskDetail.name
+        task_id: id,
+        task_name: remark
       })
     },
     /** 领取奖励回调 **/
@@ -466,8 +466,8 @@ export default {
       this.$marchSetsPoint('D_JFQ0001', {
         out_gameplat: 1,
         game_duration: time,
-        task_id: this.taskDetail.id,
-        task_name: this.taskDetail.name
+        game_id: this.taskDetail.gameId,
+        game_name: this.taskDetail.name
       })
     },
     /** 梦工厂初始化 **/

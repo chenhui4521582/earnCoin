@@ -14,9 +14,7 @@ export const HOST = {
 }
 const API = {
   marchBuriedPoint: 'https://log-center.beeplaying.com/am/log/v1/json',
-  getUserInfo: `${HOST.UIC_API}/uic/api/user/center/getPersonalInfo`, //获取用户信息
   getUserCenter: `${HOST.PLATFORM_API}/point/api/user/center`, //获取用户信息
-  getAccountInfo: `${HOST.PLATFORM_API}/point/api/account/info`, // 用户账户信息
   getUserPhone: `${HOST.PLATFORM_API}/point/api/user/getUserPhone`, // 获取用户手机号
   getCoinLog: `${HOST.PLATFORM_API}/point/api/account/point-history`, // 金币明细记录
   getIconList: `${HOST.PLATFORM_API}/point/api/entrance/icon/list`, // 首页Icon列表
@@ -26,7 +24,6 @@ const API = {
   getSignList : `${HOST.PLATFORM_API}/point/api/signIn/list`, //签到列表
   sign : `${HOST.PLATFORM_API}/point/api/signIn/sign`, //签到
   getTodaySign : `${HOST.PLATFORM_API}/point/api/signIn/todayStatus`, //今天是否签到
-  getTaskInfo : `${HOST.PLATFORM_API}/point/api/task/info`, //获取用户任务信息
   getGreatTaskList : `${HOST.PLATFORM_API}/point/api/task/list`, //获取高额任务列表
   getMyTaskList : `${HOST.PLATFORM_API}/point/api/task/userList`, //获取高额任务列表
   getTaskDetail : `${HOST.PLATFORM_API}/point/api/task/taskSpecific/{taskId}`, //获取任务详情
