@@ -85,7 +85,14 @@ export default {
     showH5UserGuide: false,
     showAppNewUserGuide: false,
     list: [],
-    isDisplay: true
+    isDisplay: true,
+    popupSort: {
+      popup: {
+        1: 'redPacket',
+        2: 'userGuide'
+      },
+      currentIndex: 0
+    }
   }),
   components: {
     BaseFooter,
