@@ -212,7 +212,7 @@ export default {
     /** 首页弹框排序->打开弹框 **/
     openPopup (popup) {
       if(!popup) return 
-      /** 判断不同平台的新手引导 **/
+      // /** 判断不同平台的新手引导 **/
       if (popup == 'userGuide' && this.APP_VERSION) {
         popup = 'appUserGuide'
       } 

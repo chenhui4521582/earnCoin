@@ -44,7 +44,6 @@ export default {
           callback && callback(this.showVersion)
         })
       }
-      callback && callback(this.showVersion)
     },
   }
 }

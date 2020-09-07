@@ -46,8 +46,7 @@ export default {
       userIsReceive().then(res => {
         const {code, data, message} = _get(res, 'data')
         if(code == 200) {
-          // this.showRedPacket = _get(data, 'popup', false)
-          this.showRedPacket = true
+          this.showRedPacket = _get(data, 'popup', false)
           this.redPacketData = data
         }
         callback && callback(this.showRedPacket)

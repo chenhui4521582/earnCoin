@@ -1,24 +1,24 @@
 <template>
   <div class="new-guide2" v-if="showAppNewUserGuide">
-    <div class="mask" @click="hideUserGuide"></div>
-    <div class="step1" v-if="step ==1" @click="handeClick(2)">
+    <div class="mask" @click.stop="hideUserGuide"></div>
+    <div class="step1" v-if="step ==1" @click.stop="hideUserGuide">
       <div class="arrows"><img class="inner-img" src="../img/user-guide/arrows1.png" alt=""></div>
       <div class="tips">
         <div class="icon"><img class="inner-img" src="../img/user-guide/icon.png" alt=""></div>
         <div class="title"><img class="inner-img" src="../img/user-guide/title3.png" alt=""><img
             src="../img/user-guide/first-step.png" class="stepDisplay"></div>
         <div class="text">这边显示您获得金币数量<br>再赚1000金币就可以提现了</div>
-        <div class="btn" @click="handeClick(2)">知道了</div>
+        <div class="btn" @click.stop="hideUserGuide">知道了</div>
       </div>
     </div>
-    <div class="step2" v-if="step==2" @click="hideUserGuide">
+    <div class="step2" v-if="step==2" @click.stop="hideUserGuide">
       <div class="arrows"><img class="inner-img" src="../img/user-guide/arrows3.png" alt=""></div>
       <div class="tips">
         <div class="icon"><img class="inner-img" src="../img/user-guide/icon.png" alt=""></div>
         <div class="title"><img class="inner-img" src="../img/user-guide/title3.png" alt=""><img
             src="../img/user-guide/second-step.png" class="stepDisplay"></div>
         <div class="text">点击"去看看"查看如何赚钱吧</div>
-        <div class="btn" @click="hideUserGuide">好的</div>
+        <div class="btn" @click.stop="hideUserGuide">好的</div>
       </div>
     </div>
   </div>
@@ -32,9 +32,6 @@ export default {
     showAppNewUserGuide: false
   }),
   methods: {
-    handeClick (step) {
-      this.step = step
-    },
     hideUserGuide () {
       console.log(this.step)
       if (this.step == 1) {
@@ -49,6 +46,7 @@ export default {
     init (callback) {
       let cacheNewUser = localStorage.getItem('cacheAppNewUser')
       if (!cacheNewUser) {
+        this.step = 1
         this.showAppNewUserGuide = true
         newUtils.ScrollNoMove()
         localStorage.setItem('cacheAppNewUser', Date.now())
