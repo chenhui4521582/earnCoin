@@ -68,7 +68,7 @@ export default {
     DurationEntry
   },
   computed: {
-    ...mapState(['APP_VERSION', 'isVisitory']),
+    ...mapState(['APP_VERSION', 'isVisitory', 'deviceId']),
     isShowLogout () {
       if(!this.isVisitory && this.APP_VERSION) {
         return true
@@ -108,7 +108,7 @@ export default {
       this.userInfo.bindWechat = true
       setTimeout(()=> {
         this._getUserCenter()
-        this._userIsVisitor()
+        this._userIsVisitor({deviceNum: this.deviceId})
       }, 1000)
     },
     goWithdraw () {
