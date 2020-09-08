@@ -75,10 +75,7 @@ export default {
           this.$Toast('绑定成功');
           this.$router.push({name:"my"})
           /** 趣头条广告回传，用户注册 **/
-          const firstRegister =localStorage.getItem('firstRegister')
-          if( !firstRegister ) {
-            this.userFirstRegister(1)
-          }
+          this.userFirstRegister(1)
         }else{
           this.$Toast(message);
         }

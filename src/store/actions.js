@@ -39,9 +39,6 @@ export default {
       if(type==0) {
         localStorage.setItem('firstInApp', 'true')
       }
-      if(type == 1) {
-        localStorage.setItem('firstRegister', 'true')
-      }
     })
   }
 }

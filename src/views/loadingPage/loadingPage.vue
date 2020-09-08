@@ -184,8 +184,8 @@ export default {
     cancelClick () {
       AppCall.closeApp()
     },
+    /** 趣头条广告回传，用户激活 **/
     QTT_API () {
-      /** 趣头条广告回传，用户激活 **/
       const firstInApp = localStorage.getItem('firstInApp')
       if( !firstInApp ) {
         this.userFirstActive(0)
