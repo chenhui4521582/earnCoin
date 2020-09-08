@@ -5,7 +5,7 @@ import Api from './API/API'
  * 0:激活，1：注册（绑定手机或者微信）
  */
 const qttReport = function (params) {
-  return $axios.post(Api.getSignList, params)
+  return $axios.post(Api.qttReport, params)
 }
 
 export {
