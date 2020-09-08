@@ -63,7 +63,8 @@ export default {
   },
   methods: {
     ...mapActions({
-      userIsVisitor: "USER_IS_VISITOR"
+      userIsVisitor: "USER_IS_VISITOR",
+      userFirstActive: "QTT_REPORT"
     }),
     /** 游客登录 **/
     _visitorLogin () {
@@ -155,6 +156,11 @@ export default {
             }
           }
         })
+      }
+      /** 趣头条广告回传，用户激活 **/
+      const firstInApp = localStorage.getItem('firstInApp')
+      if( !firstInApp ) {
+        this.userFirstActive(0)
       }
     }
   },

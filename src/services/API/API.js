@@ -14,6 +14,7 @@ export const HOST = {
 }
 const API = {
   marchBuriedPoint: 'https://log-center.beeplaying.com/am/log/v1/json',
+  qttReport: `${HOST.PLATFORM_API}/point/user/adLog/report`, // 趣头条用户激活 or 趣头条用户注册
   getUserCenter: `${HOST.PLATFORM_API}/point/api/user/center`, //获取用户信息
   getUserPhone: `${HOST.PLATFORM_API}/point/api/user/getUserPhone`, // 获取用户手机号
   getCoinLog: `${HOST.PLATFORM_API}/point/api/account/point-history`, // 金币明细记录
