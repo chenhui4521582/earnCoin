@@ -186,10 +186,7 @@ export default {
             localStorage.setItem('OPEN_ACCESS_TOKEN', data.token)
           }
         })
-      }
-      /** 趣头条广告回传，用户注册 **/
-      const firstRegister =localStorage.getItem('firstRegister')
-      if ( !firstRegister && !this.isVisitory ) {
+        /** 趣头条广告回传，用户注册 **/
         this.userFirstRegister(1)
       }
     },
