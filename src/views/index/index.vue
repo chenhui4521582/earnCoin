@@ -57,7 +57,7 @@
     <!-- 时长活动入口 -->
     <duration-entry />
     <!-- 红包 -->
-    <red-packet ref="redPacket" @refresh="_getAccountInfo" @popupSortHide="popupSortHide" />
+    <red-packet ref="redPacket" @refresh="_getUserCenter" @popupSortHide="popupSortHide" />
   </div>
 </template>
 <script>
