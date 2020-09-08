@@ -124,7 +124,7 @@ export default {
   },
   mounted () {
     this._getUserCenter()
-    this._userIsVisitor()
+    this._userIsVisitor({deviceNum: this.deviceId})
   }
 }
 </script>
