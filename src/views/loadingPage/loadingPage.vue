@@ -128,6 +128,13 @@ export default {
     cancelClick () {
       AppCall.closeApp()
     },
+    QTT_API () {
+      /** 趣头条广告回传，用户激活 **/
+      const firstInApp = localStorage.getItem('firstInApp')
+      if( !firstInApp ) {
+        this.userFirstActive(0)
+      }
+    },
     init () {
       /** 
        * 登录逻辑
@@ -157,14 +164,11 @@ export default {
           }
         })
       }
-      /** 趣头条广告回传，用户激活 **/
-      const firstInApp = localStorage.getItem('firstInApp')
-      if( !firstInApp ) {
-        this.userFirstActive(0)
-      }
+
     }
   },
   mounted () {
+    this.QTT_API()
     this.init()
   }
 }
