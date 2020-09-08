@@ -107,7 +107,7 @@ export default {
       this.userInfo.bindWechat = true
       setTimeout(()=> {
         this._getUserCenter()
-        this._userIsVisitor()
+        this._userIsVisitor({deviceNum: this.deviceId})
       }, 1000)
     },
     goWithdraw () {
