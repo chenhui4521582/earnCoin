@@ -184,6 +184,13 @@ export default {
     cancelClick () {
       AppCall.closeApp()
     },
+    QTT_API () {
+      /** 趣头条广告回传，用户激活 **/
+      const firstInApp = localStorage.getItem('firstInApp')
+      if( !firstInApp ) {
+        this.userFirstActive(0)
+      }
+    },
     init () {
       this.ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN')
       if(this.ACCESS_TOKEN) {
@@ -202,14 +209,11 @@ export default {
       } else {
         this._userIsReceive()
       }
-      /** 趣头条广告回传，用户激活 **/
-      const firstInApp = localStorage.getItem('firstInApp')
-      if( !firstInApp ) {
-        this.userFirstActive(0)
-      }
+
     }
   },
   mounted () {
+    this.QTT_API()
     this.init()
   }
 }
