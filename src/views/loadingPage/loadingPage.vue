@@ -42,6 +42,7 @@
 import { getUrlParams } from '@/utils/utils'
 import RedPacket from './components/redPacket'
 import { visitorLogin, userIsReceive, getRedPacketAward, sendRedPacketToServer, getAccessToken, getOpenToken, tokenVerify} from '@/services/user'
+import { qttReport } from '@/services/qutoutiao'
 import AppCall from '@/utils/native'
 import { mapState } from 'vuex'
 import _get from 'lodash.get'
@@ -198,6 +199,15 @@ export default {
         })
       } else {
         this._userIsReceive()
+      }
+      /** 趣头条广告回传，用户激活 **/
+      const firstInApp = localStorage.getItem('firstInApp')
+      if( !firstInApp ) {
+        qttReport({
+          deviceNum: this.deviceId,
+          type: 0
+        })
+        localStorage.setItem('firstInApp', 'true')
       }
     }
   },

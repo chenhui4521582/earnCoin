@@ -7,7 +7,7 @@
         v-for="(item, index) in nav" 
         ref="navItem"
         :key="index" 
-        :class="{'active': currentIndex == item.type}"
+        :class="{'active': currentSort == item.sort}"
         @click="navClick(item, index)"
       >
         <i>{{item.name}}</i>
@@ -17,7 +17,7 @@
     <div class="list" :class="{'animation': animation}">
       <div class="item" v-for="(item, index) in list" :key="index">
         <div class="ranking-num">
-          <img v-if="index < 3"   :src="iconList[currentIndex].list[index]" alt="">
+          <img v-if="index < 3"   :src="iconList[currentSort].list[index]" alt="">
           <span v-else> {{index+1}}</span>
         </div>
         <div class="item-img">
@@ -56,13 +56,14 @@ export default {
       }
     },
     currentIndex: 1,
+    currentSort: 1,
     nav: [],
     list: [],
     animation: false
   }),
   computed: {
     background () {
-      return this.iconList[this.currentIndex].titleImg
+      return this.iconList[this.currentSort].titleImg
     }
   },
   methods: {
@@ -75,18 +76,11 @@ export default {
         }
       })
     },
-    /** 获取列表tab **/
-    _getRankTab () {
-      getRankTab().then(res => {
-        const {code, data, message} = _get(res, 'data')
-        if(code == 200) {
-          this.nav = data
-        }
-      })
-    },
     /** nav 点击**/
-    navClick ({ type }, index) {
+    navClick (item, index) {
+      const {type, sort} = item
       this.currentIndex = type
+      this.currentSort = sort
       localStorage.setItem('rankingCurrent', this.currentIndex)
       this._getRankList(type)
       this.navAnimation(index)
@@ -114,12 +108,16 @@ export default {
       })
     },
     /** 初始化 **/
-    init () {
-      setTimeout(() => {
-        this.currentIndex = localStorage.getItem('rankingCurrent') || 1
-        this.navClick({type: this.currentIndex}, this.currentIndex-1)
-      }, 500)
-      this._getRankTab()
+    async init () {
+      const {data} = await getRankTab()
+      this.nav = data.data
+      this.currentIndex = localStorage.getItem('rankingCurrent') || 1
+      let tabItem = this.nav.find((item, index) => {
+        return item.type == this.currentIndex
+      })
+      this.$nextTick(res=> {
+        this.navClick({type: this.currentIndex, sort: tabItem.sort }, tabItem.sort-1)
+      })
     }
   },
   mounted () {
