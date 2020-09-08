@@ -16,8 +16,8 @@ axios.defaults.timeout = 10000
 /** axios Request 配置 **/
 axios.interceptors.request.use(
   config => {
-    let ACCESS_TOKEN = getUrlParams('token') || localStorage.getItem('ACCESS_TOKEN')
-    let APP_CHANNEL = getUrlParams('channel') || localStorage.getItem('APP_CHANNEL')
+    let ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN')
+    let APP_CHANNEL = localStorage.getItem('APP_CHANNEL')
     let APP_VERSION = localStorage.getItem('APP_VERSION') || '1.0.0'
     ACCESS_TOKEN && (config.headers['Authorization'] = ACCESS_TOKEN)
     if (!config.headers['App-Channel']) {
