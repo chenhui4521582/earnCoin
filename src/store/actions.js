@@ -1,5 +1,6 @@
 import AppCall from '@/utils/native/index'
 import { userIsVisitor } from '@/services/user'
+import { qttReport } from '@/services/qutoutiao'
 import _get from 'lodash.get'
 export default {
   /** 获取用户是否是游客 **/
@@ -28,5 +29,14 @@ export default {
         commit('SET_APP_VERSION', product.appVersion)
       }
     } catch {}
+  },
+  /** 趣头条绑定回调 **/
+  QTT_REPORT ({ commit, state }, type) {
+    qttReport({
+      deviceNum: state.deviceId,
+      type: type
+    }).then(res => {
+      localStorage.setItem('firstInApp', 'true')
+    })
   }
 }
