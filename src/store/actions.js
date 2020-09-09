@@ -4,12 +4,13 @@ import { qttReport } from '@/services/qutoutiao'
 import _get from 'lodash.get'
 export default {
   /** 获取用户是否是游客 **/
-  USER_IS_VISITOR ({ commit }) {
-    userIsVisitor().then(res => {
+  USER_IS_VISITOR ({ commit }, params) {
+    return userIsVisitor(params).then(res => {
       const {code, data, message} = _get(res, 'data')
       if(code == 200) {
         commit('SET_VISITORY', data)
       }
+      return res
     })
   },
   /** 获取用户设备id **/

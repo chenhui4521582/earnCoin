@@ -6,7 +6,10 @@
         <img class="inner-img" :src="taskDetail.icon | filter" alt="">
       </div>
       <div class="info">
-        <div class="name">{{taskDetail.name}}</div>
+        <div class="name-wrap">
+          <div class="name">{{taskDetail.name}}</div>
+          <grade :star="taskDetail.star"/>
+        </div>
         <div class="platform">{{taskDetail.gameVersion}}</div>
         <div class="text">{{taskDetail.gameRemark}}</div>
       </div>
@@ -48,14 +51,13 @@
                   <img class="inner-img" src="./img/coin-icon.png" alt="">
                 </div>
                 <div class="prize">+{{item.award}}金币</div>
-                <div class="rmb">≈{{item.awardR}}元</div>
               </div>
               <div class="task-text">{{item.remark}}</div>
             </div>
             <div class="right">
               <div class="btn yellow2" v-if="item.status == 2" @click="_userIsVisitor(item)">领奖励</div>
               <div class="btn gray" v-if="item.status == 1">已完成</div>
-              <div class="btn yellow" v-if="item.status == 0" @click="listItemClick">去完成</div>
+              <div class="btn yellow" v-if="item.status == 0" @click="listItemClick(index)">去完成</div>
               <div class="progress" v-if="item.userFinish || item.configFinish">当前进度：{{item.userFinish | amountComputen1}}/{{item.configFinish | amountComputen2}}</div>
             </div>
           </div>
@@ -86,7 +88,6 @@
     <div class="task-footer">
       <div class="service-btn" @click="openService">
         <img src="./img/service-icon.png" alt="">
-        <span>联系客服</span>
       </div>
       <div class="task-btn yellow1" v-if="taskDetail.status == 2" @click="startTaskConfirm">开始任务</div>
       <div class="task-btn continue" v-if="taskDetail.status == 1" @click="taskUnderway">去玩游戏</div>
@@ -154,6 +155,7 @@ import Service from '@/components/servicePop/service'
 import AppCall from '@/utils/native'
 import UserGuide from './components/userGuide/userGuide'
 import GameBanner from './components/gameBanner/gameBanner'
+import Grade from '@/components/grade/grade'
 import { getTaskDetail, startTask, getAward, getCard, firstReport, durationReport } from '@/services/task'
 import { userIsVisitor, getUserCenter } from '@/services/user'
 import { jumpUrl } from '@/utils/utils'
@@ -179,7 +181,8 @@ export default {
   components: {
     UserGuide,
     Service,
-    GameBanner
+    GameBanner,
+    Grade
   },
   filters: {
     amountComputen1 (val) {
@@ -384,7 +387,13 @@ export default {
       }
     },
     /** 任务列表点击 **/
-    listItemClick () {
+    listItemClick (index) {
+      if(index == 0) {
+        this.$marchSetsPoint('A_H5PT0303000020', {
+          game_id: this.taskDetail.gameId,
+          game_name: this.taskDetail.name
+        })
+      }
       if(this.taskDetail.status == 2) {
         this.startTaskConfirm()
       }else {
@@ -537,9 +546,15 @@ export default {
     }
     .info {
       display: flex;
+      flex: 1;
       flex-direction: column;
       justify-content: space-between;
       min-height: 1.1rem;
+      .name-wrap {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
       .name {
         font-size: .32rem;
         font-weight: bold;
@@ -693,6 +708,12 @@ export default {
         align-items: center;
         height: 1.2rem;
         border-bottom: 1px solid #F2F2F2;
+        &:first-child {
+          .prize {
+            font-size: .28rem;
+            color: #E8382B !important;
+          }
+        }
         &:last-child {
           border: none;
         }
@@ -719,15 +740,6 @@ export default {
               margin-right: .23rem;
               font-weight: bold;
               color: #D39436;
-            }
-            .rmb {
-              padding: 0 .1rem;
-              height: .3rem;
-              line-height: .3rem;
-              font-size: .2rem;
-              color: #E8382B;
-              border:1px solid #E8382B;
-              border-radius: .06rem;
             }
           }
           .task-text {
@@ -845,6 +857,7 @@ export default {
     }
   }
   .task-footer {
+    padding: 0 .3rem;
     position: fixed;
     left: 0;
     right: 0;
@@ -869,18 +882,15 @@ export default {
         width: .3rem;
         height: .3rem;
       }
-      span {
-        color: #E7BD69;
-      }
       display: flex;
       align-items: center;
       justify-content: center;
       margin-right: .2rem;
-      width: 2.2rem;
-      border: .02rem solid #E7BD69
+      width: .8rem;
+      background: #FFF5CF
     }
     .task-btn {
-      width: 4.2rem;
+      flex: 1;
       &.yellow {
         background: #FFE790;
         color: #D39436;

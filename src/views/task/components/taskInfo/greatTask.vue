@@ -5,16 +5,19 @@
         <img class="inner-img" :src="item.icon | filter" alt="">
       </div>
       <div class="task-desc">
-        <div class="name">{{item.name}}</div>
+        <div class="name-wrap">
+          <div class="name">{{item.name}}</div>
+          <grade :star="item.star"/>
+        </div>
         <div class="desc">{{item.remark}}</div>
       </div>
-      <div class="add-num">+{{item.award}}</div>
+      <div class="add-num">+{{item.award}}金币</div>
       <div class="btn" >去完成</div>
     </div>
   </div>
 </template>
 <script>
-
+import Grade from '@/components/grade/grade'
 export default {
   name: 'greatTask',
   props: {
@@ -22,6 +25,9 @@ export default {
       type: Array,
       default: () => []
     }
+  },
+  components: {
+    Grade
   },
   methods: {
     goDetail ({id, name}) {
@@ -58,8 +64,14 @@ export default {
       flex-direction: column;
       justify-content: center;
       width: 3.6rem;
-      .name {
+      .name-wrap {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
         margin-bottom: .08rem;
+        .name {
+          margin-right: .15rem;
+        }
       }
       .desc {
         overflow: hidden;

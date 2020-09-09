@@ -49,6 +49,7 @@ import Service from '@/components/servicePop/service'
 import AccountBind from './components/accountBind'
 import MyList from './components/list'
 import DurationEntry from '@/components/durationEntry/durationEntry'
+import AppCall from '@/utils/native'
 import { getUserCenter } from '@/services/user'
 import { mapState, mapActions } from 'vuex'
 import _get from 'lodash.get'
@@ -109,7 +110,7 @@ export default {
       setTimeout(()=> {
         this._getUserCenter()
         this._userIsVisitor({deviceNum: this.deviceId})
-      }, 2000)
+      }, 1000)
     },
     goWithdraw () {
       this.$router.push({
@@ -117,7 +118,8 @@ export default {
       })
     },
     logout () {
-      localStorage.removeItem('ACCESS_TOKEN')
+      /** 快捷登录，切换用户时，清除缓存在app的token **/
+      AppCall.saveToken('')
       this.$router.push({
         name: 'loginPage'
       })

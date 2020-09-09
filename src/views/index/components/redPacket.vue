@@ -1,17 +1,17 @@
 <template>
-  <div class="red-packet" v-if="value">
+  <div class="red-packet" v-if="showRedPacket">
     <div class="mask"></div>
     <!-- 红包弹框 -->
     <div class="open-red-packet" v-if="step == 1">
       <div class="award">{{redPacketData.min }}~{{redPacketData.max}}</div>
       <div class="open-btn" @click="_getRedPacketAward">
-        <img class="inner-img" src="../img/open-btn.png" alt="">
+        <img class="inner-img" src="../img/red-packet/open-btn.png" alt="">
       </div>
       <div class="explain">
         已有账号，<a @click="login">直接登录</a> 
       </div>
       <div class="close" @click="hidePopup">
-        <img class="inner-img" src="../img/close.png" alt="">
+        <img class="inner-img" src="../img/red-packet/close.png" alt="">
       </div>
     </div>
     <!-- 红包奖品 -->
@@ -20,56 +20,62 @@
         <span class="award-num">{{awardData.award}}</span><span class="award-unit">元</span>
       </div>
       <div class="explain">还差{{awardData.balance}}元即可提现</div>
-      <div class="receive-btn" @click="redPacketFinish">
-        <img class="inner-img" src="../img/get-btn.png" alt="">
+      <div class="receive-btn" @click="hidePopup">
+        <img class="inner-img" src="../img/red-packet/get-btn.png" alt="">
       </div>
-      <div class="close" @click="redPacketFinish">
-        <img class="inner-img" src="../img/close.png" alt="">
+      <div class="close" @click="hidePopup">
+        <img class="inner-img" src="../img/red-packet/close.png" alt="">
       </div>
     </div>  
   </div>
 </template>
 <script>
-import { getRedPacketAward } from '@/services/user'
+import { userIsReceive, getRedPacketAward, sendRedPacketToServer } from '@/services/index'
 import _get from 'lodash.get'
 export default {
   name: 'redPacket',
-  props: {
-    value: {
-      type: Boolean,
-      default: false
-    },
-    redPacketData: {
-      type: Object,
-      default: () => {}
-    }
-  },
   data: () => ({
+    showRedPacket: false,
+    redPacketData: {},
     step: 1,
     awardData: {}
   }),
   methods: {
+    /** 判断用户是否领取过红包 **/
+    init (callback) {    
+      userIsReceive().then(res => {
+        const {code, data, message} = _get(res, 'data')
+        if(code == 200) {
+          this.showRedPacket = _get(data, 'popup', false)
+          this.redPacketData = data
+        }
+        callback && callback(this.showRedPacket)
+      })
+    },
     /** 打开红包 **/
     _getRedPacketAward () {
-      getRedPacketAward().then(res => {
-        res = {
-          data: {"code":200,"data":{"award":"0.2","balance":"0.1元","num":2000},"message":null}
-        }
+      sendRedPacketToServer().then(res => {
         const {code, data, message} = _get(res, 'data')
         if(code == 200) {
           this.step = 2
           this.awardData = data
+          this.$emit('refresh')
+        }else {
+          this.$Toast(message, () => {
+            this.hidePopup()
+          })
         }
       })
-    },
-    hidePopup() {
-      this.$emit('input', false)
-      this.$emit('hideRedPacket')
     },
     /** 领取红包 = **/
     redPacketFinish () {
       this.$emit('input', false)
-      this.$emit('redPacketFinish')
+      this.$emit('popupSortHide')
+    },
+    /** 关闭弹框 **/
+    hidePopup() {
+      this.$emit('popupSortHide')
+      this.showRedPacket = false
     },
     /** 调用 **/
     login () {
@@ -77,7 +83,7 @@ export default {
         name: 'loginPage'
       })
     }
-  },
+  }
 }
 </script>
 <style lang="less" scoped>
@@ -105,7 +111,7 @@ export default {
     transform: translate(-50%, -50%);
     width: 5.2rem;
     height: 5.72rem;
-    background: url(../img/red-packet-bg.png) no-repeat center top;
+    background: url(../img/red-packet/red-packet-bg.png) no-repeat center top;
     background-size: 100% 100%;
     .award {
       margin: 2.3rem auto 0;
@@ -147,7 +153,7 @@ export default {
     transform: translate(-50%, -50%);
     width: 5.88rem;
     height: 6.64rem;
-    background: url(../img/red-packet-open.png) no-repeat center top;
+    background: url(../img/red-packet/red-packet-open.png) no-repeat center top;
     background-size: 100% 100%;
     .award {
       margin: 3rem 0 .24rem;

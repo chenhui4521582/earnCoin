@@ -28,7 +28,7 @@
           <div class="desc">{{item.recommendRemark}}</div>
         </div>
         <div class="wrap"> 
-          <div class="earn-Num">+{{item.award}}元</div>
+          <div class="earn-Num">+{{item.award}}</div>
           <div class="btn" @click="goDetail(item)">试玩</div>
         </div>
       </div>
@@ -242,9 +242,11 @@ export default {
         margin-left: auto;
         display: flex;
         flex-direction: column;
+        align-items: flex-end;
         .earn-Num {
           padding-right: .15rem;
           text-align: right;
+          white-space: nowrap;
           color: #E8382B;
           font-weight: bold;
         }

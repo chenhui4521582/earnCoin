@@ -90,7 +90,7 @@ export default new Router({
       component: () => import(/* webpackChunkName: "loadingPage" */ '../views/loadingPage/loadingPage'),
       meta: {
         title: '高额赚',
-        index: 2
+        index: 1
       }
     },
     {
