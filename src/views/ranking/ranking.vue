@@ -244,9 +244,11 @@ export default {
         margin-left: auto;
         display: flex;
         flex-direction: column;
+        align-items: flex-end;
         .earn-Num {
           padding-right: .15rem;
           text-align: right;
+          white-space: nowrap;
           color: #E8382B;
           font-weight: bold;
         }

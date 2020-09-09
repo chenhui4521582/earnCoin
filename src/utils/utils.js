@@ -193,11 +193,11 @@ class utils {
   async marchSetsPoint (_pointId, _pointObject) {
     try {
       /** 获取用户信息 **/
-      let userInfo = JSON.parse(localStorage.getItem('user_Info'))
+      let userInfo = JSON.parse(localStorage.getItem('user_info'))
       if (!userInfo) {
         let r = await axios.post(API.getUserCenter)
         userInfo = r.data.data
-        localStorage.setItem('user_Info', JSON.stringify(userInfo))
+        localStorage.setItem('user_info', JSON.stringify(userInfo))
       }
       /** 平台数据 **/
       let _beginTime = Date.now()

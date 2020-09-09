@@ -88,7 +88,6 @@
     <div class="task-footer">
       <div class="service-btn" @click="openService">
         <img src="./img/service-icon.png" alt="">
-        <span>联系客服</span>
       </div>
       <div class="task-btn yellow1" v-if="taskDetail.status == 2" @click="startTaskConfirm">开始任务</div>
       <div class="task-btn continue" v-if="taskDetail.status == 1" @click="taskUnderway">去玩游戏</div>
@@ -831,6 +830,7 @@ export default {
     }
   }
   .task-footer {
+    padding: 0 .3rem;
     position: fixed;
     left: 0;
     right: 0;
@@ -855,18 +855,15 @@ export default {
         width: .3rem;
         height: .3rem;
       }
-      span {
-        color: #E7BD69;
-      }
       display: flex;
       align-items: center;
       justify-content: center;
       margin-right: .2rem;
-      width: 2.2rem;
-      border: .02rem solid #E7BD69
+      width: .8rem;
+      background: #FFF5CF
     }
     .task-btn {
-      width: 4.2rem;
+      flex: 1;
       &.yellow {
         background: #FFE790;
         color: #D39436;

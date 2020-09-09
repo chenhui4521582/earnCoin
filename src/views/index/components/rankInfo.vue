@@ -61,12 +61,15 @@ export default {
     }
   },
   methods: {
-    goDetail ({ id }) {
+    goDetail ({ id, name }) {
+      this.$marchSetsPoint('A_H5PT0303000021', {
+        game_id: id,
+        game_name: name
+      })
       this.$router.push({
         name: 'taskDetail',
         query: { id }
       })
-      this.$marchSetsPoint('A_H5PT0303003786')
     },
     goRanking ({ type }) {
       localStorage.setItem('rankingCurrent', type)
