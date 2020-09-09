@@ -49,8 +49,8 @@ axios.interceptors.response.use(
     /** 实名认证页面, 风控页面不需要监控token **/
     if (code && code != 200) {
       if (code == 401) {
-        /** 本地缓存没有找到user_Info 删除本地 user_info 字段 **/
-        localStorage.getItem('user_Info') && localStorage.removeItem('user_Info')
+        /** 本地缓存没有找到user_info 删除本地 user_info 字段 **/
+        localStorage.getItem('user_info') && localStorage.removeItem('user_info')
         localStorage.removeItem('ACCESS_TOKEN')
         /** 开发环境跳转登录页, 生产环境跳转断开连接 **/
         if (NODE_ENV === 'production') {

@@ -147,7 +147,7 @@ export default {
         const { code, data, message } = _get(res, 'data')
         if (code == 200) {
           this.accountInfo = data
-          localStorage.setItem('user_Info', JSON.stringify(this.accountInfo))
+          localStorage.setItem('user_info', JSON.stringify(this.accountInfo))
         }
       })
     },
