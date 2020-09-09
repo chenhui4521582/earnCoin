@@ -57,7 +57,7 @@
             <div class="right">
               <div class="btn yellow2" v-if="item.status == 2" @click="_userIsVisitor(item)">领奖励</div>
               <div class="btn gray" v-if="item.status == 1">已完成</div>
-              <div class="btn yellow" v-if="item.status == 0" @click="listItemClick">去完成</div>
+              <div class="btn yellow" v-if="item.status == 0" @click="listItemClick(index)">去完成</div>
               <div class="progress" v-if="item.userFinish || item.configFinish">当前进度：{{item.userFinish | amountComputen1}}/{{item.configFinish | amountComputen2}}</div>
             </div>
           </div>
@@ -379,7 +379,13 @@ export default {
       }
     },
     /** 任务列表点击 **/
-    listItemClick () {
+    listItemClick (index) {
+      if(index == 0) {
+        this.$marchSetsPoint('A_H5PT0303000020', {
+          game_id: this.taskDetail.gameId,
+          game_name: this.taskDetail.name
+        })
+      }
       if(this.taskDetail.status == 2) {
         this.startTaskConfirm()
       }else {
