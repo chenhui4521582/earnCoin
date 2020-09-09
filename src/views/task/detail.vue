@@ -6,7 +6,10 @@
         <img class="inner-img" :src="taskDetail.icon | filter" alt="">
       </div>
       <div class="info">
-        <div class="name">{{taskDetail.name}}</div>
+        <div class="name-wrap">
+          <div class="name">{{taskDetail.name}}</div>
+          <grade :star="taskDetail.star"/>
+        </div>
         <div class="platform">{{taskDetail.gameVersion}}</div>
         <div class="text">{{taskDetail.gameRemark}}</div>
       </div>
@@ -48,7 +51,6 @@
                   <img class="inner-img" src="./img/coin-icon.png" alt="">
                 </div>
                 <div class="prize">+{{item.award}}金币</div>
-                <div class="rmb">≈{{item.awardR}}元</div>
               </div>
               <div class="task-text">{{item.remark}}</div>
             </div>
@@ -154,6 +156,7 @@ import Service from '@/components/servicePop/service'
 import AppCall from '@/utils/native'
 import UserGuide from './components/userGuide/userGuide'
 import GameBanner from './components/gameBanner/gameBanner'
+import Grade from '@/components/grade/grade'
 import { getTaskDetail, startTask, getAward, getCard, firstReport, durationReport } from '@/services/task'
 import { userIsVisitor, getUserCenter } from '@/services/user'
 import { jumpUrl } from '@/utils/utils'
@@ -179,7 +182,8 @@ export default {
   components: {
     UserGuide,
     Service,
-    GameBanner
+    GameBanner,
+    Grade
   },
   filters: {
     amountComputen1 (val) {
@@ -516,9 +520,15 @@ export default {
     }
     .info {
       display: flex;
+      flex: 1;
       flex-direction: column;
       justify-content: space-between;
       min-height: 1.1rem;
+      .name-wrap {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
       .name {
         font-size: .32rem;
         font-weight: bold;
@@ -672,6 +682,12 @@ export default {
         align-items: center;
         height: 1.2rem;
         border-bottom: 1px solid #F2F2F2;
+        &:first-child {
+          .prize {
+            font-size: .28rem;
+            color: #E8382B !important;
+          }
+        }
         &:last-child {
           border: none;
         }
@@ -698,15 +714,6 @@ export default {
               margin-right: .23rem;
               font-weight: bold;
               color: #D39436;
-            }
-            .rmb {
-              padding: 0 .1rem;
-              height: .3rem;
-              line-height: .3rem;
-              font-size: .2rem;
-              color: #E8382B;
-              border:1px solid #E8382B;
-              border-radius: .06rem;
             }
           }
           .task-text {

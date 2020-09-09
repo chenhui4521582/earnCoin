@@ -28,7 +28,7 @@
           <div class="desc">{{item.recommendRemark}}</div>
         </div>
         <div class="wrap"> 
-          <div class="earn-Num">+{{item.award}}元</div>
+          <div class="earn-Num">+{{item.award}}</div>
           <div class="btn" @click="goDetail(item)">试玩</div>
         </div>
       </div>

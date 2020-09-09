@@ -18,7 +18,7 @@
         </div>
         <div class="text">
           <div class="name">{{item.name}}</div>
-          <div class="desc">{{item.recommendRemark}} <span v-if="info.type == 1">得{{item.award}}元</span> </div>
+          <div class="desc">{{item.recommendRemark}} <span v-if="item.award">得{{item.award}}</span> </div>
         </div>
         <div class="btn">去看看</div>
       </div>
@@ -134,7 +134,6 @@ export default {
       margin-bottom: .4rem;
       padding-right: .2rem;
       .wrap {
-        margin-bottom: .2rem;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -187,6 +186,7 @@ export default {
         }
       }
       .game-banner {
+        margin-top: .2rem;
         margin-left:.6rem;
         width: 5.8rem;
         height: 1.5rem;
