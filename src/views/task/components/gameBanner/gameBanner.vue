@@ -40,8 +40,9 @@ export default {
   data: () => ({
     bannerSwitch: 0,
     defaultOptions: {
+      spaceBetween : 10,
       initialSlide: 0,
-      slidesPerView: "auto"
+      slidesPerView: 3
     },
     maxOptions: {
       initialSlide: 0,
@@ -79,14 +80,11 @@ export default {
 .game-banner {
   overflow: hidden;
   padding: .2rem .3rem 0;
-  height: 4.56rem;
   background: #fff;
   box-sizing: content-box;
   .min-item {
-    padding-right: .2rem;
     overflow: hidden;
     width: 2.56rem;
-    height: 4.56rem;
     img {
       border-radius: .3rem;
     }
@@ -113,12 +111,10 @@ export default {
     left: 50%;
     top: 50%;
     z-index: 2;
-    width: 5.4rem;
-    height: 9.6rem;
+    width: 4.2rem;
     transform: translate(-50%,-50%);
     .max-item {
-      width: 5.4rem;
-      height: 9.6rem;
+      width: 4.2rem;
       border-radius: .4rem;
       overflow: hidden;
     }
