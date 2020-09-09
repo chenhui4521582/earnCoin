@@ -93,7 +93,7 @@ export default {
     AppUserGuide
   },
   computed: {
-    ...mapState(['APP_VERSION']),
+    ...mapState(['APP_VERSION', 'isVisitory']),
     showAnimation () {
       if (this.APP_VERSION) {
         return !this.showAppNewUserGuide
@@ -103,6 +103,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      userFirstRegister: "QTT_REPORT"
+    }),
     openService () {
       this.showService = true
       this.$marchSetsPoint('A_H5PT0303003633')
@@ -198,6 +201,8 @@ export default {
             localStorage.setItem('OPEN_ACCESS_TOKEN', data.token)
           }
         })
+        /** 趣头条广告回传，用户注册 **/
+        this.userFirstRegister(1)
       }
     },
     /** 判断不同平台的新手引导 **/

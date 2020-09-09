@@ -27,6 +27,7 @@
 </template>
 <script>
 import { getPhoneCode, bindMobilePhone } from "@/services/user"
+import { mapState, mapActions } from 'vuex'
 import _get from 'lodash.get'
 export default {
   name: 'bindPhone',
@@ -37,6 +38,7 @@ export default {
     showCountdown: false
   }),
   computed: {
+    ...mapState(['deviceId']),
     isSubmit () {
       let phoneReg = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
       if(this.phone === "" || !phoneReg.test(this.phone) || this.code=== ""){
@@ -49,6 +51,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      userFirstRegister: "QTT_REPORT"
+    }),
     // 绑定手机号码
     saveBinding () {
       let phoneReg = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
@@ -69,6 +74,8 @@ export default {
         if(code == 200){
           this.$Toast('绑定成功');
           this.$router.push({name:"my"})
+          /** 趣头条广告回传，用户注册 **/
+          this.userFirstRegister(1)
         }else{
           this.$Toast(message);
         }

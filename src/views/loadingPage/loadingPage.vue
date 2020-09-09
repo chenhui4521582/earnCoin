@@ -43,7 +43,7 @@ import { getUrlParams } from '@/utils/utils'
 import RedPacket from './components/redPacket'
 import { visitorLogin, userIsReceive, getRedPacketAward, sendRedPacketToServer, getAccessToken, getOpenToken, tokenVerify} from '@/services/user'
 import AppCall from '@/utils/native'
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import _get from 'lodash.get'
 export default {
   name: 'loadingPage',
@@ -59,6 +59,9 @@ export default {
     ...mapState(['deviceId'])
   },
   methods: {
+    ...mapActions({
+      userFirstActive: "QTT_REPORT"
+    }),
     async _visitorLogin (callback) {
       /** 游客登录 **/
       const vRes = await visitorLogin({ source: 1,visitorToken: this.deviceId })
@@ -181,6 +184,13 @@ export default {
     cancelClick () {
       AppCall.closeApp()
     },
+    /** 趣头条广告回传，用户激活 **/
+    QTT_API () {
+      const firstInApp = localStorage.getItem('firstInApp')
+      if( !firstInApp ) {
+        this.userFirstActive(0)
+      }
+    },
     init () {
       this.ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN')
       if(this.ACCESS_TOKEN) {
@@ -199,9 +209,11 @@ export default {
       } else {
         this._userIsReceive()
       }
+
     }
   },
   mounted () {
+    this.QTT_API()
     this.init()
   }
 }
