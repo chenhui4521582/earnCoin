@@ -33,14 +33,15 @@ export default {
   }),
   methods: {
     hideUserGuide () {
-      console.log(this.step)
       if (this.step == 1) {
         this.step = 2
+        this.$marchSetsPoint('A_H5PT0303000019')
         return 
       }
       if (this.step == 2) {
         this.showAppNewUserGuide = false
         this.$emit('popupSortHide')
+        this.$marchSetsPoint('A_H5PT0303000020')
       }
     },
     init (callback) {
