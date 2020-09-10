@@ -25,7 +25,7 @@
       <div class="name">微信绑定</div>
       <div class="staus">已绑定</div>
     </div>
-    <div class="item phone">
+    <div class="item phone" @click="phoneClick">
       <div class="name">手机号绑定</div>
       <div class="staus">{{userInfo.phone}}<span class="iconfont icon-next"></span></div>
     </div>
