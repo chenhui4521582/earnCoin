@@ -35,9 +35,12 @@ export default {
     } catch {}
   },
   /** 趣头条绑定回调 **/
-  QTT_REPORT ({ commit, state }, type) {
+  async QTT_REPORT ({ commit }, type) {
+    let productData = await AppCall.getProductData()
+    productData && (productData = JSON.parse(productData))
+    commit('SET_ANDROID_ID', productData.androidId)
     qttReport({
-      deviceNum: state.deviceId,
+      deviceNum: productData.androidId,
       type: type
     }).then(res => {
       if(type==0) {
