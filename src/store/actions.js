@@ -32,5 +32,19 @@ export default {
         commit('SET_APP_VERSION', product.appVersion)
       }
     } catch {}
+  },
+  /** 趣头条绑定回调 **/
+  async QTT_REPORT ({ commit }, type) {
+    let productData = await AppCall.getProductData()
+    productData && (productData = JSON.parse(productData))
+    commit('SET_ANDROID_ID', productData.androidId)
+    qttReport({
+      deviceNum: productData.androidId,
+      type: type
+    }).then(res => {
+      if(type==0) {
+        localStorage.setItem('firstInApp', 'true')
+      }
+    })
   }
 }
