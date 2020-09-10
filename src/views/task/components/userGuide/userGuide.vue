@@ -86,16 +86,16 @@ export default {
   .step {
     position: absolute;
     bottom: 0;
-    right: 0;
+    left: 1.3rem;
     z-index: 1;
-    width: 4.59rem;
+    width: 5.6rem;
     height: 1.09rem;
     box-shadow: 0 0 0 999999px rgba(0,0,0,.6);
   }
   .step1 {
     position: absolute;
     top: 2.85rem;
-    left: 2.02rem;
+    left: 1.91rem;
     z-index: 1;
     width: .64rem;
     height: .64rem;
