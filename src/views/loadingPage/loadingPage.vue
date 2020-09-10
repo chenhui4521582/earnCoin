@@ -51,19 +51,18 @@
 <script>
 import { visitorLogin, getAccessToken, tokenVerify } from '@/services/user'
 import AppCall from '@/utils/native'
-import { mapState, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
 import _get from 'lodash.get'
 export default {
   name: 'loadingPage',
   data: () => ({
-    showPrivacy: false
+    showPrivacy: false,
+    deviceId: ''
   }),
-  computed: {
-    ...mapState(['deviceId'])
-  },
   methods: {
     ...mapActions({
-      userIsVisitor: "USER_IS_VISITOR"
+      userIsVisitor: "USER_IS_VISITOR",
+      _getDeviceId: "GET_DEVICEID"
     }),
     /** 游客登录 **/
     _visitorLogin () {
@@ -127,7 +126,7 @@ export default {
     cancelClick () {
       AppCall.closeApp()
     },
-    init () {
+    async init () {
       /** 
        * 登录逻辑
        * 1. 用户隐私协议
@@ -136,6 +135,7 @@ export default {
       **/
       const userPrivacy = localStorage.getItem('userPrivacy')
       this.ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN')
+      this.deviceId = await this._getDeviceId()
       if(!userPrivacy) {
         this.showPrivacy = true
       }

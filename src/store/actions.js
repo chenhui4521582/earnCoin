@@ -17,7 +17,10 @@ export default {
     try {
       let deviceID = await AppCall.getDeviceID()
       commit('SET_DEVICEID', deviceID)
-    } catch {}
+      return deviceID
+    } catch (e) {
+      return e
+    }
   },
   /** 获取设备版本 **/
   async GET_APP_VERSION ({ commit }) {
