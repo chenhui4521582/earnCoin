@@ -91,7 +91,7 @@
       <div class="task-btn yellow1" v-if="taskDetail.status == 2" @click="startTaskConfirm">开始任务</div>
       <div class="task-btn gray" v-if="taskDetail.status == 1" >任务已完成</div>
       <div class="task-btn yellow" v-if="taskDetail.status == 0 && taskDetail.gameType == 2" @click="taskUnderway">任务进行中</div>
-      <div class="task-btn" v-if="taskDetail.status == 0 && taskDetail.gameType == 1">
+      <div class="task-btn" v-if="isshowDownLoadProgress">
         <!-- 下载进度条 -->
         <div class="download-progress" v-if="downloadedProgress">
           <div class="text">正在下载 {{downloadedProgress}}</div>
@@ -156,7 +156,7 @@
       </div>
     </modal>
     <!-- 原生粘贴板 -->
-    <textarea cols="20" rows="10" id="copy" style="width:0;height:0;opacity:0"></textarea>
+    <textarea cols="20" rows="10" id="copy" style="width:0;height:0;opacity:0" readonly="readonly"></textarea>
   </div>
 </template>
 <script>
@@ -244,13 +244,16 @@ export default {
     downloadedProgress () {
       let {downloaded = 0, length = 0} = this.download
       if(downloaded && length) {
-        if(downloaded>= length) {
+        if(downloaded >= length) {
           this.download = {}
           return
         }
         return (downloaded / length * 100).toFixed(1)  + '%'
       }
       return false
+    },
+    isshowDownLoadProgress () {
+      return this.taskDetail.status == 0 && this.taskDetail.gameType == 1
     }
   },
   methods: {
@@ -338,10 +341,7 @@ export default {
           this._getTaskDetail()
           /** gameType == 1 下载app处理逻辑 **/
           if(this.taskDetail.gameType == 1) {
-            this.copy(() => {
-              const url = this.taskDetail.download.split('?')[0]
-              AppCall.downloadApk(url)
-            })
+            this.resetDownload()
           } 
           /** 梦工厂游戏 **/
           else if (this.taskDetail.gameSource == 1) {
@@ -426,11 +426,10 @@ export default {
     },
     /** 重新下载 **/
     resetDownload () {
+      if(this.lock) return
+      this.lock = true
       this.copy(() => {
-        if(this.lock) return
-        this.lock = true
-        // const url = this.taskDetail.download.split('?')[0]
-        const url = 'https://wap.beeplaying.com/m/apk/hk_ddw_100097.apk'
+        const url = this.taskDetail.download.split('?')[0]
         AppCall.downloadApk(url)
         // switch (this.taskDetail.appId) {
         //   case 40000: 
@@ -441,6 +440,9 @@ export default {
         //     break;
         // }
       })
+      setTimeout(() => {
+        this.lock = false
+      }, 3000)
     },
     /** 获取礼包码 **/
     _getCard ({id}) {
@@ -476,14 +478,15 @@ export default {
         name: 'bindPhone'
       })
     },
+    /** 复制成功回调 **/
     onSuccess () {
       this.$Toast('复制成功，请前往游戏兑换礼包')
     },
     /** 向window插入下载监听方法 **/
     insertDownloadFn () {
       window.downloadApkCallback = (d) => {
-        const url = 'https://wap.beeplaying.com/m/apk/hk_ddw_100097.apk'
-        // if(d.url == this.taskDetail.download.split('?')[1]) {
+        console.log(d)
+        let url = this.taskDetail.download.split('?')[0]
         if(d.url == url) {
           this.download = d
         }
