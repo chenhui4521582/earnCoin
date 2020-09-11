@@ -247,6 +247,7 @@ export default {
       if(downloaded && length) {
         if(downloaded >= length) {
           this.download = {}
+          this.lock = false
           return
         }
         return (downloaded / length * 100).toFixed(1)  + '%'
@@ -429,23 +430,16 @@ export default {
     },
     /** 重新下载 **/
     resetDownload () {
-      if(this.lock) return
-      this.lock = true
-      this.copy(() => {
-        const url = this.taskDetail.download.split('?')[0]
-        AppCall.downloadApk(url)
-        // switch (this.taskDetail.appId) {
-        //   case 40000: 
-        //     location.href = 'https://wap.beeplaying.com/ddwgame/'
-        //   break;
-        //   case 10000:
-        //     location.href = 'https://fish.665e.com/fish/fishdown/'
-        //     break;
-        // }
-      })
+  
       setTimeout(() => {
-        this.lock = false
-      }, 3000)
+        if(this.lock) return
+        this.lock = true
+        this.copy(() => {
+          sessionStorage.setItem(`downloadLength${this.taskDetail.id}`, 0)
+          const url = this.taskDetail.download.split('?')[0]
+          AppCall.downloadApk(url)
+        })
+      }, 2000)
     },
     /** 获取礼包码 **/
     _getCard ({id}) {
@@ -524,12 +518,15 @@ export default {
     /** 向window插入下载监听方法 **/
     insertDownloadFn () {
       window.downloadApkCallback = (d) => {
-        console.log(d)
-        let url = this.taskDetail.download.split('?')[0]
-        if(d.url == url) {
+        /** 判断url **/
+        const {url, downloaded} = d
+        let downloadUrl = this.taskDetail.download.split('?')[0]
+        let downloadLength = sessionStorage.getItem(`downloadLength${this.taskDetail.id}`) || 0
+        if(downloadUrl == url && downloaded > downloadLength) {
+          sessionStorage.setItem(`downloadLength${this.taskDetail.id}`, downloaded)
+          this.lock = true
           this.download = d
         }
-        this.lock = false
       }
     },
     /** 离开页面的时候删除window对象的下载监听方法 **/
