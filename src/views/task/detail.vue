@@ -92,7 +92,15 @@
       <div class="task-btn yellow1" v-if="taskDetail.status == 2" @click="startTaskConfirm">开始任务</div>
       <div class="task-btn continue" v-if="taskDetail.status == 1" @click="taskUnderway">去玩游戏</div>
       <div class="task-btn yellow" v-if="taskDetail.status == 0 && taskDetail.gameType == 2" @click="taskUnderway">任务进行中</div>
-      <div class="task-btn red" v-if="taskDetail.status == 0 && taskDetail.gameType == 1" @click="resetDownload">如安装包下载失败，点此重新下载</div>
+      <div class="task-btn" v-if="isshowDownLoadProgress">
+        <!-- 下载进度条 -->
+        <div class="download-progress" v-if="downloadedProgress">
+          <div class="text">正在下载 {{downloadedProgress}}</div>
+          <div class="progress" :style="{width: downloadedProgress}"></div>
+        </div>
+        <!-- 下载按钮 -->
+        <div class="task-btn red" @click="resetDownload" v-else>如安装包下载失败，点此重新下载</div>
+      </div>
     </div>
     <!-- 客服弹框 -->
     <Service v-model="showService" />
@@ -147,7 +155,7 @@
       </div>
     </modal>
     <!-- 原生粘贴板 -->
-    <textarea cols="20" rows="10" id="copy" style="width:0;height:0;opacity:0"></textarea>
+    <textarea cols="20" rows="10" id="copy" style="width:0;height:0;opacity:0" readonly="readonly"></textarea>
   </div>
 </template>
 <script>
@@ -176,7 +184,9 @@ export default {
     showExchangeCard: false,
     showLoginConfirm: false,
     confirmItem: '',
-    cardAward: {}
+    cardAward: {},
+    download: {}
+    // download: {downloaded: 50, length: 500}
   }),
   components: {
     UserGuide,
@@ -218,10 +228,6 @@ export default {
       return this.taskDetail && this.taskDetail.configInfo && this.taskDetail.configInfo[index] || []
     },
     remark () {
-      // if(this.taskDetail.tUserId || this.taskDetail.tUserName) {
-      //   let name = this.taskDetail.gameType == 1 ? this.taskDetail.tUserId : this.taskDetail.tUserName
-      //   return `账号：${name}<br>${this.taskDetail.remark}`
-      // }
       return this.taskDetail.remark || ''
     },
     showResetDownLoad () {
@@ -235,6 +241,20 @@ export default {
         return this.taskDetail.img.split(',')
       }
       return []
+    },
+    downloadedProgress () {
+      let {downloaded = 0, length = 0} = this.download
+      if(downloaded && length) {
+        if(downloaded >= length) {
+          this.download = {}
+          return
+        }
+        return (downloaded / length * 100).toFixed(1)  + '%'
+      }
+      return false
+    },
+    isshowDownLoadProgress () {
+      return this.taskDetail.status == 0 && this.taskDetail.gameType == 1
     }
   },
   methods: {
@@ -314,9 +334,7 @@ export default {
           this._getTaskDetail()
           /** gameType == 1 下载app处理逻辑 **/
           if(this.taskDetail.gameType == 1) {
-            this.copy(() => {
-              location.href = this.taskDetail.download.split('?')[0]
-            })
+            this.resetDownload()
           } 
           /** 梦工厂游戏 **/
           else if (this.taskDetail.gameSource == 1) {
@@ -411,16 +429,23 @@ export default {
     },
     /** 重新下载 **/
     resetDownload () {
+      if(this.lock) return
+      this.lock = true
       this.copy(() => {
-        switch (this.taskDetail.appId) {
-          case 40000: 
-            location.href = 'https://wap.beeplaying.com/ddwgame/'
-          break;
-          case 10000:
-            location.href = 'https://fish.665e.com/fish/fishdown/'
-            break;
-        }
+        const url = this.taskDetail.download.split('?')[0]
+        AppCall.downloadApk(url)
+        // switch (this.taskDetail.appId) {
+        //   case 40000: 
+        //     location.href = 'https://wap.beeplaying.com/ddwgame/'
+        //   break;
+        //   case 10000:
+        //     location.href = 'https://fish.665e.com/fish/fishdown/'
+        //     break;
+        // }
       })
+      setTimeout(() => {
+        this.lock = false
+      }, 3000)
     },
     /** 获取礼包码 **/
     _getCard ({id}) {
@@ -499,7 +524,12 @@ export default {
     /** 向window插入下载监听方法 **/
     insertDownloadFn () {
       window.downloadApkCallback = (d) => {
-        // alert(JSON.stringify(d));
+        console.log(d)
+        let url = this.taskDetail.download.split('?')[0]
+        if(d.url == url) {
+          this.download = d
+        }
+        this.lock = false
       }
     },
     /** 离开页面的时候删除window对象的下载监听方法 **/
@@ -910,6 +940,38 @@ export default {
       &.continue {
         background: #FF7800;
         color: #FFFFFF;
+      }
+      .download-progress {
+        overflow: hidden;
+        border-radius: .4rem;
+        position: relative;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        border: 1px solid #D39436;
+        background: #fff;
+        .progress {
+          position: absolute;
+          left: 0;
+          top: 0;
+          z-index: 1;
+          width: 100%;
+          height: 100%;
+          background: #FFE790;
+        }
+        .text {
+          position: absolute;
+          left: 0;
+          top: 0;
+          z-index: 2;
+          width: 100%;
+          height: 100%;
+          text-align: center;
+          line-height: .8rem;
+          font-weight: bold;
+          font-size: .26rem;
+          color: #D39436;
+        }
       }
     }
   }

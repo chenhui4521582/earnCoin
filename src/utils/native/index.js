@@ -176,6 +176,10 @@ AppCall.extend({
   //关闭APP
   closeApp: function () {
     return this.call("closeApp")
+  },
+  //下载进度
+  downloadApk: function (url) {
+    return this.call('downloadApk', url)
   }
 })
 
