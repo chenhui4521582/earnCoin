@@ -83,24 +83,36 @@
           <p>亲，暂无数据哦~</p>
         </div>
       </div>
-      <div class="download" v-if="showResetDownLoad" @click="resetDownload">如安装包下载失败，点此<span>重新下载</span></div>
     </div>
+    <!-- 底部按钮 -->
     <div class="task-footer">
       <div class="service-btn" @click="openService">
         <img src="./img/service-icon.png" alt="">
       </div>
-      <div class="task-btn yellow1" v-if="taskDetail.status == 2" @click="startTaskConfirm">开始任务</div>
-      <div class="task-btn continue" v-if="taskDetail.status == 1" @click="taskUnderway">去玩游戏</div>
-      <div class="task-btn yellow" v-if="taskDetail.status == 0 && taskDetail.gameType == 2" @click="taskUnderway">任务进行中</div>
-      <div class="task-btn" v-if="isshowDownLoadProgress">
+      <!-- H5任务按钮 -->
+      <template v-if="taskDetail.gameType == 2">
+        <div class="task-btn yellow1" v-if="taskDetail.status == 2" @click="startTaskConfirm">开始任务</div>
+        <div class="task-btn gray" v-if="taskDetail.status == 1" >任务已完成</div>
+        <div class="task-btn yellow1" v-if="taskDetail.status == 0 && taskDetail.gameType == 2" @click="taskUnderway">开始游戏</div>
+      </template>
+      <!-- app任务按钮 -->
+      <template v-if="taskDetail.gameType == 1">
+        <!-- 任务完成 -->
+        <div class="task-btn gray" v-if="taskDetail.status == 1">任务已完成</div>
+        <!-- 开始任务 -->
+        <div class="task-btn yellow1" v-else-if="taskDetail.status == 2" @click="startTaskConfirm">开始任务</div>
         <!-- 下载进度条 -->
-        <div class="download-progress" v-if="downloadedProgress">
+        <div class="download-progress" v-else-if="downloadedProgress">
           <div class="text">正在下载 {{downloadedProgress}}</div>
           <div class="progress" :style="{width: downloadedProgress}"></div>
         </div>
-        <!-- 下载按钮 -->
-        <div class="task-btn red" @click="resetDownload" v-else>如安装包下载失败，点此重新下载</div>
-      </div>
+        <!-- 打开apk -->
+        <div class="task-btn yellow1" v-else-if="isShowOpenAppBtn" @click="openAPP">开始游戏</div>
+        <!-- 安装apk -->
+        <div class="task-btn yellow1" v-else-if="isShowInstallBtn" @click="installAPK">安装游戏</div>
+        <!-- 重新下载 -->
+        <div class="task-btn yellow1" v-else-if="isShowReloadBtn" @click="downloadApk">下载游戏</div>
+      </template>
     </div>
     <!-- 客服弹框 -->
     <Service v-model="showService" />
@@ -185,8 +197,10 @@ export default {
     showLoginConfirm: false,
     confirmItem: '',
     cardAward: {},
-    download: {}
-    // download: {downloaded: 50, length: 500}
+    download: {},
+    isShowReloadBtn: false,
+    isShowInstallBtn: false,
+    isShowOpenAppBtn: false
   }),
   components: {
     UserGuide,
@@ -256,6 +270,36 @@ export default {
     },
     isshowDownLoadProgress () {
       return this.taskDetail.status == 0 && this.taskDetail.gameType == 1
+    },
+    /** 计算是否显示 重新下载按钮 **/
+    async isShowReloadBtn () {
+      try {
+        console.log(await AppCall.checkIsDownload())
+        return await AppCall.checkIsDownload() && this.taskDetail.status == 0
+      }catch (e) {
+        return false
+      }
+    },
+    /** 计算是否显示 重新安装按钮 **/
+    async isShowInstallBtn () {
+      try {
+        return await AppCall.checkIsInstall() && this.taskDetail.status == 0
+      }catch (e) {
+        return false
+      }
+    },
+    /** 计算是否显示 开始游戏按钮 **/
+    async isShowOpenAppBtn () {
+      try {
+        let checkIsDownload = await AppCall.checkIsDownload()
+        let checkIsInstall =  await AppCall.checkIsInstall()
+        if(checkIsDownload && checkIsDownload && this.taskDetail.status == 0) {
+          return true
+        }
+        return false
+      } catch (e) {
+        return false
+      }
     }
   },
   methods: {
@@ -289,6 +333,7 @@ export default {
         if(code == 200) {
           this.taskDetail = data
           this.isShowPullDown()
+          this.appBtnStatus()
           this.$marchSetsPoint('A_H5PT0303000015', {
             game_id: this.taskDetail.gameId,
             game_name: this.taskDetail.name
@@ -332,10 +377,9 @@ export default {
       startTask(id).then(res => {
         const {code, data, message} = _get(res, 'data')
         if(code == 200) {
-          this._getTaskDetail()
           /** gameType == 1 下载app处理逻辑 **/
           if(this.taskDetail.gameType == 1) {
-            this.resetDownload()
+            this.downloadApk()
           } 
           /** 梦工厂游戏 **/
           else if (this.taskDetail.gameSource == 1) {
@@ -428,19 +472,6 @@ export default {
       document.execCommand("copy")
       callback && callback()
     },
-    /** 重新下载 **/
-    resetDownload () {
-  
-      setTimeout(() => {
-        if(this.lock) return
-        this.lock = true
-        this.copy(() => {
-          sessionStorage.setItem(`downloadLength${this.taskDetail.id}`, 0)
-          const url = this.taskDetail.download.split('?')[0]
-          AppCall.downloadApk(url)
-        })
-      }, 2000)
-    },
     /** 获取礼包码 **/
     _getCard ({id}) {
       getCard(id).then(res => {
@@ -479,6 +510,60 @@ export default {
     onSuccess () {
       this.$Toast('复制成功，请前往游戏兑换礼包')
     },
+    /** 重新下载 **/
+    downloadApk () {
+      if(this.lock) return
+      this.lock = true
+      this.copy(() => {
+        this.taskDetail.status = 0
+        sessionStorage.setItem(`downloadLength${this.taskDetail.id}`, 0)
+        const url = this.taskDetail.download.split('?')[0]
+        AppCall.downloadApk(url)
+      })
+    },
+    /** 计算APP下载的按钮状态 **/
+    async appBtnStatus () {
+      try {
+        let { packageName, fileName } = this.taskDetail
+        let checkIsDownload = await AppCall.checkIsDownload(fileName)
+        let checkIsInstall = await AppCall.checkIsInstall(packageName)
+        console.log('下载', checkIsDownload)
+        console.log('安装', checkIsInstall)
+        this.isShowReloadBtn = false
+        this.isShowInstallBtn = false
+        this.isShowOpenAppBtn = false
+        /** 显示重新下载按钮 **/
+        if(checkIsDownload == 'false' && this.taskDetail.status == 0) {
+          this.isShowReloadBtn = true
+          return
+          console.log('1是否下载', checkIsDownload)
+        }
+        /** 显示重新安装按钮 **/
+        if(checkIsInstall == 'false' && this.taskDetail.status == 0) {
+          this.isShowInstallBtn = true
+          return
+          console.log('2是否安装', checkIsInstall)
+        }
+        /** 显示去玩游戏按钮 **/
+        if(checkIsInstall == 'true' && this.taskDetail.status == 0) {
+          this.isShowOpenAppBtn = true
+          return
+          console.log('3是否去玩游戏', checkIsInstall)
+        }
+      } catch (e) {
+        return false
+      }
+    },
+    /** 重新安装APK **/
+    installAPK () {
+      let { fileName } = this.taskDetail
+      AppCall.installApk(fileName)
+    },
+    /** 打开APP **/
+    openAPP () {
+      let { packageName } = this.taskDetail
+      AppCall.openPackage(packageName)
+    },
     /** 梦工厂游戏时长上报 **/
     _durationReport ({gameId, time}) {
       const sign = localStorage.getItem('MGC_SIGN')
@@ -516,7 +601,8 @@ export default {
       }
     },
     /** 向window插入下载监听方法 **/
-    insertDownloadFn () {
+    insertWindowFn () {
+      /** 下载回调 **/
       window.downloadApkCallback = (d) => {
         /** 判断url **/
         const {url, downloaded} = d
@@ -528,10 +614,16 @@ export default {
           this.download = d
         }
       }
+      /** APP重后台返回前台的时候刷新下载按钮 **/
+      window.launchTimes = () => {
+        (this.taskDetail.gameType == 1) && this.appBtnStatus()
+      }
     },
+
     /** 离开页面的时候删除window对象的下载监听方法 **/
-    removeDownloadFn () {
+    removeWindowFn () {
       window.downloadApkCallback = null
+      window.launchTimes = null
     },
     /** 开始任务确认弹框关闭回调 **/
     hideConifrm () {
@@ -544,10 +636,10 @@ export default {
   mounted () {
     this._getTaskDetail()
     this.MGC_gameInit()
-    this.insertDownloadFn()
+    this.insertWindowFn()
   },
   beforeDestroy () {
-    this.removeDownloadFn()
+    this.removeWindowFn()
   }
 }
 </script>
@@ -891,7 +983,7 @@ export default {
     bottom: 0;
     z-index: 3;
     display: flex;  
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     height: 1.1rem;
     background: #fff;
@@ -917,7 +1009,7 @@ export default {
       background: #FFF5CF
     }
     .task-btn {
-      flex: 1;
+      width: 5.4rem;
       &.yellow {
         background: #FFE790;
         color: #D39436;
@@ -938,37 +1030,48 @@ export default {
         background: #FF7800;
         color: #FFFFFF;
       }
-      .download-progress {
-        overflow: hidden;
-        border-radius: .4rem;
-        position: relative;
-        padding: 0;
+      &.orange {
+        background: #FF7800;
+        color: #FFFFFF;
+      }
+    }
+    .download-progress {
+      position: absolute;
+      right: .3rem;
+      top: .15rem;
+      z-index: 1;
+      overflow: hidden;
+      padding: 0;
+      width: 5.4rem;
+      height: .8rem;
+      line-height: .82rem;
+      font-size: .26rem;
+      font-weight: bold;
+      text-align: center;
+      border: 1px solid #D39436;
+      border-radius: .4rem;
+      background: #fff;
+      .progress {
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 1;
         width: 100%;
         height: 100%;
-        border: 1px solid #D39436;
-        background: #fff;
-        .progress {
-          position: absolute;
-          left: 0;
-          top: 0;
-          z-index: 1;
-          width: 100%;
-          height: 100%;
-          background: #FFE790;
-        }
-        .text {
-          position: absolute;
-          left: 0;
-          top: 0;
-          z-index: 2;
-          width: 100%;
-          height: 100%;
-          text-align: center;
-          line-height: .8rem;
-          font-weight: bold;
-          font-size: .26rem;
-          color: #D39436;
-        }
+        background: #FFE790;
+      }
+      .text {
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 2;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        line-height: .8rem;
+        font-weight: bold;
+        font-size: .26rem;
+        color: #D39436;
       }
     }
   }
