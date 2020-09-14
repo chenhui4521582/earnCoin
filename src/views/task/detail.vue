@@ -332,7 +332,7 @@ export default {
         if(code == 200) {
           this.taskDetail = data
           this.isShowPullDown()
-          this.coutAppBtnStatus()
+          this.appBtnStatus()
           this.$marchSetsPoint('A_H5PT0303000015', {
             game_id: this.taskDetail.gameId,
             game_name: this.taskDetail.name
@@ -523,7 +523,7 @@ export default {
       })
     },
     /** 计算APP下载的按钮状态 **/
-    async coutAppBtnStatus () {
+    async appBtnStatus () {
       try {
         let { packageName, fileName } = this.taskDetail
         let checkIsDownload = await AppCall.checkIsDownload(fileName)
@@ -617,7 +617,7 @@ export default {
       }
       /** APP重后台返回前台的时候刷新下载按钮 **/
       window.launchTimes = () => {
-        (this.taskDetail.gameType == 1) && this.coutAppBtnStatus()
+        (this.taskDetail.gameType == 1) && this.appBtnStatus()
       }
     },
 
