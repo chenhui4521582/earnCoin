@@ -83,23 +83,36 @@
       </div>
       <div class="download" v-if="showResetDownLoad" @click="resetDownload">如安装包下载失败，点此<span>重新下载</span></div>
     </div>
+    <!-- 底部按钮 -->
     <div class="task-footer">
       <div class="service-btn" @click="openService">
         <img src="./img/service-icon.png" alt="">
         <span>联系客服</span>
       </div>
-      <div class="task-btn yellow1" v-if="taskDetail.status == 2" @click="startTaskConfirm">开始任务</div>
-      <div class="task-btn gray" v-if="taskDetail.status == 1" >任务已完成</div>
-      <div class="task-btn yellow" v-if="taskDetail.status == 0 && taskDetail.gameType == 2" @click="taskUnderway">任务进行中</div>
-      <div class="task-btn" v-if="isshowDownLoadProgress">
+      <!-- H5任务按钮 -->
+      <template v-if="taskDetail.gameType == 2">
+        <div class="task-btn yellow1" v-if="taskDetail.status == 2" @click="startTaskConfirm">开始任务</div>
+        <div class="task-btn gray" v-if="taskDetail.status == 1" >任务已完成</div>
+        <div class="task-btn yellow" v-if="taskDetail.status == 0 && taskDetail.gameType == 2" @click="taskUnderway">任务进行中</div>
+      </template>
+      <!-- app任务按钮 -->
+      <template v-if="taskDetail.gameType == 1">
+        <!-- 任务完成 -->
+        <div class="task-btn gray" v-if="taskDetail.status == 1" >任务已完成</div>
+        <!-- 开始任务 -->
+        <div class="task-btn yellow1" v-else-if="taskDetail.status == 2" @click="startTaskConfirm">开始任务</div>
+        <!-- 重新下载 -->
+        <div class="task-btn red" v-else-if="isShowReloadBtn" >下载遇到问题 点我重新下载</div>
+        <!-- 安装apk -->
+        <div class="task-btn gray" v-else-if="isShowInstallBtn" >重新安装</div>
+        <!-- 打开apk -->
+        <div class="task-btn gray" v-else-if="isShowOpenAppBtn" >打开APP</div>
         <!-- 下载进度条 -->
         <div class="download-progress" v-if="downloadedProgress">
           <div class="text">正在下载 {{downloadedProgress}}</div>
           <div class="progress" :style="{width: downloadedProgress}"></div>
         </div>
-        <!-- 下载按钮 -->
-        <div class="task-btn red" @click="resetDownload" v-else>如安装包下载失败，点此重新下载</div>
-      </div>
+      </template>
     </div>
     <!-- 客服弹框 -->
     <Service v-model="showService" />
@@ -186,7 +199,6 @@ export default {
     confirmItem: '',
     cardAward: {},
     download: {}
-    // download: {downloaded: 50, length: 500}
   }),
   components: {
     UserGuide,
@@ -255,6 +267,36 @@ export default {
     },
     isshowDownLoadProgress () {
       return this.taskDetail.status == 0 && this.taskDetail.gameType == 1
+    },
+    /** 计算是否显示 重新下载按钮 **/
+    async isShowReloadBtn () {
+      try {
+        console.log(await AppCall.checkIsDownload())
+        return await AppCall.checkIsDownload() && this.taskDetail.status == 0
+      }catch (e) {
+        return false
+      }
+    },
+    /** 计算是否显示 重新安装按钮 **/
+    async isShowInstallBtn () {
+      try {
+        return await AppCall.checkIsInstall() && this.taskDetail.status == 0
+      }catch (e) {
+        return false
+      }
+    },
+    /** 计算是否显示 开始游戏按钮 **/
+    async isShowOpenAppBtn () {
+      try {
+        let checkIsDownload = await AppCall.checkIsDownload()
+        let checkIsInstall =  await AppCall.checkIsInstall()
+        if(checkIsDownload && checkIsDownload && this.taskDetail.status == 0) {
+          return true
+        }
+        return false
+      } catch (e) {
+        return false
+      }
     }
   },
   methods: {
@@ -427,16 +469,13 @@ export default {
     },
     /** 重新下载 **/
     resetDownload () {
-  
-      setTimeout(() => {
-        if(this.lock) return
-        this.lock = true
-        this.copy(() => {
-          sessionStorage.setItem(`downloadLength${this.taskDetail.id}`, 0)
-          const url = this.taskDetail.download.split('?')[0]
-          AppCall.downloadApk(url)
-        })
-      }, 2000)
+      if(this.lock) return
+      this.lock = true
+      this.copy(() => {
+        sessionStorage.setItem(`downloadLength${this.taskDetail.id}`, 0)
+        const url = this.taskDetail.download.split('?')[0]
+        AppCall.downloadApk(url)
+      })
     },
     /** 获取礼包码 **/
     _getCard ({id}) {
