@@ -504,22 +504,25 @@ export default {
         this.isShowReloadBtn = false
         this.isShowInstallBtn = false
         this.isShowOpenAppBtn = false
+        console.log(checkIsDownload)
+        console.log(checkIsInstall)
         /**  1.0.1, 1.0 版本包不运行分步骤下载 **/
         if(this.APP_VERSION == '1.0.1' || this.APP_VERSION == '1.0') {
           console.log('1.0.1, 1.0 版本包不运行分步骤下载')
+          return
         }
         /** 显示重新下载按钮 **/
-        else if(checkIsDownload == 'false' && this.taskDetail.status == 0) {
+        if(checkIsDownload == 'false' && this.taskDetail.status == 0) {
           this.isShowReloadBtn = true
           console.log('1是否下载', checkIsDownload)
         }
         /** 显示重新安装按钮 **/
-        else if(checkIsInstall == 'false' && this.taskDetail.status == 0) {
+        if(checkIsInstall == 'false' && checkIsDownload == 'true' && this.taskDetail.status == 0) {
           this.isShowInstallBtn = true
           console.log('2是否安装', checkIsInstall)
         }
         /** 显示去玩游戏按钮 **/
-        else if(checkIsInstall == 'true' && this.taskDetail.status == 0) {
+        if(checkIsInstall == 'true' && this.taskDetail.status == 0) {
           this.isShowOpenAppBtn = true
           console.log('3是否去玩游戏', checkIsInstall)
         }
