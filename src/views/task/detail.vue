@@ -111,7 +111,7 @@
         <div class="task-btn yellow1" v-else-if="isShowInstallBtn" @click="installAPK">安装游戏</div>
         <!-- 重新下载 -->
         <div class="task-btn yellow1" v-else-if="isShowReloadBtn" @click="downloadApk">下载游戏</div>
-        <!-- 重新下载 -->
+        <!-- 1.0.1版本兼容 -->
         <div class="task-btn yellow1" v-else @click="downloadApk">下载游戏</div>
       </template>
     </div>
@@ -220,7 +220,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['isVisitory']),
+    ...mapState(['isVisitory', 'APP_VERSION']),
     activeStyle () {
       return {
         position: `relative`,
@@ -497,11 +497,11 @@ export default {
         let { packageName, fileName } = this.taskDetail
         let checkIsDownload = await AppCall.checkIsDownload(fileName)
         let checkIsInstall = await AppCall.checkIsInstall(packageName)
-        console.log('下载', checkIsDownload)
-        console.log('安装', checkIsInstall)
         this.isShowReloadBtn = false
         this.isShowInstallBtn = false
         this.isShowOpenAppBtn = false
+        /**  1.0.1 版本包不运行分步骤下载 **/
+        if(this.APP_VERSION == '1.0.1') return
         /** 显示重新下载按钮 **/
         if(checkIsDownload == 'false' && this.taskDetail.status == 0) {
           this.isShowReloadBtn = true
