@@ -267,39 +267,6 @@ export default {
         return (downloaded / length * 100).toFixed(1)  + '%'
       }
       return false
-    },
-    isshowDownLoadProgress () {
-      return this.taskDetail.status == 0 && this.taskDetail.gameType == 1
-    },
-    /** 计算是否显示 重新下载按钮 **/
-    async isShowReloadBtn () {
-      try {
-        console.log(await AppCall.checkIsDownload())
-        return await AppCall.checkIsDownload() && this.taskDetail.status == 0
-      }catch (e) {
-        return false
-      }
-    },
-    /** 计算是否显示 重新安装按钮 **/
-    async isShowInstallBtn () {
-      try {
-        return await AppCall.checkIsInstall() && this.taskDetail.status == 0
-      }catch (e) {
-        return false
-      }
-    },
-    /** 计算是否显示 开始游戏按钮 **/
-    async isShowOpenAppBtn () {
-      try {
-        let checkIsDownload = await AppCall.checkIsDownload()
-        let checkIsInstall =  await AppCall.checkIsInstall()
-        if(checkIsDownload && checkIsDownload && this.taskDetail.status == 0) {
-          return true
-        }
-        return false
-      } catch (e) {
-        return false
-      }
     }
   },
   methods: {
