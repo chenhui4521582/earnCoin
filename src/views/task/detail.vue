@@ -506,23 +506,22 @@ export default {
         this.isShowInstallBtn = false
         this.isShowOpenAppBtn = false
         /**  1.0.1, 1.0 版本包不运行分步骤下载 **/
-        if(this.APP_VERSION == '1.0.1' || this.APP_VERSION == '1.0') return
+        if(this.APP_VERSION == '1.0.1' || this.APP_VERSION == '1.0') {
+          console.log('1.0.1, 1.0 版本包不运行分步骤下载')
+        }
         /** 显示重新下载按钮 **/
-        if(checkIsDownload == 'false' && this.taskDetail.status == 0) {
+        else if(checkIsDownload == 'false' && this.taskDetail.status == 0) {
           this.isShowReloadBtn = true
-          return
           console.log('1是否下载', checkIsDownload)
         }
         /** 显示重新安装按钮 **/
-        if(checkIsInstall == 'false' && this.taskDetail.status == 0) {
+        else if(checkIsInstall == 'false' && this.taskDetail.status == 0) {
           this.isShowInstallBtn = true
-          return
           console.log('2是否安装', checkIsInstall)
         }
         /** 显示去玩游戏按钮 **/
-        if(checkIsInstall == 'true' && this.taskDetail.status == 0) {
+        else if(checkIsInstall == 'true' && this.taskDetail.status == 0) {
           this.isShowOpenAppBtn = true
-          return
           console.log('3是否去玩游戏', checkIsInstall)
         }
       } catch (e) {
@@ -593,7 +592,6 @@ export default {
         (this.taskDetail.gameType == 1) && this.appBtnStatus()
       }
     },
-
     /** 离开页面的时候删除window对象的下载监听方法 **/
     removeWindowFn () {
       window.downloadApkCallback = null
