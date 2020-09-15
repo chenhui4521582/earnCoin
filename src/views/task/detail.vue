@@ -111,7 +111,7 @@
         <div class="task-btn yellow1" v-else-if="isShowInstallBtn" @click="installAPK">安装游戏</div>
         <!-- 重新下载 -->
         <div class="task-btn yellow1" v-else-if="isShowReloadBtn" @click="downloadApk">下载游戏</div>
-        <!-- 1.0.1版本兼容 -->
+        <!-- 1.0.1, 1.0 版本兼容 -->
         <div class="task-btn yellow1" v-else @click="downloadApk">下载游戏</div>
       </template>
     </div>
@@ -262,7 +262,6 @@ export default {
       if(downloaded && length) {
         if(downloaded >= length) {
           this.download = {}
-          this.lock = false
           return
         }
         return (downloaded / length * 100).toFixed(1)  + '%'
@@ -482,14 +481,20 @@ export default {
     },
     /** 重新下载 **/
     downloadApk () {
-      if(this.lock) return
-      this.lock = true
+      if(this.downlock) {
+        this.$Toast('请勿连续点击')
+        return 
+      } 
       this.copy(() => {
         this.taskDetail.status = 0
         sessionStorage.setItem(`downloadLength${this.taskDetail.id}`, 0)
         const url = this.taskDetail.download.split('?')[0]
         AppCall.downloadApk(url)
       })
+      this.downlock = true
+      setTimeout(function () {
+        this.downlock = false
+      }, 3000)
     },
     /** 计算APP下载的按钮状态 **/
     async appBtnStatus () {
@@ -500,8 +505,8 @@ export default {
         this.isShowReloadBtn = false
         this.isShowInstallBtn = false
         this.isShowOpenAppBtn = false
-        /**  1.0.1 版本包不运行分步骤下载 **/
-        if(this.APP_VERSION == '1.0.1') return
+        /**  1.0.1, 1.0 版本包不运行分步骤下载 **/
+        if(this.APP_VERSION == '1.0.1' || this.APP_VERSION == '1.0') return
         /** 显示重新下载按钮 **/
         if(checkIsDownload == 'false' && this.taskDetail.status == 0) {
           this.isShowReloadBtn = true
@@ -580,7 +585,6 @@ export default {
         let downloadLength = sessionStorage.getItem(`downloadLength${this.taskDetail.id}`) || 0
         if(downloadUrl == url && downloaded > downloadLength) {
           sessionStorage.setItem(`downloadLength${this.taskDetail.id}`, downloaded)
-          this.lock = true
           this.download = d
         }
       }
