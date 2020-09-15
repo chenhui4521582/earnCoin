@@ -55,8 +55,8 @@
         </div>
         <p v-if="award.day == 7" class="p2">成功签到一周，下一周可获得 <span>{{allAward}}</span> 金币</p>
         <p v-else class="p2">明天再来，可以获得<span>{{nextAward}}</span>金币</p>
-        <div class="recommend">
-          <a href="#/task/detail?id=41"><img class="inner-img" src="../../img/sign/recommend.png" alt=""></a>
+        <div class="recommend" @click="recommendClick">
+          <img class="inner-img" src="../../img/sign/recommend.png" alt="">
         </div>
       </Modal>
       <!-- 规则弹框 -->
@@ -148,7 +148,7 @@ export default {
       })
     },
     _sign () {
-      // if(this.isSign) return
+      if(this.isSign) return
       sign().then( res => {
         // res = {
         //   "data":{
@@ -164,19 +164,17 @@ export default {
         //       "awardsDesc":[
         //         {"awardIcon":"/group1/M00/42/81/CmcEHF8D65-AUDFwAAAp4GWqT7s687.png","awardsNumDesc":"3500","awardsType":"1"},
         //       ],
-        //         "balance":0},
-        //       "message":null},
+        //       "balance":0,
+        //       "taskId": 41
+        //     },
+        //     "message":null
+        //   },
         // }
         let {code, data, message} = _get(res, 'data')
         if(code == 200) {
           this.showAward = true
           this.award = data
           if(this.award.day == 7) {
-            // let num = 0
-            // this.award.awardsDesc.forEach(element => {
-            //   num +=  Number(element.awardsNumD  esc)
-            // });
-            // this.award.awardsDesc.length = 1
             this.award.awardsDesc[1].awardIcon = null
           }
           this.isSign = true
@@ -209,6 +207,14 @@ export default {
       } else {
         this.$marchSetsPoint('A_H5PT0022001687')
       }
+    },
+    recommendClick () {
+      this.$router.push({
+        name: 'taskDetail',
+        query: {
+          id: this.award.taskId
+        }
+      })
     },
     init () {
       this._getTodaySign()
