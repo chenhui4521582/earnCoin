@@ -111,6 +111,8 @@
         <div class="task-btn yellow1" v-else-if="isShowInstallBtn" @click="installAPK">安装游戏</div>
         <!-- 重新下载 -->
         <div class="task-btn yellow1" v-else-if="isShowReloadBtn" @click="downloadApk">下载游戏</div>
+        <!-- 重新下载 -->
+        <div class="task-btn yellow1" v-else @click="downloadApk">下载游戏</div>
       </template>
     </div>
     <!-- 客服弹框 -->
