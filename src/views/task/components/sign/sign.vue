@@ -55,6 +55,9 @@
         </div>
         <p v-if="award.day == 7" class="p2">成功签到一周，下一周可获得 <span>{{allAward}}</span> 金币</p>
         <p v-else class="p2">明天再来，可以获得<span>{{nextAward}}</span>金币</p>
+        <div class="recommend">
+          <a href="#/task/detail?id=41"><img class="inner-img" src="../../img/sign/recommend.png" alt=""></a>
+        </div>
       </Modal>
       <!-- 规则弹框 -->
       <Modal v-model="showRule" title="说明" saveText="知道了" @on-save="ruleCallback">
@@ -82,7 +85,7 @@ export default {
     isSign: false,
     isCurDaySign: false,
     signToggle: true,
-    showAward: false,
+    showAward: true,
     award: [],
     showRule: false
   }),
@@ -534,6 +537,12 @@ export default {
   span {
     color: #D39436;
   }
+}
+.recommend {
+  position: absolute;
+  bottom: -2.2rem;
+  left: 0;
+  width: 5rem;
 }
 .rule-content {
   line-height: .42rem;
