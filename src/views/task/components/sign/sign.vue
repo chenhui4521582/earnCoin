@@ -85,7 +85,7 @@ export default {
     isSign: false,
     isCurDaySign: false,
     signToggle: true,
-    showAward: true,
+    showAward: false,
     award: [],
     showRule: false
   }),
