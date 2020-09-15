@@ -491,7 +491,7 @@ export default {
         AppCall.downloadApk(url)
       })
       this.downlock = true
-      setTimeout(function () {
+      setTimeout( () => {
         this.downlock = false
       }, 3000)
     },
