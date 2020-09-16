@@ -31,47 +31,41 @@
       </div>
       <div class="line"></div>
     </div>
-    <!-- task-nav -->
-    <div class="task-nav">
-      <div class="item" v-for="(item, index) in iconList" :key="index"
-        @click="jump(item.link, index)">
-        <img :src="item.img | filter" class="inner-img" :class="{'animation': showAnimation}"
-          alt="">
-        <p>{{item.name}}</p>
-      </div>
-    </div>
+    <!-- 导航 -->
+    <Navigation />
     <!-- ranking -->
-    <rank-info v-for="(item, index) in list" :info="item" :key="index" />
+    <Rank-info v-for="(item, index) in list" :info="item" :key="index" />
     <!-- agreement -->
     <div class="agreement">
       高额赚 <span @click="goUserAgreement">用户协议</span>
     </div>
     <!-- footer -->
-    <base-footer></base-footer>
+    <Base-footer />
     <!-- H5新手引导 -->
-    <h5-user-guide ref="h5UserGuide" @popupSortHide="popupSortHide" />
+    <H5-user-guide ref="h5UserGuide" @popupSortHide="popupSortHide" />
     <!-- APP新手引导 -->
-    <app-user-guide ref="appUserGuide" @popupSortHide="popupSortHide" />
+    <App-user-guide ref="appUserGuide" @popupSortHide="popupSortHide" />
     <!-- APP强更新弹框 -->
-    <app-update ref="appUpdate" @popupSortHide="popupSortHide"/>
-    <!-- 时长活动入口 -->
-    <duration-entry />
+    <App-update ref="appUpdate" @popupSortHide="popupSortHide"/>
+    <!-- 新手1小时活动 -->
+    <New-user-active ref="newUserActive" @popupSortHide="popupSortHide"/>
     <!-- 红包 -->
-    <red-packet ref="redPacket" @refresh="_getUserCenter" @popupSortHide="popupSortHide" />
+    <Red-packet ref="redPacket" @refresh="_getUserCenter" @popupSortHide="popupSortHide" />
   </div>
 </template>
 <script>
 import BaseFooter from '@/components/baseFooter/baseFooter'
+import Navigation from './components/navigation'
 import H5UserGuide from './components/h5UserGuide'
 import AppUserGuide from './components/appUserGuide'
 import RankInfo from './components/rankInfo'
 import AppUpdate from './components/AppUpdate'
 import RedPacket from './components/redPacket'
-import DurationEntry from '@/components/durationEntry/durationEntry'
-import Services from '@/services/index'
+import NewUserActive from './components/newUserActive'
 import AppCall from '@/utils/native'
-import { getUserCenter, getOpenToken } from '@/services/user'
 import { getUrlParams } from '@/utils/utils'
+import Services from '@/services/index'
+import { getUserCenter, getOpenToken } from '@/services/user'
 import { mapState, mapActions } from 'vuex'
 import _get from 'lodash.get'
 export default {
@@ -80,14 +74,14 @@ export default {
     accountInfo: {},
     taskInfo: {},
     avatar: '/cdn/common/images/common/img_photo.png',
-    iconList: [],
     list: [],
     isDisplay: true,
     popupSort: {
       popup: {
         1: 'appUpdate',
         2: 'redPacket',
-        3: 'userGuide'
+        3: 'userGuide',
+        4: 'newUserActive'
       },
       currentIndex: 0,
       serverSort: []
@@ -95,22 +89,16 @@ export default {
   }),
   components: {
     BaseFooter,
+    Navigation,
     RankInfo,
     AppUpdate,
-    DurationEntry,
     H5UserGuide,
     AppUserGuide,
-    RedPacket
+    RedPacket,
+    NewUserActive
   },
   computed: {
     ...mapState(['APP_VERSION', 'isVisitory']),
-    showAnimation () {
-      if (this.APP_VERSION) {
-        return !this.showAppNewUserGuide
-      } else {
-        return !this.showH5UserGuide
-      }
-    }
   },
   methods: {
     ...mapActions({
@@ -160,22 +148,6 @@ export default {
         }
       })
     },
-    /** 获取iconList **/
-    _getIconList () {
-      Services.getIconList().then(res => {
-        const { code, data, message } = _get(res, 'data')
-        if (code == 200) {
-          this.iconList = data
-        }
-      })
-    },
-    /** 跳转 **/
-    jump (url, index) {
-      this.$marchSetsPoint('H5PT0303003628', {
-        task_name: index
-      })
-      window.location.href = url
-    },
     /** 判断是否有openToken **/
     isOpenToken () {
       const isQuickLogin = getUrlParams('quicklogin')
@@ -193,7 +165,7 @@ export default {
     /** 首页弹框排序Init **/
     popupSortInit () {
       /** 服务器返回来的3个弹框 **/
-      this.popupSort.serverSort = [1,2,3]
+      this.popupSort.serverSort = [1, 2, 3, 4]
       /** 打开第一个弹框 **/
       let index = this.popupSort.serverSort[this.popupSort.currentIndex]
       let popup = this.popupSort.popup[index] || ''
@@ -218,6 +190,7 @@ export default {
         popup = 'h5UserGuide'
       }
       this.$refs[popup].init(isShow => {
+        console.log(popup)
         if(!isShow) {
           this.popupSortHide()
         }
@@ -226,7 +199,6 @@ export default {
   },
   mounted () {
     this._getUserCenter()
-    this._getIconList()
     this._getRankList()
     this.isOpenToken()
     this.popupSortInit()
@@ -356,41 +328,6 @@ export default {
       background: #f2f2f2;
     }
   }
-  .task-nav {
-    margin: 0 0 0.57rem;
-    display: flex;
-    justify-content: flex-start;
-    .item {
-      margin-right: 0.2rem;
-      img {
-        margin-bottom: 0.1rem;
-        height: 1.4rem;
-      }
-      p {
-        text-align: center;
-        color: #000000;
-      }
-      &:nth-child(1) {
-        .animation {
-          animation: scale infinite 2s;
-        }
-      }
-      &:nth-child(1) {
-        width: 2.6rem;
-        flex-shrink: 0;
-      }
-      &:nth-child(2) {
-        flex: 1;
-      }
-      &:nth-child(3) {
-        flex: 1;
-      }
-      &:last-child {
-        margin-right: 0;
-      }
-    }
-  }
-
   .agreement {
     height: 0.56rem;
     line-height: 0.56rem;
@@ -402,16 +339,6 @@ export default {
       text-decoration: underline;
     }
   }
-  @keyframes scale {
-    0% {
-      transform: scale(1);
-    }
-    50% {
-      transform: scale(1.1);
-    }
-    100% {
-      transform: scale(1);
-    }
-  }
+
 }
 </style>

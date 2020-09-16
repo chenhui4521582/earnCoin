@@ -43,6 +43,8 @@ export default {
           }
           callback && callback(this.showVersion)
         })
+      } else {
+        callback && callback(false)
       }
     },
   }
