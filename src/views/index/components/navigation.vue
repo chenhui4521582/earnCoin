@@ -58,9 +58,9 @@ export default {
         const {code, data, message} = _get(res, 'data')
         if(code == 200) {
           if(data) {
-            this.showNewUserActive = 1
-          }else {
             this.showNewUserActive = 2
+          }else {
+            this.showNewUserActive = 1
             this._getIconList()
           }
         }
