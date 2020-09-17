@@ -43,7 +43,7 @@ export default {
     hide () {
       this.$emit('popupSortHide')
       this.showPopup = false
-      this._startNewUserActive()
+      startNewUserActive()
       this.$marchSetsPoint('A_H5PT0303000026')
     }
   },
