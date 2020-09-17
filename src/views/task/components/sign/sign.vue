@@ -215,6 +215,10 @@ export default {
           id: this.award.taskId
         }
       })
+      this.$marchSetsPoint('A_H5PT0303000023', {
+        banner_id: this.award.taskId,
+        banner_name: '签到banner'
+      })
     },
     init () {
       this._getTodaySign()
