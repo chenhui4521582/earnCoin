@@ -165,7 +165,7 @@ export default {
     /** 首页弹框排序Init **/
     popupSortInit () {
       /** 服务器返回来的3个弹框 **/
-      this.popupSort.serverSort = [1, 2, 3, 4]
+      this.popupSort.serverSort = [1, 3, 4]
       /** 打开第一个弹框 **/
       let index = this.popupSort.serverSort[this.popupSort.currentIndex]
       let popup = this.popupSort.popup[index] || ''
