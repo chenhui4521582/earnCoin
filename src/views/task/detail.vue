@@ -551,13 +551,13 @@ export default {
         }).then( res => {
           this._getTaskDetail()
         })
+        this.$marchSetsPoint('D_JFQ0001', {
+          out_gameplat: 1,
+          game_duration: time,
+          game_id: this.taskDetail.gameId,
+          game_name: this.taskDetail.name
+        })
       }
-      this.$marchSetsPoint('D_JFQ0001', {
-        out_gameplat: 1,
-        game_duration: time,
-        game_id: this.taskDetail.gameId,
-        game_name: this.taskDetail.name
-      })
     },
     /** 梦工厂初始化 **/
     async MGC_gameInit () {

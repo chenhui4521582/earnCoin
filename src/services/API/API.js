@@ -1,5 +1,4 @@
 export const HOST = {
-  POINT_API: '//platform-point-api.beeplaying.com',
   PLATFORM_API: '//platform-api.beeplaying.com',
   OPS_API: '//ops-api.beeplaying.com',
   SHOP_API: '//shop-api.beeplaying.com',
@@ -57,7 +56,9 @@ const API = {
   userBindWechat: `${HOST.UIC_API}/uic/api/user/center/bindWechat`,
   firstReport: `${HOST.PLATFORM_API}/point/api/task/report`, //第一次进入游戏上报
   durationReport: `${HOST.PLATFORM_API}/point/api/task/duration`, //游戏时长上报
-  tokenVerify: `${HOST.UIC_API}/uic/api/user/login/tokenVerify` //验证token是否过期
+  tokenVerify: `${HOST.UIC_API}/uic/api/user/login/tokenVerify`, //验证token是否过期
+  getNewUserActive: `${HOST.PLATFORM_API}/point/new/user/welfare/popup`, //获取新手1小时活动
+  startNewUserActive: `${HOST.PLATFORM_API}/point/new/user/welfare/apply` //开始新手1小时活动
 }
 
 export default API
