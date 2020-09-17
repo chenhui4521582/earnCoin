@@ -1,10 +1,12 @@
 <template>
-  <div class="new-user-active" v-if="showPopup">
-    <div class="mask"></div>
-    <div class="body">
-      <img class="inner-img" src="../img/new-user-active/popup-bg.png" alt="" @click="_startNewUserActive">
-      <div class="close" @click="hide"></div>
-    </div>
+  <div class="new-user-active" >
+    <div class="mask" v-if="showPopup"></div>
+    <transition name="scale">
+      <div class="body" v-if="showPopup">
+        <img class="inner-img" src="../img/new-user-active/popup-bg.png" alt="" @click="_startNewUserActive">
+        <div class="close" @click="hide"></div>
+      </div>
+    </transition>
   </div>
 </template>
 <script>
@@ -22,6 +24,9 @@ export default {
         const {code, data, message} = _get(res, 'data')
         if(code == 200) {
           this.showPopup = data
+          if(this.showPopup) {
+            this.$marchSetsPoint('A_H5PT0303000025')
+          }
         }
         callback && callback(this.showPopup)
       })
@@ -30,6 +35,7 @@ export default {
       startNewUserActive().then(res => {
         const {code, data, message} = _get(res, 'data')
         if(code == 200) {
+          this.$marchSetsPoint('A_H5PT0303000027')
           location.href = '//wap.beeplaying.com/activities/earnCoinNewUser.html'
         } else {
           this.$Toast( message )
@@ -39,6 +45,8 @@ export default {
     hide () {
       this.$emit('popupSortHide')
       this.showPopup = false
+      this._startNewUserActive()
+      this.$marchSetsPoint('A_H5PT0303000026')
     }
   },
   watch: {
@@ -85,6 +93,35 @@ export default {
       width: 0.7rem;
       height: 0.7rem;
     }
+  }
+}
+.scale-enter-active {
+  animation: showAnimation .5s ease-in-out;
+}
+.scale-leave-active {
+  animation: hideAnimation 1s ease-in-out;
+}
+@keyframes showAnimation {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+@keyframes hideAnimation {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  40% {
+    transform: translate(-50%, -50%) scale(.2);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(0);
+    transform-origin:  3.5rem 1.3rem;
   }
 }
 </style>
