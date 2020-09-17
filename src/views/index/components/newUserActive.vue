@@ -23,7 +23,7 @@ export default {
       getNewUserActive().then(res => {
         const {code, data, message} = _get(res, 'data')
         if(code == 200) {
-          this.showPopup = data
+          this.showPopup = data.popup
           if(this.showPopup) {
             this.$marchSetsPoint('A_H5PT0303000025')
           }

@@ -1,30 +1,15 @@
 <template>
   <!-- navigation 走配置的 -->
   <div class="navigation">
-    <template v-if="showNewUserActive == 1">
-      <div class="item" 
-        v-for="(item, index) in iconList" 
-        :key="index"
-        @click="jump(item.link, index)"
-      >
-        <img :src="item.img | filter" class="inner-img" :class="{'animation': index == 0}" alt="" />
-        <p>{{item.name}}</p>
-      </div>
-    </template>
-    <template v-if="showNewUserActive == 2">
-      <div class="item" @click="goTask">
-        <img src="../img/navigation/img1.png" alt="" class="inner-img">
-        <p>高额赚</p>
-      </div>
-      <div class="item" @click="goNewUserActive">
-        <img src="../img/navigation/img2.png" alt="" class="inner-img animation">
-        <p>新人福利</p>
-      </div>
-      <div class="item" @click="goDutaionActive">
-        <img src="../img/navigation/img3.png" alt="" class="inner-img">
-        <p>砸金蛋</p>
-      </div>
-    </template>
+    <div class="item" 
+      v-for="(item, index) in iconList" 
+      :key="index"
+      @click="jump(item.link, index)"
+    >
+      <img v-if="item.img" :src="item.img | filter" class="inner-img" :class="{'animation': item.animation}" alt="" />
+      <img v-if="item.image" :src="item.image" class="inner-img" :class="{'animation': item.animation}" alt="" />
+      <p>{{item.name}}</p>
+    </div>
   </div>
 </template>
 <script>
@@ -33,19 +18,9 @@ import _get from 'lodash.get'
 export default {
   name: 'navigation',
   data: () => ({
-    iconList: [],
-    showNewUserActive: 0
+    iconList: []
   }),
   methods: {
-    /** 获取iconList **/
-    _getIconList () {
-      getIconList().then(res => {
-        const { code, data, message } = _get(res, 'data')
-        if (code == 200) {
-          this.iconList = data
-        }
-      })
-    },
     /** 跳转 **/
     jump (url, index) {
       this.$marchSetsPoint('H5PT0303003628', {
@@ -53,27 +28,36 @@ export default {
       })
       window.location.href = url
     },
-    init () {
-      getNewUserActive().then(res => {
-        const {code, data, message} = _get(res, 'data')
-        if(code == 200) {
-          if(data) {
-            this.showNewUserActive = 2
-          }else {
-            this.showNewUserActive = 1
-            this._getIconList()
-          }
+    async init () {
+      /** 获取iconList **/
+      let iconListRes = await getIconList()
+      let iconListData = _get(iconListRes, 'data.data', [])
+      /** 获取活动信息 **/
+      let newUserRes = await getNewUserActive()
+      let newUserData = _get(newUserRes, 'data.data', {})
+      /** 假如新手任务开启状态 **/
+      if(newUserData.active) {
+        let data = {
+          animation: true,
+          name: '新人福利',
+          image: require('../img/navigation/img2.png'),
+          link: '//wap.beeplaying.com/activities/earnCoinNewUser.html'
         }
-      })
-    },
-    goTask () {
-      window.location.href = `https://wap.beeplaying.com/earnCoin/#/task`
-    },
-    goDutaionActive () {
-      window.location.href = 'https://wap.beeplaying.com/activities/duration.html'
-    },
-    goNewUserActive () {
-      window.location.href = '//wap.beeplaying.com/activities/earnCoinNewUser.html'
+        iconListData[1] = data
+      }
+      /** 假如砸蛋开启状态 **/
+      if(newUserData.egg) {
+        let data = {
+          name: '砸金蛋',
+          image: require('../img/navigation/img3.png'),
+          link: '//wap.beeplaying.com/activities/duration.html'
+        }
+        iconListData[2] = data
+      }
+      if(!newUserData.active) {
+        iconListData[0].animation = true
+      }
+      this.iconList = iconListData
     }
   },
   mounted () {
