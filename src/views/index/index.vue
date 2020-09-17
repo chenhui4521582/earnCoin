@@ -190,7 +190,6 @@ export default {
         popup = 'h5UserGuide'
       }
       this.$refs[popup].init(isShow => {
-        console.log(popup)
         if(!isShow) {
           this.popupSortHide()
         }
