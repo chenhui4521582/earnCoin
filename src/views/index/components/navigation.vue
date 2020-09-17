@@ -66,14 +66,14 @@ export default {
         }
       })
     },
-    goTask ({taskId}) {
-      location.href = `https://wap.beeplaying.com/earnCoin/#/task`
+    goTask () {
+      window.location.href = `https://wap.beeplaying.com/earnCoin/#/task`
     },
     goDutaionActive () {
-      location.href = 'https://wap.beeplaying.com/activities/duration.html'
+      window.location.href = 'https://wap.beeplaying.com/activities/duration.html'
     },
     goNewUserActive () {
-      location.href = '//wap.beeplaying.com/activities/earnCoinNewUser.html'
+      window.location.href = '//wap.beeplaying.com/activities/earnCoinNewUser.html'
     }
   },
   mounted () {

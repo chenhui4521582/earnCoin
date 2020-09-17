@@ -37,8 +37,6 @@ export default {
         if(code == 200) {
           this.$marchSetsPoint('A_H5PT0303000027')
           location.href = '//wap.beeplaying.com/activities/earnCoinNewUser.html'
-        } else {
-          this.$Toast( message )
         }
       })
     },
@@ -63,13 +61,9 @@ export default {
 <style lang="less" scoped>
 .new-user-active {
   position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
   z-index: 10;
   .mask {
-    position: absolute;
+    position: fixed;
     left: 0;
     right: 0;
     top: 0;
@@ -78,7 +72,7 @@ export default {
     background: rgba(0,0,0,.6);
   }
   .body {
-    position: absolute;
+    position: fixed;
     left: 50%;
     top: 50%;
     z-index: 2;
