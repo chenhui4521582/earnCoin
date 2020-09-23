@@ -1,8 +1,8 @@
 let state = {
   /** 用户信息 **/
-  userInfo: {},
+  userCenter: {},
   /** app版本 **/
-  APP_VERSION: null,
+  APP_VERSION: 111,
   /** 是否是游客 **/
   isVisitory: null,
   /** 设备号 **/

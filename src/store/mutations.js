@@ -1,6 +1,7 @@
 export default {
-  SET_USERINFO (state, data) {
-    state.userInfo = data
+  SET_USER_CENTER (state, data) {
+    console.log()
+    state.userCenter = {...state.userCenter, ...data}
   },
   SET_VISITORY (state, data) {
     state.isVisitory = data

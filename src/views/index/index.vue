@@ -9,13 +9,13 @@
           我的金币
         </div>
         <div class="number">
-          <em>{{ accountInfo.currPoint }}</em><span>个</span>
+          <em>{{ userCenter.currPoint }}</em><span>个</span>
           <div class="check">
             <img class="inner-img" src="./img/check-now.png" alt="">
           </div>
         </div>
         <div class="add">
-          今日+{{ accountInfo.todayPoint }}
+          今日+{{ userCenter.todayPoint }}
         </div>
       </div>
       <div class="task item" @click="goTask">
@@ -24,10 +24,10 @@
           我的任务
         </div>
         <div class="number">
-          <em>{{accountInfo.num}}</em><span>个</span>
+          <em>{{userCenter.num}}</em><span>个</span>
         </div>
         <div class="add">
-          已完成+{{accountInfo.finishNum}}
+          已完成+{{userCenter.finishNum}}
         </div>
       </div>
       <div class="line"></div>
@@ -65,14 +65,13 @@ import RedPacket from './components/redPacket'
 import NewUserActive from './components/newUserActive'
 import AppCall from '@/utils/native'
 import Services from '@/services/index'
-import { getUserCenter, getOpenToken } from '@/services/user'
+import { getOpenToken } from '@/services/user'
 import { getUrlParams, imgToBase64 } from '@/utils/utils'
 import { mapState, mapActions } from 'vuex'
 import _get from 'lodash.get'
 export default {
   name: 'Index',
   data: () => ({
-    accountInfo: {},
     taskInfo: {},
     avatar: '/cdn/common/images/common/img_photo.png',
     list: [],
@@ -99,11 +98,12 @@ export default {
     NewUserActive
   },
   computed: {
-    ...mapState(['APP_VERSION', 'isVisitory']),
+    ...mapState(['APP_VERSION', 'isVisitory', 'userCenter']),
   },
   methods: {
     ...mapActions({
-      userFirstRegister: "QTT_REPORT"
+      userFirstRegister: "QTT_REPORT",
+      _getUserCenter: "GET_USER_CENTER"
     }),
     openService () {
       this.showService = true
@@ -129,16 +129,6 @@ export default {
     },
     goUserAgreement () {
       window.location.href = 'https://wap.beeplaying.com/xmWap/#/my/userAgreement'
-    },
-    /** 用户账户信息 **/
-    _getUserCenter () {
-      getUserCenter().then(res => {
-        const { code, data, message } = _get(res, 'data')
-        if (code == 200) {
-          this.accountInfo = data
-          localStorage.setItem('user_info', JSON.stringify(this.accountInfo))
-        }
-      })
     },
     /** 获取推荐排行榜 **/
     _getRankList () {

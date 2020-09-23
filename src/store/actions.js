@@ -1,5 +1,5 @@
 import AppCall from '@/utils/native/index'
-import { userIsVisitor } from '@/services/user'
+import { userIsVisitor, getUserCenter } from '@/services/user'
 import { qttReport } from '@/services/qutoutiao'
 import _get from 'lodash.get'
 export default {
@@ -45,6 +45,16 @@ export default {
     }).then(res => {
       if(type==0) {
         localStorage.setItem('firstInApp', 'true')
+      }
+    })
+  },
+  /** 获取用户信息 **/
+  GET_USER_CENTER ({ commit }) {
+    getUserCenter().then(res => {
+      const {code, data, message} = _get(res, 'data')
+      if(code == 200) {
+        commit('SET_USER_CENTER', data)
+        localStorage.setItem('user_info', JSON.stringify(this.userCenter))
       }
     })
   }
