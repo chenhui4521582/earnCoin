@@ -77,6 +77,12 @@ const durationReport = function (params) {
   return $axios.post(Api.durationReport, params)
 }
 
+/**
+ * @description 任务详情  游戏时长上报
+ */
+const getReadAdAward = function (params) {
+  return $axios.post(Api.getReadAdAward, params)
+}
 
 export { 
   getSignList,
@@ -89,7 +95,8 @@ export {
   getAward, 
   getCard,
   firstReport,
-  durationReport
+  durationReport,
+  getReadAdAward
 }
 
 const Services = {
@@ -103,6 +110,7 @@ const Services = {
   getAward,
   getCard,
   firstReport,
-  durationReport
+  durationReport,
+  getReadAdAward
 }
 export default Services
