@@ -505,8 +505,6 @@ export default {
         this.isShowReloadBtn = false
         this.isShowInstallBtn = false
         this.isShowOpenAppBtn = false
-        console.log(checkIsDownload)
-        console.log(checkIsInstall)
         /**  1.0.1, 1.0 版本包不运行分步骤下载 **/
         if(this.APP_VERSION == '1.0.1' || this.APP_VERSION == '1.0') {
           console.log('1.0.1, 1.0 版本包不运行分步骤下载')
