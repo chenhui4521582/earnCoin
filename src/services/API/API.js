@@ -58,7 +58,7 @@ const API = {
   firstReport: `${HOST.PLATFORM_API}/point/api/task/report`, //第一次进入游戏上报
   durationReport: `${HOST.PLATFORM_API}/point/api/task/duration`, //游戏时长上报
   tokenVerify: `${HOST.UIC_API}/uic/api/user/login/tokenVerify`, //验证token是否过期
-  getReadAdAward: `${HOST.PLATFORM_API}/point/api/task/drawAward` //验证token是否过期
+  getReadAdAward: `${HOST.PLATFORM_API}/point/api/task/drawAward` //看广告领奖励
 }
 
 export default API

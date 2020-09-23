@@ -78,7 +78,7 @@ const durationReport = function (params) {
 }
 
 /**
- * @description 任务详情  游戏时长上报
+ * @description 任务详情  看广告领奖励
  */
 const getReadAdAward = function (params) {
   return $axios.post(Api.getReadAdAward, params)
