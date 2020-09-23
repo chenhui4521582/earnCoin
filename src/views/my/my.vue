@@ -4,11 +4,11 @@
     <!-- userInfo -->
     <div class="user-info" >
       <div class="avatar" @click="AvatarClick">
-        <img class="inner-img" :src="(userInfo.headImg || avatar) | filter" alt="">
+        <img class="inner-img" :src="(userCenter.headImg || avatar) | filter" alt="">
       </div>
       <div class="info" @click="AvatarClick">
-        <div class="name">{{userInfo.nickname}}</div>
-        <div class="id">用户ID:{{userInfo.userId}}</div>
+        <div class="name">{{userCenter.nickname}}</div>
+        <div class="id">用户ID:{{userCenter.userId}}</div>
       </div>
       <div class="service" @click="openService">
         <img src="./img/service-icon.png" alt="">联系客服
@@ -18,21 +18,21 @@
     <div class="account-info">
       <div class="title">
         金币总额
-        <i v-if="userInfo.balance==0">可以提现了</i>
-        <span v-else>再赚{{userInfo.balance}}金币就能提现了</span>
+        <i v-if="userCenter.balance==0">可以提现了</i>
+        <span v-else>再赚{{userCenter.balance}}金币就能提现了</span>
       </div>
       <div class="coin">
-        {{userInfo.currPoint}}<span>个</span>
+        {{userCenter.currPoint}}<span>个</span>
       </div>
       <div class="rmb">
-        ≈{{userInfo.convertRmb}}<span>元</span>
+        ≈{{userCenter.convertRmb}}<span>元</span>
       </div>
       <div class="btn" @click="goWithdraw">提现</div>
     </div>
     <!-- 账号绑定 -->
-    <account-bind :userInfo="userInfo" v-if="isShowAccount" @wechatBindSuccess="wechatBindSuccess"/>
+    <account-bind :userInfo="userCenter" v-if="isShowAccount" @wechatBindSuccess="wechatBindSuccess"/>
     <!-- 个人中心List -->
-    <my-list :userInfo="userInfo" @openService="openService"/>
+    <my-list :userInfo="userCenter" @openService="openService"/>
     <!-- 退出登录 -->
     <div class="logout" v-if="isShowLogout" @click="logout"> 退出登录</div>
     <!-- 客服弹框 -->
@@ -50,8 +50,7 @@ import AccountBind from './components/accountBind'
 import MyList from './components/list'
 import DurationEntry from '@/components/durationEntry/durationEntry'
 import AppCall from '@/utils/native'
-import { getUserCenter } from '@/services/user'
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 import _get from 'lodash.get'
 export default {
   name: 'my',
@@ -69,7 +68,7 @@ export default {
     DurationEntry
   },
   computed: {
-    ...mapState(['APP_VERSION', 'isVisitory', 'deviceId']),
+    ...mapState(['APP_VERSION', 'isVisitory', 'deviceId', 'userCenter']),
     isShowLogout () {
       if(!this.isVisitory && this.APP_VERSION) {
         return true
@@ -86,7 +85,11 @@ export default {
   },
   methods: {
     ...mapActions({
-      _userIsVisitor: 'USER_IS_VISITOR'
+      _userIsVisitor: 'USER_IS_VISITOR',
+      _getUserCenter: "GET_USER_CENTER"
+    }),
+    ...mapMutations({
+      setUserCenter: 'SET_USER_CENTER'
     }),
     AvatarClick () {
       this.$marchSetsPoint('A_H5PT0303003634')
@@ -95,18 +98,8 @@ export default {
       this.showService = true
       this.$marchSetsPoint('A_H5PT0303003633')
     },
-    /** 获取用户信息 **/
-    _getUserCenter () {
-      getUserCenter().then(res => {
-        const {code, data, message} = _get(res, 'data')
-        if(code == 200) {
-          this.userInfo = data
-          localStorage.setItem('user_info', JSON.stringify(this.userInfo))
-        }
-      })
-    },
     wechatBindSuccess () {
-      this.userInfo.bindWechat = true
+      this.setUserCenter({bindWechat: true})
       setTimeout(()=> {
         this._getUserCenter()
         this._userIsVisitor({deviceNum: this.deviceId})

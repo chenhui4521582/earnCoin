@@ -93,16 +93,15 @@
 </template>
 <script>
 import WithdrawType from './components/withdrawType'
-import { getUserCenter, isBindGZH } from '@/services/user'
+import { isBindGZH } from '@/services/user'
 import { getWithdrawList, userWithDraw } from '@/services/withdraw'
-import { mapState } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import _get from 'lodash.get'
 export default {
   name: 'withdraw',
   data: () => ({
     isBind: false,
     showRule: false,
-    userCenter: {},
     withdrawList: [],
     currentIndex: 0,
     showModal: false
@@ -111,7 +110,7 @@ export default {
     WithdrawType
   },
   computed: {
-    ...mapState(['APP_VERSION']),
+    ...mapState(['APP_VERSION', 'userCenter']),
     canWithdraw () {
       /** 绑定过手机号  并且金币足够才能提现 **/
       const accountCoin = _get(this.userCenter, 'currPoint', 0)
@@ -131,6 +130,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      _getUserCenter: "GET_USER_CENTER"
+    }),
     goWithdrawLog () {
       this.$router.push({
         name: 'withdrawLog'
@@ -156,16 +158,6 @@ export default {
         const {code, data, message} = _get(res, 'data')
         if(code == 200) {
           this.isBind = data
-        }
-      })
-    },
-    /** 获取用户金币信息 **/
-    _getUserCenter () {
-      getUserCenter().then(res => {
-        const {code, data, message} = _get(res, 'data')
-        if(code == 200) {
-          this.userCenter = data
-          localStorage.setItem('user_info', JSON.stringify(this.userCenter))
         }
       })
     },
