@@ -127,7 +127,8 @@ class utils {
   }
   openGame (url, SDK, params) {
     let APP_CHANNEL = localStorage.getItem('APP_CHANNEL')
-    let baseUrl = `https://wap.beeplaying.com/${url}${url.includes('?') ? '&' : '?'}channel=${APP_CHANNEL}&time=${new Date().getTime()}${params || ''}`
+    let ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN')
+    let baseUrl = `https://wap.beeplaying.com/${url}${url.includes('?') ? '&' : '?'}channel=${APP_CHANNEL}&token=${ACCESS_TOKEN}&time=${Date.now()}`
     if (SDK) {
       parent.location.href = baseUrl
     } else {
