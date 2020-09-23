@@ -128,7 +128,7 @@ class utils {
   openGame (url, WJ_GAMETYPE) {
     let APP_CHANNEL = localStorage.getItem('APP_CHANNEL')
     let ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN')
-    let baseUrl = `https://wap.beeplaying.com/${url}${url.includes('?') ? '&' : '?'}channel=${APP_CHANNEL}&token=${ACCESS_TOKEN}&time=${Date.now()}&gameid=${WJ_GAMETYPE}`
+    let baseUrl = `https://wap.beeplaying.com/${url}${url.includes('?') ? '&' : '?'}channel=${APP_CHANNEL}&token=${ACCESS_TOKEN}&time=${Date.now()}&wj_gameType=${WJ_GAMETYPE}`
     window.location.href = baseUrl
   }
   move (e) {
