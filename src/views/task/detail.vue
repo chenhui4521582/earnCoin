@@ -51,11 +51,12 @@
                   <img class="inner-img" src="./img/coin-icon.png" alt="">
                 </div>
                 <div class="prize">+{{item.award}}金币</div>
+                <div class="read-ad" v-if="item.profit">看视频领{{ item.profit | numberFormat }}倍</div>
               </div>
               <div class="task-text">{{item.remark}}</div>
             </div>
             <div class="right">
-              <div class="btn yellow2" v-if="item.status == 2" @click="_userIsVisitor(item)">领奖励</div>
+              <div class="btn yellow2" v-if="item.status == 2" @click="userReadAdvertiting(item)">领奖励</div>
               <div class="btn gray" v-if="item.status == 1">已完成</div>
               <div class="btn yellow" v-if="item.status == 0" @click="listItemClick(index)">去完成</div>
               <div class="progress" v-if="item.userFinish || item.configFinish">当前进度：{{item.userFinish | amountComputen1}}/{{item.configFinish | amountComputen2}}</div>
@@ -136,16 +137,16 @@
         <div class="pwd">兑换路径：{{cardAward.getWay}}</div>
       </div>
     </modal>
-    <!-- 游客登录询问 -->
-    <modal v-model="showLoginConfirm" title="账号安全提示" >
-      <div class="loginconfirm-content">
-        为保障账户的资金安全，建议您绑定手机号后领取奖励。
-      </div>
-      <div class="loginconfirm-footer" slot="footer">
-        <div class="footer-btn" @click="goPhoneBind">绑定手机号</div>
+    <!-- 是否显示多倍看广告弹框 -->
+    <div class="user-read-advertiting" v-if="showReadAdvertiting">
+      <div class="mask"></div>
+      <div class="user-read-advertiting-center">
+        <div class="user-read-advertiting-btn" @click="openAdvertiting">
+          <img src="./img/ad-icon.png" alt="">
+          {{ confirmItem.profit | numberFormat}}倍领取</div>
         <p @click="_getAward(confirmItem)">直接领取</p>
       </div>
-    </modal>
+    </div>
     <!-- 原生粘贴板 -->
     <textarea cols="20" rows="10" id="copy" style="width:0;height:0;opacity:0"></textarea>
   </div>
@@ -156,10 +157,10 @@ import AppCall from '@/utils/native'
 import UserGuide from './components/userGuide/userGuide'
 import GameBanner from './components/gameBanner/gameBanner'
 import Grade from '@/components/grade/grade'
-import { getTaskDetail, startTask, getAward, getCard, firstReport, durationReport } from '@/services/task'
+import { getTaskDetail, startTask, getAward, getCard, firstReport, durationReport, getReadAdAward } from '@/services/task'
 import { userIsVisitor, getUserCenter } from '@/services/user'
 import { jumpUrl } from '@/utils/utils'
-import { mapState } from 'vuex'
+import md5 from 'js-md5';
 import _get from 'lodash.get'
 export default {
   name: 'taskDetail',
@@ -174,7 +175,7 @@ export default {
     showApptaskConfirm: false,
     showH5taskConfirm: false,
     showExchangeCard: false,
-    showLoginConfirm: false,
+    showReadAdvertiting: false,
     confirmItem: '',
     cardAward: {}
   }),
@@ -192,10 +193,24 @@ export default {
     amountComputen2 (val) {
       if (!val) { return 0 }
       return val > 10000 ? parseInt(val / 10000) + '万' : val
+    },
+    numberFormat (val) {
+      if (!val) { return 0 }
+      let format = {
+        1: '一',
+        2: '双',
+        3: '三',
+        4: '四',
+        5: '五',
+        6: '六',
+        7: '七',
+        8: '八',
+        9: '九'
+      }
+      return format[val]
     }
   },
   computed: {
-    ...mapState(['isVisitory']),
     activeStyle () {
       return {
         position: `relative`,
@@ -218,10 +233,6 @@ export default {
       return this.taskDetail && this.taskDetail.configInfo && this.taskDetail.configInfo[index] || []
     },
     remark () {
-      // if(this.taskDetail.tUserId || this.taskDetail.tUserName) {
-      //   let name = this.taskDetail.gameType == 1 ? this.taskDetail.tUserId : this.taskDetail.tUserName
-      //   return `账号：${name}<br>${this.taskDetail.remark}`
-      // }
       return this.taskDetail.remark || ''
     },
     showResetDownLoad () {
@@ -360,11 +371,35 @@ export default {
         }else {
           this.$Toast( message )
         }
-        this.showLoginConfirm = false
+        this.showReadAdvertiting = false
       })
       this.$marchSetsPoint('A_H5PT0303003643', {
         task_id: id,
         task_name: remark
+      })
+    },
+    /** 领取看广告多倍奖励 **/
+    _getReadAdAward (item) {
+      const {id} = item
+      let channel = localStorage.getItem('APP_CHANNEL')
+      let userInfo = localStorage.getItem('user_info')
+      let timestamp = Date.now()
+      userInfo && (userInfo = JSON.parse(userInfo))
+      let sign = md5(`channelId=${channel}&id=${id}&timestamp=${timestamp}&userId=${userInfo.userId}`)
+      getReadAdAward({
+        id,
+        sign,
+        timestamp
+      }).then( res => {
+        const {code, data, message} = _get(res, 'data')
+        if(code == 200) {
+          this.showReadAdvertiting = false
+          this.showAward = true
+          this.award = data
+          this._getTaskDetail()
+        }else {
+          this.$Toast( message )
+        }
       })
     },
     /** 领取奖励回调 **/
@@ -441,11 +476,11 @@ export default {
       }
       this.showExchangeCard = true
     },
-    /** 判断用户是否是游客 **/
-    _userIsVisitor (item) {
-      if(this.isVisitory) {
+    /** 判断用户是否要看广告 **/
+    userReadAdvertiting (item) {
+      if(item.profit != 0) {
         this.confirmItem = item
-        this.showLoginConfirm = true
+        this.showReadAdvertiting = true
       }else {
         this._getAward(item)
       }
@@ -512,7 +547,23 @@ export default {
         task_id: this.taskDetail.id,
         task_name: this.taskDetail.name
       })
-    }
+    },
+    /** 打开广告 **/
+    openAdvertiting () {
+      let user_info = localStorage.getItem('user_info')
+      user_info && (user_info = JSON.parse(user_info))
+      AppCall.advertiting({
+        advertitingId: 945457455,
+        userId: user_info.userId
+      }).then(res => {
+        if(res) {
+          this.showReadAdvertiting = false
+          this._getReadAdAward(this.confirmItem)
+        }else {
+          this.showReadAdvertiting = false
+        }
+      })
+    },
   },
   mounted () {
     this._getTaskDetail()
@@ -737,9 +788,21 @@ export default {
               height: .3rem;
             }
             .prize {
-              margin-right: .23rem;
+              margin-right: .08rem;
               font-weight: bold;
               color: #D39436;
+            }
+            .read-ad {
+              height: .3rem;
+              font-size: .2rem;
+              border: 1px solid #E8382B;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              padding: 0 .1rem;
+              white-space: nowrap;
+              border-radius: .06rem;
+              color: #E8382B;
             }
           }
           .task-text {
@@ -976,6 +1039,60 @@ export default {
     }
     .pwd {
       line-height: .4rem;
+    }
+  }
+  .user-read-advertiting {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    .mask {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      top: 0;
+      left: 0;
+      background-color: rgba(0, 0, 0, 0.6);
+      z-index: 1;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .user-read-advertiting-center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      z-index: 2;
+      padding-top: .56rem;
+      width: 5rem;
+      width: 3.4rem;
+      height: 2.2rem;
+      transform: translate(-50%, -50%);
+      border-radius: .5rem;
+      background: #fff;
+      .user-read-advertiting-btn {
+        margin: 0 auto .2rem;
+        width: 2.4rem;
+        height: .7rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #FFCA00;
+        border-radius: .35rem;
+        font-size: .26rem;
+        color: #000;
+        font-weight: bold;
+        img {
+          margin-right: .05rem;
+          width: .3rem;
+          height: .3rem;
+        }
+      }
+      p {
+        color: #ACACAC;
+        text-align: center;
+      }
     }
   }
   .loginconfirm-content {

@@ -337,6 +337,28 @@ class utils {
       }, 200)
     })
   }
+  /** 图片转base64 **/
+  imgToBase64 (url, callback) {
+			//一定要设置为let，不然图片不显示
+			let image = new Image();
+			//解决跨域问题
+			image.setAttribute('crossOrigin', 'anonymous');
+			let imageUrl = url
+			image.src = imageUrl
+			//image.onload为异步加载
+			image.onload = () => {
+				var canvas = document.createElement("canvas");
+				canvas.width = image.width;
+				canvas.height = image.height;
+				var context = canvas.getContext('2d');
+				context.drawImage(image, 0, 0, image.width, image.height);
+				var quality = 0.8;
+        //使用toDataUrl将图片转换成jpeg的格式,不要把图片压缩成png，因为压缩成png后base64的字符串可能比不转换前的长！
+        var dataURL = canvas.toDataURL("image/jpeg", quality);
+        callback && callback.call(this, dataURL)
+        return dataURL
+			}
+  }
 }
 
 let newUtils = new utils(),
@@ -344,6 +366,7 @@ let newUtils = new utils(),
   marchSetsPoint = newUtils.marchSetsPoint,
   jumpUrl = newUtils.jumpUrl,
   gameActivityJump = newUtils.gameActivityJump,
-  loadScripts = newUtils.loadScripts
+  loadScripts = newUtils.loadScripts,
+  imgToBase64 = newUtils.imgToBase64
 export default newUtils
-export {newUtils, getUrlParams, marchSetsPoint, jumpUrl, gameActivityJump, loadScripts }
+export {newUtils, getUrlParams, marchSetsPoint, jumpUrl, gameActivityJump, loadScripts, imgToBase64 }
