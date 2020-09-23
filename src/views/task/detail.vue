@@ -182,6 +182,7 @@ import Grade from '@/components/grade/grade'
 import { getTaskDetail, startTask, getAward, getCard, firstReport, durationReport, getReadAdAward } from '@/services/task'
 import { userIsVisitor, getUserCenter } from '@/services/user'
 import { jumpUrl } from '@/utils/utils'
+import { mapState } from 'vuex'
 import md5 from 'js-md5';
 import _get from 'lodash.get'
 export default {
@@ -544,8 +545,6 @@ export default {
         this.isShowReloadBtn = false
         this.isShowInstallBtn = false
         this.isShowOpenAppBtn = false
-        console.log(checkIsDownload)
-        console.log(checkIsInstall)
         /**  1.0.1, 1.0 版本包不运行分步骤下载 **/
         if(this.APP_VERSION == '1.0.1' || this.APP_VERSION == '1.0') {
           console.log('1.0.1, 1.0 版本包不运行分步骤下载')
