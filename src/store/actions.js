@@ -52,6 +52,7 @@ export default {
       if(code == 200) {
         commit('SET_USER_CENTER', data)
         localStorage.setItem('user_info', JSON.stringify(data))
+        AppCall.setData('platUserId', data.userId)
       }
     })
   }
