@@ -482,7 +482,6 @@ export default {
     },
     /** 判断用户是否要看广告 **/
     userReadAdvertiting (item) {
-      console.log(item)
       if(item.profit != 0) {
         this.confirmItem = item
         this.showReadAdvertiting = true
