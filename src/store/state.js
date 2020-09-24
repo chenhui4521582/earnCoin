@@ -2,7 +2,7 @@ let state = {
   /** 用户信息 **/
   userCenter: {},
   /** app版本 **/
-  APP_VERSION: 111,
+  APP_VERSION: null,
   /** 是否是游客 **/
   isVisitory: null,
   /** 获取设备号 **/
