@@ -51,7 +51,7 @@ export default {
       const {code, data, message} = _get(res, 'data')
       if(code == 200) {
         commit('SET_USER_CENTER', data)
-        localStorage.setItem('user_info', JSON.stringify(this.userCenter))
+        localStorage.setItem('user_info', JSON.stringify(data))
       }
     })
   }
