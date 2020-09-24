@@ -42,21 +42,75 @@
     <!-- 规则 -->
     <div class="rule"></div>
     <!-- 分享方式 -->
-
+    <Share-type v-model="showShareType"/>
   </div>
 </template>
 <script>
 import Slider from './components/slider'
+import ShareType from './components/shareType'
 export default {
   name: 'shareFriends',
   data: () => ({
-    showShareType: false
+    showShareType: true
   }),
   components: {
-    Slider
+    Slider,
+    ShareType
+  },
+  methods: {
+    comeGame () {
+      let url = '//file.beeplaying.com/group1/M00/42/89/CmcEHF8X38aAA18mAAJM8qWU0iA294.png'
+      imgToBase64(url, (dataUrl) => {
+        console.log(dataUrl)
+        AppCall.shareContent(JSON.stringify({
+          url: '',
+          title:'',
+          content: '',
+          imgUrl: dataUrl,
+          type: 0
+        }))
+      })
+    }
   }
 }
 </script>
 <style lang="less" scoped>
-
+.share-friends {
+  padding-top: 4.17rem;
+  min-height: 100vh;
+  background: url('./img/bg.png') no-repeat center top;
+  background-size: 100% 100%;
+  .back-home {
+    position: fixed;
+    left: .2rem;
+    top: .17rem;
+    z-index: 10;
+    width: 1.28rem;
+    height: .62rem;
+  }
+  .friends-list {
+    position: fixed;
+    right: .2rem;
+    top: .17rem;
+    z-index: 10;
+    width: 1.28rem;
+    height: .4rem;
+  }
+  .award {
+    .title {
+      margin: 0 auto;
+      width: 3.66rem;
+      height: .52rem;
+    }
+    .awrd-list {
+      margin: 0 auto;
+      width: 6.4rem;
+      .item {
+        display: flex;
+        justify-content: center;
+        
+      }
+    }
+  }
+}
 </style>
