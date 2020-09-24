@@ -377,6 +377,10 @@ export default {
         task_id: id,
         task_name: remark
       })
+      this.$marchSetsPoint('A_H5PT0303000045', {
+        task_id: id,
+        task_name: remark
+      })
     },
     /** 领取看广告多倍奖励 **/
     _getReadAdAward (item) {
@@ -478,9 +482,14 @@ export default {
     },
     /** 判断用户是否要看广告 **/
     userReadAdvertiting (item) {
+      console.log(item)
       if(item.profit != 0) {
         this.confirmItem = item
         this.showReadAdvertiting = true
+        this.$marchSetsPoint('A_H5PT0303000043', {
+          task_id: item.id,
+          task_name: item.remark
+        })
       }else {
         this._getAward(item)
       }
@@ -562,6 +571,10 @@ export default {
         }else {
           this.showReadAdvertiting = false
         }
+      })
+      this.$marchSetsPoint('A_H5PT0303000044', {
+        task_id: this.confirmItem.id,
+        task_name: this.confirmItem.remark
       })
     },
   },
