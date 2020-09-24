@@ -7,5 +7,9 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-
+.slider {
+  position: fixed;
+  left: 0;
+  top: 0;
+}
 </style>

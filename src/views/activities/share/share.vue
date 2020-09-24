@@ -38,7 +38,18 @@
       <div class="share-btn">立即邀请好友</div>
     </div>
     <!-- 分享数据 -->
-    <div class="share-content"></div>
+    <div class="share-content">
+      <div class="item">
+        <div class="key">累计邀请</div>
+        <div class="value">20<span class="unit">人</span></div>
+      </div>
+      <div class="line"></div>
+      <div class="item">
+        <div class="key">累计收入</div>
+        <div class="value">20<span class="unit">个</span></div>
+        <div class="money">≈23.3元</div>
+      </div>
+    </div>
     <!-- 规则 -->
     <div class="rule"></div>
     <!-- 分享方式 -->
@@ -76,10 +87,10 @@ export default {
 </script>
 <style lang="less" scoped>
 .share-friends {
-  padding-top: 4.17rem;
+  padding: 4.4rem 0 1.4rem;
   min-height: 100vh;
   background: url('./img/bg.png') no-repeat center top;
-  background-size: 100% 100%;
+  background-size: 100% auto;
   .back-home {
     position: fixed;
     left: .2rem;
@@ -97,19 +108,66 @@ export default {
     height: .4rem;
   }
   .award {
+    margin-bottom: .5rem;
     .title {
-      margin: 0 auto;
+      margin: 0 auto .06rem;
       width: 3.66rem;
       height: .52rem;
     }
     .awrd-list {
       margin: 0 auto;
+      padding: 0 .3rem;
       width: 6.4rem;
       .item {
+        padding: .2rem;
         display: flex;
-        justify-content: center;
+        justify-content: flex-start;
         
+        .icon {
+          margin-right: .35rem;
+          flex-shrink: 0;
+          width: 1.22rem;
+          height: 1.1rem;
+        }
+        &:first-child {
+          border-bottom: 1px solid  rgba(0,0,0,.15);
+        }
       }
+    }
+    .share-btn {
+      margin: 0 auto;
+      width: 5.7rem;
+      height: .9rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: .3rem;
+      font-weight: 800;
+      color: #fff;
+      background: url(./img/btn.png) no-repeat center center;
+      background-size: 100% 100%;
+    }
+  }
+  .share-content {
+    margin: 0 auto;
+    padding-top: .4rem;
+    width: 6.58rem;
+    height: 1.86rem;
+    background: url(./img/share-center.png) no-repeat center center;
+    background-size: 100% 100%;
+    display: flex;
+    justify-content: center;
+    .item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-items: center;
+    }
+    .line {
+      width: 1px;
+      height: .96rem;
+      background: #CBCBCB;
+
     }
   }
 }
