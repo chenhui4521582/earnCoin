@@ -57,7 +57,14 @@ const API = {
   userBindWechat: `${HOST.UIC_API}/uic/api/user/center/bindWechat`,
   firstReport: `${HOST.PLATFORM_API}/point/api/task/report`, //第一次进入游戏上报
   durationReport: `${HOST.PLATFORM_API}/point/api/task/duration`, //游戏时长上报
-  tokenVerify: `${HOST.UIC_API}/uic/api/user/login/tokenVerify` //验证token是否过期
+  tokenVerify: `${HOST.UIC_API}/uic/api/user/login/tokenVerify`, //验证token是否过期
 }
 
-export default API
+const activities = {
+  share_getActiveInfo: `${HOST.PLATFORM_API}/point/api/invite/activity-info`, //邀请豪礼活动  获取活动信息 
+  share_getFriends: `${HOST.PLATFORM_API}/point/api/invite/awards`, //邀请豪礼活动  好友信息 
+  share_getNotice: `${HOST.PLATFORM_API}/point/api/invite/notice-list`, //邀请豪礼活动  跑马灯 
+  share_bindUser: `${HOST.PLATFORM_API}/point/api/invite/record/{code}` //邀请豪礼活动  被邀请人下载注册后调用 
+}
+
+export default {...API, ...activities}

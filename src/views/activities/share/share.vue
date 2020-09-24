@@ -9,7 +9,11 @@
       <img class="inner-img" src="./img/friends-icon.png" alt="">
     </div>
     <!-- 跑马灯 -->
-    <Slider />
+    <Slider :list="noticeList"/>
+    <!-- 活动时间 -->
+    <div class="active-time">
+      活动时间：10月1日~10月30日
+    </div>
     <!-- 邀请奖励 -->
     <div class="award">
       <div class="title">
@@ -41,17 +45,34 @@
     <div class="share-content">
       <div class="item">
         <div class="key">累计邀请</div>
-        <div class="value">20<span class="unit">人</span></div>
+        <div class="value">
+          <span class="num">20</span>
+          <span class="unit">人</span></div>
       </div>
       <div class="line"></div>
       <div class="item">
         <div class="key">累计收入</div>
-        <div class="value">20<span class="unit">个</span></div>
+        <div class="value">
+          <span class="num">20</span>
+          <span class="unit">个</span>
+        </div>
         <div class="money">≈23.3元</div>
       </div>
     </div>
     <!-- 规则 -->
-    <div class="rule"></div>
+    <div class="rule">
+      <div class="title">
+        <img class="inner-img" src="./img/title2-icon.png" alt="">
+      </div>
+      <div class="rule-center">
+        <p><span class="dot"></span>活动日期为2020.9.27 00:00:00～2020.10.30 23:59:59</p>
+        <p><span class="dot"></span>基础奖励好友成功提现后直接发放，分成奖励第二日 12:00:00统一发放，可以在“我的-提现-金币记录”查看金 币记录。</p>
+        <p><span class="dot"></span>邀请好友分成奖励必须是在活动期间获得的金币，活动时 间之后好友获得的金币不算做分成奖励。</p>
+        <p><span class="dot"></span>被邀请的好友设备以及手机号微信号必须是之前从未下载 过且从未登陆过，本app才会记录有效，手机号必须为中 国大陆地区归属。</p>
+        <p><span class="dot"></span>邀请好友数量无上限，邀请越多奖励越多。</p>
+        <p><span class="dot"></span>若您有以下任何一种情况，游戏赚有权取消您的参与资格 以及金币收获：<br> a. 不符合参与资格<br> b. 提供虚假信息<br> c. 以任何第三</p>
+      </div>
+    </div>
     <!-- 分享方式 -->
     <Share-type v-model="showShareType"/>
   </div>
@@ -62,7 +83,34 @@ import ShareType from './components/shareType'
 export default {
   name: 'shareFriends',
   data: () => ({
-    showShareType: true
+    showShareType: true,
+    noticeList: [
+      {
+        "awardsName": "1111",
+        "inviteNum": 10,
+        "nickname": "陆江"
+      },
+      {
+        "awardsName": "1111",
+        "inviteNum": 10,
+        "nickname": "陆江"
+      },
+      {
+        "awardsName": "1111",
+        "inviteNum": 10,
+        "nickname": "陆江"
+      },
+      {
+        "awardsName": "1111",
+        "inviteNum": 10,
+        "nickname": "陆江"
+      },
+      {
+        "awardsName": "1111",
+        "inviteNum": 10,
+        "nickname": "陆江"
+      }
+    ]
   }),
   components: {
     Slider,
@@ -87,12 +135,12 @@ export default {
 </script>
 <style lang="less" scoped>
 .share-friends {
-  padding: 4.4rem 0 1.4rem;
+  padding: 2.17rem 0 1.4rem;
   min-height: 100vh;
   background: url('./img/bg.png') no-repeat center top;
   background-size: 100% auto;
   .back-home {
-    position: fixed;
+    position: absolute;
     left: .2rem;
     top: .17rem;
     z-index: 10;
@@ -100,12 +148,22 @@ export default {
     height: .62rem;
   }
   .friends-list {
-    position: fixed;
+    position: absolute;
     right: .2rem;
-    top: .17rem;
+    top: .25rem;
     z-index: 10;
     width: 1.28rem;
     height: .4rem;
+  }
+  .active-time {
+    margin-bottom: 1.88rem;
+    height: .38rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: .24rem;
+    color: #FF8A8A;
+    font-weight: 800;
   }
   .award {
     margin-bottom: .5rem;
@@ -149,7 +207,7 @@ export default {
     }
   }
   .share-content {
-    margin: 0 auto;
+    margin: 0 auto .52rem;
     padding-top: .4rem;
     width: 6.58rem;
     height: 1.86rem;
@@ -161,13 +219,67 @@ export default {
       flex: 1;
       display: flex;
       flex-direction: column;
-      justify-items: center;
+      align-items: center;
+      .key {
+        margin-bottom: .05rem;
+        font-size: .24rem;
+        color: #767676;
+        font-weight: 500;
+      }
+      .value {
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        .num {
+          line-height: 1;
+          font-size: .42rem;
+          font-weight: 800;
+        }
+        .unit {
+          font-weight: normal;
+          font-size: .2rem;
+        }
+      }
+      .money {
+        font-size: .2rem;
+        color: #FF5A00;
+        text-align: center;
+      }
     }
     .line {
       width: 1px;
       height: .96rem;
       background: #CBCBCB;
 
+    }
+  }
+  .rule {
+    .title {
+      margin: 0 auto .27rem;
+      width: 3.66rem;
+      height: .42rem;
+    }
+    .rule-center {
+      padding: 0 .4rem;
+      p {
+        padding-left: .3rem;
+        position: relative;
+        margin-bottom: .2rem;
+        font-size: .24rem;
+        color: #fff;
+        font-weight: 500;
+        .dot {
+          position: absolute;
+          display: block;
+          left: 0;
+          top: .1rem;
+          width: .12rem;
+          height: .12rem;
+          border-radius: 50%;
+          overflow: hidden;
+          background: #FFEDDC;
+        }
+      }
     }
   }
 }
