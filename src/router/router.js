@@ -170,6 +170,31 @@ export default new Router({
           }
         }
       ]
+    },
+    {
+      path: '/activities',
+      component: () => import('./baseRoute'),
+      children: [
+        {
+          path: 'shareFriends',
+          name: 'shareFriends',
+          component: () => import(/* webpackChunName: "shareFriends" */ '../views/activities/share/share'),
+          meta: {
+            title: '邀请豪礼',
+            index: 2
+          }
+        },
+        {
+          path: 'friendsList',
+          name: 'friendsList',
+          component: () => import(/* webpackChunName: "shareFriends" */ '../views/activities/share/friendsList'),
+          meta: {
+            title: '邀请豪礼',
+            index: 2
+          }
+        },
+
+      ]
     }
   ]
 })
