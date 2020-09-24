@@ -91,8 +91,7 @@
       <!-- H5任务按钮 -->
       <template v-if="taskDetail.gameType == 2">
         <div class="task-btn yellow1" v-if="taskDetail.status == 2" @click="startTaskConfirm">开始任务</div>
-        <div class="task-btn gray" v-if="taskDetail.status == 1" >任务已完成</div>
-        <div class="task-btn yellow1" v-if="taskDetail.status == 0 && taskDetail.gameType == 2" @click="taskUnderway">开始游戏</div>
+        <div class="task-btn yellow1" v-if="taskDetail.status == 0 || taskDetail.status == 1" @click="taskUnderway">开始游戏</div>
       </template>
       <!-- app任务按钮 -->
       <template v-if="taskDetail.gameType == 1">
