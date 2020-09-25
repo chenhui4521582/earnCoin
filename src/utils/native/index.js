@@ -372,29 +372,9 @@ AppCall.extend({
       AppCall.call("openMGCGame", gameId)
     } catch {}
   },
-    /*
-  *  参数1 广告位ID String
-  *  参数2 userId  String
-  *  参数3 视频方向  1为竖版，2为横版
-  *  参数4 游戏id
-  *  参数5 视频播放回调
-  */
-  advertiting: function ({ advertitingId, userId, dispalyMode, gameId}) {
-    return new Promise((resolve, reject) => {
-      try {
-        gameId = gameId || 0
-        dispalyMode = dispalyMode || 1
-        if(advertitingId && userId) {
-          AppCall.call("openAD", advertitingId, userId, dispalyMode, gameId)
-          window.adRewardVerifyCallback = function (rewardFinished) {
-            window.adRewardVerifyCallback = null
-            resolve(rewardFinished)
-          }
-        }
-      } catch (e) {
-        console.log(e)
-      }
-    })
+  //下载进度
+  downloadApk: function (url) {
+    return this.call('downloadApk', url)
   },
   // APP本地存放数据
   setData: function (key, value) {
