@@ -1,5 +1,6 @@
 <template>
   <div class="index">
+    <div class="goshare" @click="goshare">去分享</div>
     <!-- coin-info -->
     <div class="coin-info">
       <div class="coin item" @click="goWithdraw">
@@ -137,6 +138,11 @@ export default {
         }
       })
       this.$marchSetsPoint('A_H5PT0303003632')
+    },
+    goshare () {
+      this.$router.push({
+        name: 'shareFriends'
+      })
     },
     goUserAgreement () {
       window.location.href = 'https://wap.beeplaying.com/xmWap/#/my/userAgreement'

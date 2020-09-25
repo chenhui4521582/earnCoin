@@ -59,7 +59,7 @@ export default {
     text-align: center;
     font-size: .22rem;
     white-space: nowrap;
-    line-height: 23px;
+    line-height: 24px;
     color: #FFFFFF;
     font-weight: 500;
   }

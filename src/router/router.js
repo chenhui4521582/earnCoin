@@ -187,13 +187,21 @@ export default new Router({
         {
           path: 'friendsList',
           name: 'friendsList',
-          component: () => import(/* webpackChunName: "shareFriends" */ '../views/activities/share/friendsList'),
+          component: () => import(/* webpackChunName: "friendsList" */ '../views/activities/share/friendsList'),
           meta: {
             title: '邀请豪礼',
             index: 2
           }
         },
-
+        {
+          path: 'downloadPage',
+          name: 'downloadPage',
+          component: () => import(/* webpackChunName: "downloadPage" */ '../views/activities/share/downloadPage'),
+          meta: {
+            title: '邀请豪礼',
+            index: 2
+          }
+        }
       ]
     }
   ]

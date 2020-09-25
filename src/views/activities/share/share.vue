@@ -160,7 +160,7 @@ export default {
   .friends-list {
     position: absolute;
     right: .2rem;
-    top: .25rem;
+    top: .27rem;
     z-index: 10;
     width: 1.28rem;
     height: .4rem;
