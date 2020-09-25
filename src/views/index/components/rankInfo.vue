@@ -95,7 +95,6 @@ export default {
   .rank-info {
     overflow: hidden;
     margin-bottom: .2rem;
-    width: 6.6rem;
     border-radius: .3rem;
     background-repeat: no-repeat;
     background-position: center top;

@@ -50,7 +50,31 @@ const sendRedPacketToServer = function () {
   return $axios.post(Api.sendRedPacketToServer)
 }
 
-export { getYesterdayRank, getRankList, getRankTab, getIconList, userIsReceive, getRedPacketAward, sendRedPacketToServer }
+/**
+ * @description 获取新手1小时活动
+ */
+const getNewUserActive = function () {
+  return $axios.post(Api.getNewUserActive)
+}
+
+/**
+ * @description 开始新手1小时活动
+ */
+const startNewUserActive = function () {
+  return $axios.post(Api.startNewUserActive)
+}
+
+export { 
+  getYesterdayRank, 
+  getRankList, 
+  getRankTab, 
+  getIconList, 
+  userIsReceive, 
+  getRedPacketAward, 
+  sendRedPacketToServer, 
+  getNewUserActive, 
+  startNewUserActive
+}
 
 const Services = {
   getYesterdayRank,
@@ -59,6 +83,8 @@ const Services = {
   getIconList,
   userIsReceive,
   getRedPacketAward,
-  sendRedPacketToServer
+  sendRedPacketToServer,
+  getNewUserActive,
+  startNewUserActive
 }
 export default Services
