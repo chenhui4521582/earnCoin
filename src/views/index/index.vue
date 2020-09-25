@@ -1,5 +1,6 @@
 <template>
   <div class="index">
+    <div class="openAdvertiting" @click="gotoGame">进游戏</div>
     <!-- coin-info -->
     <div class="coin-info">
       <div class="coin item" @click="goWithdraw">
@@ -63,8 +64,8 @@ import AppUpdate from './components/AppUpdate'
 import RedPacket from './components/redPacket'
 import NewUserActive from './components/newUserActive'
 import AppCall from '@/utils/native'
-import { getUrlParams } from '@/utils/utils'
 import Services from '@/services/index'
+import { getUrlParams, imgToBase64 } from '@/utils/utils'
 import { getUserCenter, getOpenToken } from '@/services/user'
 import { mapState, mapActions } from 'vuex'
 import _get from 'lodash.get'
@@ -193,6 +194,24 @@ export default {
         if(!isShow) {
           this.popupSortHide()
         }
+      })
+    },
+    gotoGame () {
+      let channel = localStorage.getItem('APP_CHANNEL')
+      let token = localStorage.getItem('ACCESS_TOKEN')
+      window.location.href = `//wap.beeplaying.com/TestXiao?channel=${channel}&token=${token}`
+    },
+    comeGame () {
+      let url = '//file.beeplaying.com/group1/M00/42/89/CmcEHF8X38aAA18mAAJM8qWU0iA294.png'
+      imgToBase64(url, (dataUrl) => {
+        console.log(dataUrl)
+        AppCall.shareContent(JSON.stringify({
+          url: '',
+          title:'',
+          content: '',
+          imgUrl: dataUrl,
+          type: 0
+        }))
       })
     }
   },
