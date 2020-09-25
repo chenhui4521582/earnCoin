@@ -4,6 +4,50 @@ import AppCall from "./appcall"
 
 // 信息接口
 AppCall.extend({
+  // 埋点接口
+  infocTable: "",
+  infocCfg: {},
+  // type
+  // 0: wifi下上传
+  // 1: 都上传
+  infocType: 0,
+  infoc: async function (table, obj) {
+    let i,
+      params = []
+    // 如果只传第一个参数，则表名取默认
+    if (obj == null) {
+      obj = table
+      table = this.infocTable
+    }
+    // 加入默认参数
+    for (i in this.infocCfg) {
+      if (obj[i] == null) {
+        obj[i] = this.infocCfg[i]
+      }
+    }
+    // 参数格式化
+    for (i in obj) {
+      params.push(i + "=" + encodeURIComponent(obj[i]))
+    }
+    if (await this.has("report")) {
+      return AppCall.call(
+        "report",
+        JSON.stringify({
+          table: table,
+          type: this.infocType,
+          params: params.join("&")
+        })
+      )
+    } else if (window.Infoc) {
+      // 兼容旧版本
+      return Infoc.report(
+        JSON.stringify({
+          table: table,
+          params: params.join("&")
+        })
+      )
+    }
+  },
   // 获取个人参数
   getUserData: function () {
     return new Promise((resolve, reject) => {
@@ -76,11 +120,7 @@ AppCall.extend({
         resolve(params)
       })
     })
-  }       
-})
-
-// 工具类接口
-AppCall.extend({
+  },
   // 弹出提示
   alert: function (text) {
     text = typeof text === "object" ? JSON.stringify(text) : text + ""
@@ -112,7 +152,6 @@ AppCall.extend({
   goNoTitleBarWeb: function (URL) {
     return this.call("goNoTitleBarWeb", URL)
   },
-
   /**
    * 设置保存在app的值
    * @param key
@@ -196,59 +235,7 @@ AppCall.extend({
   // 打开APP 传包名
   openPackage: function (packageName) {
     return AppCall.call("openPackage", packageName)
-  } 
-})
-
-// 埋点接口
-AppCall.extend({
-  // 埋点接口
-  infocTable: "",
-  infocCfg: {},
-  // type
-  // 0: wifi下上传
-  // 1: 都上传
-  infocType: 0,
-  infoc: async function (table, obj) {
-    let i,
-      params = []
-    // 如果只传第一个参数，则表名取默认
-    if (obj == null) {
-      obj = table
-      table = this.infocTable
-    }
-    // 加入默认参数
-    for (i in this.infocCfg) {
-      if (obj[i] == null) {
-        obj[i] = this.infocCfg[i]
-      }
-    }
-    // 参数格式化
-    for (i in obj) {
-      params.push(i + "=" + encodeURIComponent(obj[i]))
-    }
-    if (await this.has("report")) {
-      return AppCall.call(
-        "report",
-        JSON.stringify({
-          table: table,
-          type: this.infocType,
-          params: params.join("&")
-        })
-      )
-    } else if (window.Infoc) {
-      // 兼容旧版本
-      return Infoc.report(
-        JSON.stringify({
-          table: table,
-          params: params.join("&")
-        })
-      )
-    }
-  }
-})
-
-// 调起接口
-AppCall.extend({
+  },
   // 行为调起
   navigate: function (action) {
     return AppCall.call("navigate", JSON.stringify(action))
@@ -269,7 +256,6 @@ AppCall.extend({
   shareNews: function (obj) {
     AppCall.call("shareNews", JSON.stringify(obj))
   },
-
   // 分享活动(int 活动ID)
   shareHuodong: function (activityid) {
     setTimeout(function () {
@@ -317,11 +303,7 @@ AppCall.extend({
   },
   isExistWXQQ: function (callback) {
     return this.call("isExistWXQQ", callback)
-  }
-})
-
-// 帐号操作接口
-AppCall.extend({
+  },
   // 登录
   login: function () {
     return AppCall.call("gameLogin")
@@ -365,11 +347,7 @@ AppCall.extend({
   // 保存Token
   saveToken: function (params) {
     return AppCall.call("saveToken", params)
-  }
-})
-
-// 基于服务端请求的封装
-AppCall.extend({
+  },
   // 设置请求数据
   setServerData: function (self, callback) {
     if (typeof self.data !== "object") {
@@ -399,11 +377,7 @@ AppCall.extend({
           })
       })
     }, 100)
-  }
-})
-
-// 梦工厂接口
-AppCall.extend({
+  },
   //初始化孟工厂用户ID，手机号，用户昵称
   initMGCGame: function (userId, nickName, callback) {
     try {
@@ -417,12 +391,36 @@ AppCall.extend({
       window.isOpenMGCGame = true
       AppCall.call("openMGCGame", gameId)
     } catch {}
-  }
-})
-
-//广告
-AppCall.extend({
-  /*
+  },
+  //下载进度
+  downloadApk: function (url) {
+    return this.call('downloadApk', url)
+  },
+  // 查看手机上是否下载了app 传文件名
+  checkIsDownload: function (fileName) {
+    return AppCall.call("checkIsDownload", fileName)
+  },
+  // 查看手机上是否安装了app 传包名
+  checkIsInstall: function (packageName) {
+    return AppCall.call("checkIsInstall", packageName)
+  },
+  // 安装app  传文件名
+  installApk: function (fileName) {
+    return AppCall.call("installApk", fileName)
+  },
+  // 打开APP 传包名
+  openPackage: function (packageName) {
+    return AppCall.call("openPackage", packageName)
+  },
+  // APP本地存放数据
+  setData: function (key, value) {
+    AppCall.call("setData", key, value)
+  },
+  // 读取app 本地数据
+  getData: function (key, value) {
+    return AppCall.call("getData", key, value)
+  },
+    /*
   *  参数1 广告位ID String
   *  参数2 userId  String
   *  参数3 视频方向  1为竖版，2为横版

@@ -88,6 +88,8 @@ export default {
         const { code, data, message } = _get(res, 'data')
         if(code == 200) {
           localStorage.setItem('ACCESS_TOKEN', data.accessToken)
+          // let string_userid = JSON.stringify({userId: data.userId})
+          // localStorage.setItem('user_info', string_userid)
           this.$router.replace({
             name: 'index',
             query: {

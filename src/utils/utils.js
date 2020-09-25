@@ -125,14 +125,11 @@ class utils {
         : ''
       : Request
   }
-  openGame (url, SDK, params) {
+  openGame (url, WJ_GAMETYPE) {
     let APP_CHANNEL = localStorage.getItem('APP_CHANNEL')
-    let baseUrl = `https://wap.beeplaying.com/${url}${url.includes('?') ? '&' : '?'}channel=${APP_CHANNEL}&time=${new Date().getTime()}${params || ''}`
-    if (SDK) {
-      parent.location.href = baseUrl
-    } else {
-      window.location.href = baseUrl
-    }
+    let ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN')
+    let baseUrl = `https://wap.beeplaying.com/${url}${url.includes('?') ? '&' : '?'}channel=${APP_CHANNEL}&token=${ACCESS_TOKEN}&time=${Date.now()}&wj_gameType=${WJ_GAMETYPE}`
+    window.location.href = baseUrl
   }
   move (e) {
     e.preventDefault()
@@ -188,7 +185,7 @@ class utils {
     }
     /** 跳转竞猜游戏 **/
     URL = URL.replace('/', '')
-    this.openGame(URL, SDK, params)
+    this.openGame(URL, WJ_GAMETYPE)
   }
   async marchSetsPoint (_pointId, _pointObject) {
     try {

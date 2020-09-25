@@ -179,7 +179,6 @@ import UserGuide from './components/userGuide/userGuide'
 import GameBanner from './components/gameBanner/gameBanner'
 import Grade from '@/components/grade/grade'
 import { getTaskDetail, startTask, getAward, getCard, firstReport, durationReport, getReadAdAward } from '@/services/task'
-import { userIsVisitor, getUserCenter } from '@/services/user'
 import { jumpUrl } from '@/utils/utils'
 import { mapState } from 'vuex'
 import md5 from 'js-md5';
@@ -237,7 +236,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['APP_VERSION']),
+    ...mapState(['APP_VERSION', 'userCenter']),
     activeStyle () {
       return {
         position: `relative`,
@@ -607,8 +606,7 @@ export default {
     },
     /** 梦工厂初始化 **/
     async MGC_gameInit () {
-      const userCenter = await getUserCenter()
-      const { userId, nickname } = _get(userCenter, 'data.data')
+      const { userId, nickname } = this.userCenter
       if(userId && nickname) {
         AppCall.initMGCGame(userId, nickname, this.MGC_duration)
       }
