@@ -421,10 +421,8 @@ export default {
     _getReadAdAward (item) {
       const {id} = item
       let channel = localStorage.getItem('APP_CHANNEL')
-      let userInfo = localStorage.getItem('user_info')
       let timestamp = Date.now()
-      userInfo && (userInfo = JSON.parse(userInfo))
-      let sign = md5(`channelId=${channel}&id=${id}&timestamp=${timestamp}&userId=${userInfo.userId}`)
+      let sign = md5(`channelId=${channel}&id=${id}&timestamp=${timestamp}&userId=${this.userCenter.userId}`)
       getReadAdAward({
         id,
         sign,
@@ -652,11 +650,9 @@ export default {
     },
     /** 打开广告 **/
     openAdvertiting () {
-      let user_info = localStorage.getItem('user_info')
-      user_info && (user_info = JSON.parse(user_info))
       AppCall.advertiting({
         advertitingId: 945457455,
-        userId: user_info.userId
+        userId: this.userCenter.userId
       }).then(res => {
         if(res) {
           this.showReadAdvertiting = false
