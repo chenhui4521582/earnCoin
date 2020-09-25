@@ -8,12 +8,40 @@ const share_getActiveInfo = function () {
   return $axios.post(Api.share_getActiveInfo)
 }
 
+/**
+ * @description   邀请豪礼活动  好友信息
+ */
+const share_getFriends = function () {
+  return $axios.post(Api.share_getFriends)
+}
+
+/**
+ * @description   //邀请豪礼活动  跑马灯
+ */
+const share_getNotice = function () {
+  return $axios.post(Api.share_getNotice)
+}
+
+/**
+ * @description   //邀请豪礼活动  被邀请人下载注册后调用 
+ */
+const share_bindUser = function () {
+  return $axios.post(Api.share_bindUser)
+}
+
+
 export {
-  share_getActiveInfo
+  share_getActiveInfo,
+  share_getFriends,
+  share_getNotice,
+  share_bindUser
 }
 
 const Services = {
-  share_getActiveInfo
+  share_getActiveInfo,
+  share_getFriends,
+  share_getNotice,
+  share_bindUser
 }
 
 export default Services

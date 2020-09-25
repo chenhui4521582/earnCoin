@@ -1,11 +1,11 @@
 <template>
   <transition name="pullup">
     <div class="share-type" v-if="value">
-      <div class="item">
+      <div class="item" @click="share(1)">
         <img class="inner-img" src="../img/wechat-icon.png" alt="">
         <p>微信</p>
       </div>
-      <div class="item">
+      <div class="item" @click="share(2)"> 
         <img class="inner-img" src="../img/wechat1-icon.png" alt="">
         <p>朋友圈</p>
       </div>
@@ -17,12 +17,18 @@
   </transition>
 </template>
 <script>
+import AppCall from '@/utils/native'
 export default {
   name: 'shareType',
   props: {
     value: {
       type: Boolean,
       default: false
+    }
+  },
+  methods: {
+    share (type) {
+       AppCall.shareContent(JSON.stringify({ url, title, content, type }))
     }
   }
 }
@@ -38,7 +44,7 @@ export default {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  // transform: translate(0, 1.3rem);
+  transform: translate(0, 1.3rem);
   transform: translate(0, 0);
   border-radius: .3rem .3rem 0 0;
   background: #fff;
@@ -55,5 +61,14 @@ export default {
     text-align: center;
     white-space: nowrap;
   }
+}
+.pullup-enter {
+  transform: translate(0, 1.3rem);
+}
+.pullup-enter-to {
+  transform: translate(0, 0);
+}
+.pullup-enter-active {
+  transition: all .5s;
 }
 </style>

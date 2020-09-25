@@ -2,7 +2,7 @@
   <div class="slider">
     <swiper v-if="showNotice" :options="options">
       <swiper-slide v-for="(item,index) in list" :key="index">
-        用户{{item.nickname}}{{item.taskName}}获得{{item.awardsName}}
+        恭喜玩家{{item.nickname}}赚取{{item.awardsName}}
       </swiper-slide>
     </swiper>
   </div>
@@ -26,7 +26,7 @@ export default {
       },
       direction : 'vertical',
       loop: true,
-      height: 26,
+      height: 23,
       spaceBetween : 10
     }
   }),
@@ -48,19 +48,20 @@ export default {
   top: .25rem;
   z-index: 10;
   transform: translate(-50%, 0);
-  height: 26px;
+  height: 23px;
   width: 3.7rem;
   background: rgba(0,0,0,.5);
   border-radius: .3rem;
   .swiper-slide {
     color: #fff;
     width: 100%;
-    height: 26px;
+    height: 23px;
     text-align: center;
     font-size: .22rem;
     white-space: nowrap;
-    line-height: 26px;
+    line-height: 23px;
     color: #FFFFFF;
+    font-weight: 500;
   }
 }
 </style>

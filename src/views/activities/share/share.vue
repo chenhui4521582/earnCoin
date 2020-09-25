@@ -1,18 +1,18 @@
 <template>
   <div class="share-friends">
     <!-- 返回按钮 -->
-    <div class="back-home">
+    <div class="back-home" @click="backHome">
       <img class="inner-img" src="./img/back-home.png" alt="">
     </div>
     <!-- 邀请好友列表 -->
-    <div class="friends-list">
+    <div class="friends-list" @click="goFriendsList">
       <img class="inner-img" src="./img/friends-icon.png" alt="">
     </div>
     <!-- 跑马灯 -->
     <Slider :list="noticeList"/>
     <!-- 活动时间 -->
     <div class="active-time">
-      活动时间：10月1日~10月30日
+      活动时间：{{activeInfo.beginDate | formatTime('m|d')}}～{{activeInfo.endShowDate | formatTime('m|d')}}
     </div>
     <!-- 邀请奖励 -->
     <div class="award">
@@ -39,24 +39,24 @@
           </div>
         </div>
       </div>
-      <div class="share-btn">立即邀请好友</div>
+      <div class="share-btn" @click="shareClick">立即邀请好友</div>
     </div>
     <!-- 分享数据 -->
     <div class="share-content">
       <div class="item">
         <div class="key">累计邀请</div>
         <div class="value">
-          <span class="num">20</span>
+          <span class="num">{{ activeInfo.inviteNum }}</span>
           <span class="unit">人</span></div>
       </div>
       <div class="line"></div>
       <div class="item">
         <div class="key">累计收入</div>
         <div class="value">
-          <span class="num">20</span>
+          <span class="num">{{ activeInfo.totalIncome }}</span>
           <span class="unit">个</span>
         </div>
-        <div class="money">≈23.3元</div>
+        <div class="money">≈{{ activeInfo.totalMoney }}元</div>
       </div>
     </div>
     <!-- 规则 -->
@@ -65,7 +65,7 @@
         <img class="inner-img" src="./img/title2-icon.png" alt="">
       </div>
       <div class="rule-center">
-        <p><span class="dot"></span>活动日期为2020.9.27 00:00:00～2020.10.30 23:59:59</p>
+        <p><span class="dot"></span>活动日期为{{activeInfo.beginDate}}～{{activeInfo.endShowDate}}</p>
         <p><span class="dot"></span>基础奖励好友成功提现后直接发放，分成奖励第二日 12:00:00统一发放，可以在“我的-提现-金币记录”查看金 币记录。</p>
         <p><span class="dot"></span>邀请好友分成奖励必须是在活动期间获得的金币，活动时 间之后好友获得的金币不算做分成奖励。</p>
         <p><span class="dot"></span>被邀请的好友设备以及手机号微信号必须是之前从未下载 过且从未登陆过，本app才会记录有效，手机号必须为中 国大陆地区归属。</p>
@@ -80,43 +80,23 @@
 <script>
 import Slider from './components/slider'
 import ShareType from './components/shareType'
+import { share_getActiveInfo, share_getNotice } from '@/services/activities'
+import _get from 'lodash.get'
 export default {
   name: 'shareFriends',
   data: () => ({
-    showShareType: true,
-    noticeList: [
-      {
-        "awardsName": "1111",
-        "inviteNum": 10,
-        "nickname": "陆江"
-      },
-      {
-        "awardsName": "1111",
-        "inviteNum": 10,
-        "nickname": "陆江"
-      },
-      {
-        "awardsName": "1111",
-        "inviteNum": 10,
-        "nickname": "陆江"
-      },
-      {
-        "awardsName": "1111",
-        "inviteNum": 10,
-        "nickname": "陆江"
-      },
-      {
-        "awardsName": "1111",
-        "inviteNum": 10,
-        "nickname": "陆江"
-      }
-    ]
+    showShareType: false,
+    noticeList: [],
+    activeInfo: {}
   }),
   components: {
     Slider,
     ShareType
   },
   methods: {
+    shareClick () {
+      this.showShareType = true
+    },
     comeGame () {
       let url = '//file.beeplaying.com/group1/M00/42/89/CmcEHF8X38aAA18mAAJM8qWU0iA294.png'
       imgToBase64(url, (dataUrl) => {
@@ -129,7 +109,37 @@ export default {
           type: 0
         }))
       })
+    },
+    _getNoticeList () {
+      share_getNotice().then(res => {
+        const { code, data, message } = _get(res, 'data') 
+        if(code == 200) {
+          this.noticeList = _get(res, 'data.data')
+        }
+      })
+    },
+    _getActiveInfo () {
+      share_getActiveInfo().then(res => {
+        const { code, data, message } = _get(res, 'data') 
+        if(code == 200) {
+          this.activeInfo = _get(res, 'data.data')
+        }
+      })
+    },
+    /** 后退 **/
+    backHome () {
+      this.$router.go(-1);
+    },
+    /** 好友列表也 **/
+    goFriendsList () {
+      this.$router.push({
+        name: 'friendsList'
+      })
     }
+  },
+  mounted () {
+    this._getNoticeList()
+    this._getActiveInfo()
   }
 }
 </script>
@@ -137,7 +147,7 @@ export default {
 .share-friends {
   padding: 2.17rem 0 1.4rem;
   min-height: 100vh;
-  background: url('./img/bg.png') no-repeat center top;
+  background: url('./img/bg.png') no-repeat center top #a12ffa;
   background-size: 100% auto;
   .back-home {
     position: absolute;
@@ -180,12 +190,23 @@ export default {
         padding: .2rem;
         display: flex;
         justify-content: flex-start;
-        
         .icon {
           margin-right: .35rem;
           flex-shrink: 0;
           width: 1.22rem;
           height: 1.1rem;
+        }
+        .text {
+          .name {
+            font-size: .28rem;
+            color: #D43C00;
+            font-weight: 800;
+          }
+          .desc {
+            font-size: .24rem;
+            color: #767676;
+            font-weight: 800;
+          }
         }
         &:first-child {
           border-bottom: 1px solid  rgba(0,0,0,.15);
