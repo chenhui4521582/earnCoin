@@ -29,6 +29,8 @@
       </div>
       <div class="btn" @click="goWithdraw">提现</div>
     </div>
+    <!-- banner -->
+    <Banner />
     <!-- 账号绑定 -->
     <account-bind :userInfo="userInfo" v-if="isShowAccount" @wechatBindSuccess="wechatBindSuccess"/>
     <!-- 个人中心List -->
@@ -48,6 +50,7 @@ import BaseFooter from '@/components/baseFooter/baseFooter'
 import Service from '@/components/servicePop/service'
 import AccountBind from './components/accountBind'
 import MyList from './components/list'
+import Banner from './components/banner'
 import DurationEntry from '@/components/durationEntry/durationEntry'
 import AppCall from '@/utils/native'
 import { getUserCenter } from '@/services/user'
@@ -64,9 +67,10 @@ export default {
   components: {
     Service,
     BaseFooter,
+    Banner,
     AccountBind,
     MyList,
-    DurationEntry
+    DurationEntry,
   },
   computed: {
     ...mapState(['APP_VERSION', 'isVisitory', 'deviceId']),

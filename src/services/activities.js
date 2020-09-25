@@ -37,6 +37,7 @@ const share_download = function () {
 }
 
 
+
 export {
   share_getActiveInfo,
   share_getFriends,

@@ -97,19 +97,6 @@ export default {
     shareClick () {
       this.showShareType = true
     },
-    comeGame () {
-      let url = '//file.beeplaying.com/group1/M00/42/89/CmcEHF8X38aAA18mAAJM8qWU0iA294.png'
-      imgToBase64(url, (dataUrl) => {
-        console.log(dataUrl)
-        AppCall.shareContent(JSON.stringify({
-          url: '',
-          title:'',
-          content: '',
-          imgUrl: dataUrl,
-          type: 0
-        }))
-      })
-    },
     _getNoticeList () {
       share_getNotice().then(res => {
         const { code, data, message } = _get(res, 'data') 

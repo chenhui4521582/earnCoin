@@ -58,6 +58,7 @@ const API = {
   firstReport: `${HOST.PLATFORM_API}/point/api/task/report`, //第一次进入游戏上报
   durationReport: `${HOST.PLATFORM_API}/point/api/task/duration`, //游戏时长上报
   tokenVerify: `${HOST.UIC_API}/uic/api/user/login/tokenVerify`, //验证token是否过期
+  isShowBanner: `${HOST.PLATFORM_API}/point/api/user/banner` //判断个人中心是否显示banner
 }
 
 const activities = {
