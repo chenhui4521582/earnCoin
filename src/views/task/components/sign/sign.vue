@@ -55,6 +55,9 @@
         </div>
         <p v-if="award.day == 7" class="p2">成功签到一周，下一周可获得 <span>{{allAward}}</span> 金币</p>
         <p v-else class="p2">明天再来，可以获得<span>{{nextAward}}</span>金币</p>
+        <div class="recommend" @click="recommendClick">
+          <img class="inner-img" src="../../img/sign/recommend.png" alt="">
+        </div>
       </Modal>
       <!-- 规则弹框 -->
       <Modal v-model="showRule" title="说明" saveText="知道了" @on-save="ruleCallback">
@@ -145,7 +148,7 @@ export default {
       })
     },
     _sign () {
-      // if(this.isSign) return
+      if(this.isSign) return
       sign().then( res => {
         // res = {
         //   "data":{
@@ -161,19 +164,17 @@ export default {
         //       "awardsDesc":[
         //         {"awardIcon":"/group1/M00/42/81/CmcEHF8D65-AUDFwAAAp4GWqT7s687.png","awardsNumDesc":"3500","awardsType":"1"},
         //       ],
-        //         "balance":0},
-        //       "message":null},
+        //       "balance":0,
+        //       "taskId": 41
+        //     },
+        //     "message":null
+        //   },
         // }
         let {code, data, message} = _get(res, 'data')
         if(code == 200) {
           this.showAward = true
           this.award = data
           if(this.award.day == 7) {
-            // let num = 0
-            // this.award.awardsDesc.forEach(element => {
-            //   num +=  Number(element.awardsNumD  esc)
-            // });
-            // this.award.awardsDesc.length = 1
             this.award.awardsDesc[1].awardIcon = null
           }
           this.isSign = true
@@ -206,6 +207,18 @@ export default {
       } else {
         this.$marchSetsPoint('A_H5PT0022001687')
       }
+    },
+    recommendClick () {
+      this.$router.push({
+        name: 'taskDetail',
+        query: {
+          id: this.award.taskId
+        }
+      })
+      this.$marchSetsPoint('A_H5PT0303000023', {
+        banner_id: this.award.taskId,
+        banner_name: '签到banner'
+      })
     },
     init () {
       this._getTodaySign()
@@ -534,6 +547,12 @@ export default {
   span {
     color: #D39436;
   }
+}
+.recommend {
+  position: absolute;
+  bottom: -2.2rem;
+  left: 0;
+  width: 5rem;
 }
 .rule-content {
   line-height: .42rem;
