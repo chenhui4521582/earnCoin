@@ -372,6 +372,10 @@ AppCall.extend({
       AppCall.call("openMGCGame", gameId)
     } catch {}
   },
+  //下载进度
+  downloadApk: function (url) {
+    return this.call('downloadApk', url)
+  },
   // APP本地存放数据
   setData: function (key, value) {
     AppCall.call("setData", key, value)
