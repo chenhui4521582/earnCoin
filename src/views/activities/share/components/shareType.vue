@@ -24,7 +24,6 @@
 </template>
 <script>
 import AppCall from '@/utils/native'
-import { mapState } from 'vuex'
 export default {
   name: 'shareType',
   props: {
@@ -34,12 +33,11 @@ export default {
     }
   },
   computed: {
-    ...mapState(['userCenter']),
     qrCodeUrl () {
       let userInfo = localStorage.getItem('user_info')
       userInfo && (userInfo = JSON.parse(userInfo))
       let {userId} = userInfo
-      return `https://wap.beeplaying.com/ddwgame/?type=share&userId=${userId}&token=${localStorage.getItem('ACCESS_TOKEN')}&channel=${localStorage.getItem('APP_CHANNEL')}`
+      return `https://wap.beeplaying.com/earnCoin/?from=earnShareNewUser&userId=${userId}&token=${localStorage.getItem('ACCESS_TOKEN')}&channel=${localStorage.getItem('APP_CHANNEL')}&time=${Date.now()}#/activities/downloadPage/`
     }
   },
   methods: {

@@ -62,9 +62,10 @@ const API = {
 
 const activities = {
   share_getActiveInfo: `${HOST.PLATFORM_API}/point/api/invite/activity-info`, //邀请豪礼活动  获取活动信息 
-  share_getFriends: `${HOST.TEST}/point/api/invite/awards`, //邀请豪礼活动  好友信息 
+  share_getFriends: `${HOST.PLATFORM_API}/point/api/invite/awards`, //邀请豪礼活动  好友信息 
   share_getNotice: `${HOST.PLATFORM_API}/point/api/invite/notice-list`, //邀请豪礼活动  跑马灯 
-  share_bindUser: `${HOST.PLATFORM_API}/point/api/invite/record/{code}` //邀请豪礼活动  被邀请人下载注册后调用 
+  share_bindUser: `${HOST.PLATFORM_API}/point/api/invite/record/{code}`, //邀请豪礼活动  被邀请人下载注册后调用 
+  share_download: `${HOST.PLATFORM_API}/point/api/entrance/app/download/url` //邀请豪礼活动  被邀请人下载注册后调用 
 }
 
 
