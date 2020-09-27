@@ -29,6 +29,8 @@
       </div>
       <div class="btn" @click="goWithdraw">提现</div>
     </div>
+    <!-- banner -->
+    <Banner />
     <!-- 账号绑定 -->
     <account-bind :userInfo="userCenter" v-if="isShowAccount" @wechatBindSuccess="wechatBindSuccess"/>
     <!-- 个人中心List -->
@@ -46,6 +48,7 @@ import BaseFooter from '@/components/baseFooter/baseFooter'
 import Service from '@/components/servicePop/service'
 import AccountBind from './components/accountBind'
 import MyList from './components/list'
+import Banner from './components/banner'
 import AppCall from '@/utils/native'
 import { mapState, mapActions, mapMutations } from 'vuex'
 import _get from 'lodash.get'
@@ -60,6 +63,7 @@ export default {
   components: {
     Service,
     BaseFooter,
+    Banner,
     AccountBind,
     MyList
   },
@@ -109,6 +113,8 @@ export default {
     logout () {
       /** 快捷登录，切换用户时，清除缓存在app的token **/
       AppCall.saveToken('')
+      localStorage.removeItem('ACCESS_TOKEN')
+      localStorage.removeItem('user_info')
       this.$router.push({
         name: 'loginPage'
       })
