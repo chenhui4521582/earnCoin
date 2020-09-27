@@ -22,13 +22,17 @@ export default {
   methods: {
     copy () {
       let clipboardJS = new ClipboardJS('.download-btn', {
-      text: function(){
+      text: () => {
+        if(newUtils.isWechat()) {
+          this.showWechatTips = true
+          return 
+        }
+        this.download()
         return `from=earnShareNewUser&userId=${getUrlParams('userId')}`;
       }
       })
       clipboardJS.on('success', (e) => {
         console.log(e)
-        this.download()
       });
     },
     download () {
@@ -42,10 +46,6 @@ export default {
     }
   },
   mounted () {
-    if(newUtils.isWechat()) {
-      this.showWechatTips = true
-      return 
-    }
     let access = getUrlParams('token')
     let channel = getUrlParams('channel')
     this.copy()
