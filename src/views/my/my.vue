@@ -124,6 +124,8 @@ export default {
     logout () {
       /** 快捷登录，切换用户时，清除缓存在app的token **/
       AppCall.saveToken('')
+      localStorage.removeItem('ACCESS_TOKEN')
+      localStorage.removeItem('user_info')
       this.$router.push({
         name: 'loginPage'
       })

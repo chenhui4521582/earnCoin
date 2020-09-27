@@ -35,7 +35,7 @@
           </div>
           <div class="text">
             <div class="name">分成奖励9元</div>
-            <div class="desc">好友在平台内赚取金币，额外奖励 您好友金币得30%，最高分成9元</div>
+            <div class="desc">好友在平台内赚取金币，额外奖励您，好友金币的30%，最高分成9元</div>
           </div>
         </div>
       </div>
@@ -96,6 +96,7 @@ export default {
   methods: {
     shareClick () {
       this.showShareType = true
+      this.$marchSetsPoint('A_H5PT0001000038')
     },
     _getNoticeList () {
       share_getNotice().then(res => {
@@ -122,11 +123,13 @@ export default {
       this.$router.push({
         name: 'friendsList'
       })
+      this.$marchSetsPoint('A_H5PT0001000042')
     }
   },
   mounted () {
     this._getNoticeList()
     this._getActiveInfo()
+    this.$marchSetsPoint('P_H5PT0001')
   }
 }
 </script>

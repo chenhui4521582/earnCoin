@@ -102,6 +102,10 @@ export default {
   },
   mounted () {
     this.init()
+  },
+  created () {
+    localStorage.removeItem('ACCESS_TOKEN')
+    localStorage.removeItem('user_info')
   }
 }
 </script>

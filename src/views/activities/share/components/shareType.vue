@@ -49,9 +49,18 @@ export default {
       const title = `我在这个APP里赚了${convertRmb || 20}话费，好东西也要分享给你。`
       const content = '玩游戏就能赚话费，真的能领！'
       AppCall.shareContent(JSON.stringify({ url, title, content, type }))
+      switch (type) {
+        case 0 :
+          this.$marchSetsPoint('A_H5PT0001000039')
+          break;
+        case 1 :
+          this.$marchSetsPoint('A_H5PT0001000040')
+          break;
+      }
     },
     onCopy () {
       this.$Toast('复制成功')
+      this.$marchSetsPoint('A_H5PT0001000041')
     },
     onError () {
       this.$Toast('复制失败')
