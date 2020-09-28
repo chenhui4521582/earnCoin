@@ -65,7 +65,7 @@ import NewUserActive from './components/newUserActive'
 import AppCall from '@/utils/native'
 import Services from '@/services/index'
 import { getOpenToken } from '@/services/user'
-import { getUrlParams, imgToBase64 } from '@/utils/utils'
+import { getUrlParams } from '@/utils/utils'
 import { mapState, mapActions } from 'vuex'
 import _get from 'lodash.get'
 export default {
@@ -97,7 +97,7 @@ export default {
     NewUserActive
   },
   computed: {
-    ...mapState(['APP_VERSION', 'isVisitory', 'userCenter']),
+    ...mapState(['APP_VERSION', 'userCenter']),
   },
   methods: {
     ...mapActions({
