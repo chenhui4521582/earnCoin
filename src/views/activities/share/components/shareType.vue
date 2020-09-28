@@ -44,10 +44,10 @@ export default {
     share (type) {
       let userInfo = localStorage.getItem('user_info')
       userInfo && (userInfo = JSON.parse(userInfo))
-      let {userId, convertRmb} = userInfo
+      let {userId} = userInfo
       const url = this.qrCodeUrl
-      const title = `我在这个APP里赚了${convertRmb || 20}话费，好东西也要分享给你。`
-      const content = '玩游戏就能赚话费，真的能领！'
+      const title = `我在这个APP里赚了30元，好东西也要分享给你`
+      const content = '边玩游戏边赚钱，提现无门槛!'
       AppCall.shareContent(JSON.stringify({ url, title, content, type }))
       switch (type) {
         case 0 :
