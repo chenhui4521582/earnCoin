@@ -1,72 +1,40 @@
 <template>
-  <div class="user-guide" v-if="show" @click="handClick()">>
-    <!-- step1 -->
-    <template v-if="step == 1" >
-      <div class="step"></div>
-      <div class="step-arrow">
-        <img class="inner-img" src="../../img/user-guide/guide-arrow1.png" alt="">
+  <div class="user-guide" v-if="show" @click="hide">>
+    <div class="step"></div>
+    <div class="step-arrow">
+      <img class="inner-img" src="../../img/user-guide/guide-arrow1.png" alt="">
+    </div>
+    <div class="step-center">
+      <div class="tips">
+        <img class="inner-img" src="../../img/user-guide/guide-tips.png" alt="">
       </div>
-      <div class="step-center">
-        <div class="tips">
-          <img class="inner-img" src="../../img/user-guide/guide-tips.png" alt="">
-        </div>
-        <div class="title">
-          <img class="title-img1" src="../../img/user-guide/guide-title.png" alt="">
-          <img class="title-img2" src="../../img/user-guide/guide-step1.png" alt="">
-          <div class="btn">知道了</div>
-        </div>
-        <div class="text">
-          <p>点击“开始任务”或“下载赚钱”下载应用，</p>
-          <p>注册账号回到页面确定账号信息，如未显示，请点击“刷新”</p>
-        </div>
+      <div class="title">
+        <img class="title-img1" src="../../img/user-guide/guide-title.png" alt="">
+        <img class="title-img2" src="../../img/user-guide/guide-step1.png" alt="">
+        <div class="btn">知道了</div>
       </div>
-    </template>
-    <!-- step2 -->
-    <template v-if="step == 2" >
-      <div class="step1"></div>
-      <div class="step1-arrow">
-        <img class="inner-img" src="../../img/user-guide/guide-arrow2.png" alt="">
+      <div class="text">
+        <p>点击“开始任务”或“下载赚钱”下载应用，</p>
+        <p>注册账号回到页面确定账号信息，如未显示，请点击“刷新”</p>
       </div>
-      <div class="step1-center">
-        <div class="tips">
-          <img class="inner-img" src="../../img/user-guide/guide-tips.png" alt="">
-        </div>
-        <div class="title">
-          <img class="title-img1" src="../../img/user-guide/guide-title.png" alt="">
-          <img class="title-img2" src="../../img/user-guide/guide-step2.png" alt="">
-          <div class="btn">好的</div>
-        </div>
-        <div class="text">
-          <p>按要求完成任务后，返回任务页面，</p>
-          <p>查看奖励是否发放，如未发放，点击“刷新”</p>
-        </div>
-      </div>
-    </template>
+    </div>
   </div>
 </template>
 <script>
 export default {
   name: 'userGuide',
   data: () => ({
-    step: 1,
     show: false
   }),
   methods: {
-    handClick () {
-      if(this.step == 1) {
-        this.step = 2
-      }else {
-        this.show = false
-      }
-    },
     hide () {
       this.show = false
     },
     init () {
-      let cacheTime = localStorage.getItem('userGuide')
+      let cacheTime = localStorage.getItem('detailUserGuide')
       if (!cacheTime) {
         this.show = true;
-        localStorage.setItem('userGuide', Date.now())
+        localStorage.setItem('detailUserGuide', Date.now())
       }
     }
   },
