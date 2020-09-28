@@ -144,10 +144,11 @@ export default {
       const userPrivacy = localStorage.getItem('userPrivacy')
       this.ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN')
       this.deviceId = await this._getDeviceId()
-      if(!userPrivacy) {
-        this.showPrivacy = true
-      }
-      else if (this.ACCESS_TOKEN) {
+      // if(!userPrivacy) {
+      //   this.showPrivacy = true
+      // }
+      // else
+      if (this.ACCESS_TOKEN) {
         this._tokenVerify()
       } else {
         // 6b2dc0d2-7aa4-3d43-9811-4fb832b49e6f
