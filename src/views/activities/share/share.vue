@@ -95,6 +95,10 @@ export default {
   },
   methods: {
     shareClick () {
+      if(this.activeInfo.state == 2) { 
+        this.$Toast('活动已结束')
+        return  
+      }
       this.showShareType = true
       this.$marchSetsPoint('A_H5PT0001000038')
     },
@@ -111,6 +115,9 @@ export default {
         const { code, data, message } = _get(res, 'data') 
         if(code == 200) {
           this.activeInfo = _get(res, 'data.data')
+          if(this.activeInfo.state == 2) { 
+            this.$Toast('活动已结束')
+          }
         }
       })
     },
