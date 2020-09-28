@@ -392,6 +392,14 @@ AppCall.extend({
   openPackage: function (packageName) {
     return AppCall.call("openPackage", packageName)
   },
+  // 获取粘贴板
+  getClipboardContent: function () {
+    return this.call('getClipboardContent')
+  },
+  // 清空粘贴板
+  clearClipboardContent: function() {
+    return this.call('clearClipboardContent')
+  },
   // APP本地存放数据
   setData: function (key, value) {
     AppCall.call("setData", key, value)

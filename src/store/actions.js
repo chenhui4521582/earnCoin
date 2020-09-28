@@ -1,5 +1,6 @@
 import AppCall from '@/utils/native/index'
 import { userIsVisitor, getUserCenter } from '@/services/user'
+import { share_userRelevance } from '@/services/activities'
 import { qttReport } from '@/services/qutoutiao'
 import _get from 'lodash.get'
 export default {
@@ -56,6 +57,8 @@ export default {
         commit('SET_USER_CENTER', data)
         localStorage.setItem('user_info', JSON.stringify(data))
         AppCall.setData('platUserId', data.userId)
+        /** 新手拉新，关联用户接口 **/
+        share_userRelevance(data.userId)
       }
     })
   }
