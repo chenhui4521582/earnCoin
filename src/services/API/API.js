@@ -8,7 +8,7 @@ export const HOST = {
   QUOITS_API: '//quoits-api.beeplaying.com',
   SMARTEYES_API: '//smarteyes-api.beeplaying.com',
   MARCH_BURIED_POINT: 'https://log-center.beeplaying.com/am/log/v1/json',
-  TEST: 'http://rap2.taobao.org:38080/app/mock/264196/',
+  TEST: 'http://rap2api.taobao.org/app/mock/264196/',
   local: 'http://10.33.80.16:7080'
 }
 const API = {
@@ -59,7 +59,17 @@ const API = {
   tokenVerify: `${HOST.UIC_API}/uic/api/user/login/tokenVerify`, //验证token是否过期
   getNewUserActive: `${HOST.PLATFORM_API}/point/new/user/welfare/popup`, //获取新手1小时活动
   startNewUserActive: `${HOST.PLATFORM_API}/point/new/user/welfare/apply`, //开始新手1小时活动
-  getReadAdAward: `${HOST.PLATFORM_API}/point/api/task/drawAward` //看广告领奖励
+  getReadAdAward: `${HOST.PLATFORM_API}/point/api/task/drawAward`, //看广告领奖励
+  isShowBanner: `${HOST.PLATFORM_API}/point/api/user/banner` //判断个人中心是否显示banner
 }
 
-export default API
+const activities = {
+  share_getActiveInfo: `${HOST.PLATFORM_API}/point/api/invite/activity-info`, //邀请豪礼活动  获取活动信息 
+  share_getFriends: `${HOST.PLATFORM_API}/point/api/invite/awards`, //邀请豪礼活动  好友信息 
+  share_getNotice: `${HOST.PLATFORM_API}/point/api/invite/notice-list`, //邀请豪礼活动  跑马灯 
+  share_bindUser: `${HOST.PLATFORM_API}/point/api/invite/record/{code}`, //邀请豪礼活动  被邀请人下载注册后调用 
+  share_download: `${HOST.PLATFORM_API}/point/api/entrance/app/download/url` //邀请豪礼活动  被邀请人下载注册后调用 
+}
+
+
+export default {...API, ...activities}

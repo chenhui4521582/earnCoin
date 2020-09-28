@@ -131,6 +131,13 @@ const tokenVerify = function (params) {
   return $axios.post(Api.tokenVerify, params)
 }
 
+/**
+ * @description 用户  判断个人中心是否显示banner
+ */
+const isShowBanner = function (params) {
+  return $axios.post(Api.isShowBanner, params)
+}
+
 export { 
   getUserCenter,
   getPhoneCode,
@@ -149,7 +156,8 @@ export {
   getAppVersion,
   userIsVisitor,
   userBindWechat,
-  tokenVerify
+  tokenVerify,
+  isShowBanner
 }
 
 const Services = {
@@ -169,6 +177,7 @@ const Services = {
   checkOriginalPhoneNo,
   getAppVersion,
   userIsVisitor,
-  userBindWechat
+  userBindWechat,
+  isShowBanner
 }
 export default Services

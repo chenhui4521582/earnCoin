@@ -170,6 +170,39 @@ export default new Router({
           }
         }
       ]
+    },
+    {
+      path: '/activities',
+      component: () => import('./baseRoute'),
+      children: [
+        {
+          path: 'shareFriends',
+          name: 'shareFriends',
+          component: () => import(/* webpackChunName: "shareFriends" */ '../views/activities/share/share'),
+          meta: {
+            title: '邀请豪礼',
+            index: 2
+          }
+        },
+        {
+          path: 'friendsList',
+          name: 'friendsList',
+          component: () => import(/* webpackChunName: "friendsList" */ '../views/activities/share/friendsList'),
+          meta: {
+            title: '邀请豪礼',
+            index: 2
+          }
+        },
+        {
+          path: 'downloadPage',
+          name: 'downloadPage',
+          component: () => import(/* webpackChunName: "downloadPage" */ '../views/activities/share/downloadPage'),
+          meta: {
+            title: '邀请豪礼',
+            index: 2
+          }
+        }
+      ]
     }
   ]
 })
