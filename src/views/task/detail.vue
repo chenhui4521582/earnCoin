@@ -333,6 +333,23 @@ export default {
         this.$refs.refreshBtn.classList.remove('animation')
       },1000)
     },
+    /** 下载APK **/
+    downloadApk () {
+      if(this.downlock) {
+        this.$Toast('请勿连续点击')
+        return 
+      } 
+      this.copy(() => {
+        this.taskDetail.status = 0
+        sessionStorage.setItem(`downloadLength${this.taskDetail.id}`, 0)
+        const url = this.taskDetail.download.split('?')[0]
+        AppCall.downloadApk(url)
+      })
+      this.downlock = true
+      setTimeout( () => {
+        this.downlock = false
+      }, 3000)
+    },
     /** 打开H5游戏**/
     open_h5_game () {
       localStorage.removeItem('earnCoinDuration')
@@ -344,14 +361,28 @@ export default {
     /** 打开梦工厂游戏 **/
     open_MGC_game () {
       localStorage.removeItem('earnCoinDuration')
-      firstReport({
+      this.taskDetail.gameId && firstReport({
         value: this.taskDetail.gameId
       }).then(res => {
         const {code, data, message} = _get(res, 'data')
         if(code == 200 && data.sign) {
           localStorage.setItem('MGC_SIGN', data.sign)
-          this.taskDetail.gameId && AppCall.openMGCGame(this.taskDetail.gameId)
+          AppCall.openMGCGame(this.taskDetail.gameId)
+          this.taskDetail.status = 0
         }
+      })
+    },
+    /** 开始任务按钮点击弹出确认弹框 **/
+    startTaskConfirm () {
+      /** gameType == 1 下载app处理逻辑 **/
+      if(this.taskDetail.gameType == 1) {
+        this.showApptaskConfirm = true
+      } else {
+        this.showH5taskConfirm = true
+      }
+      this.$marchSetsPoint('A_H5PT0303000016', {
+        game_id: this.taskDetail.gameId,
+        game_name: this.taskDetail.name
       })
     },
     /** 开始任务 **/
@@ -369,7 +400,7 @@ export default {
             this.open_MGC_game()
           }
           /** h5游戏 **/
-          else {
+          else if (this.taskDetail.gameType == 2) {
             this.open_h5_game()
           }
           this.$marchSetsPoint('A_H5PT0303000017', {
@@ -381,18 +412,33 @@ export default {
       this.showApptaskConfirm = false
       this.showH5taskConfirm = false
     },
-    /** 开始任务询问 **/
-    startTaskConfirm () {
+    /** 任务进行中按钮点击 **/
+    taskUnderway () {
       /** gameType == 1 下载app处理逻辑 **/
       if(this.taskDetail.gameType == 1) {
-        this.showApptaskConfirm = true
-      } else {
-        this.showH5taskConfirm = true
+        this.$Toast('任务已领取,打开app试玩吧')
       }
-      this.$marchSetsPoint('A_H5PT0303000016', {
-        game_id: this.taskDetail.gameId,
-        game_name: this.taskDetail.name
-      })
+      /** 梦工厂游戏 **/
+      else if (this.taskDetail.gameSource == 1) {
+        this.open_MGC_game()
+      }
+      /** h5游戏 **/
+      else if (this.taskDetail.gameType == 2) {
+        this.open_h5_game()
+      }
+    },
+    /** 领取奖励的时候判断用户是否要看广告 **/
+    userReadAdvertiting (item) {
+      if(item.profit != 0) {
+        this.confirmItem = item
+        this.showReadAdvertiting = true
+        this.$marchSetsPoint('A_H5PT0303000043', {
+          task_id: item.id,
+          task_name: item.remark
+        })
+      }else {
+        this._getAward(item)
+      }
     },
     /** 领取奖励 **/
     _getAward (item) {
@@ -443,21 +489,6 @@ export default {
     awardCallback () {
       this.showAward = false
     },
-    /** 任务进行中 **/
-    taskUnderway () {
-      /** gameType == 1 下载app处理逻辑 **/
-      if(this.taskDetail.gameType == 1) {
-        this.$Toast('任务已领取,打开app试玩吧')
-      }
-      /** 梦工厂游戏 **/
-      else if (this.taskDetail.gameSource == 1) {
-        this.open_MGC_game()
-      }
-      /** h5游戏 **/
-      else{
-        this.open_h5_game()
-      }
-    },
     /** 任务列表点击 **/
     listItemClick (index) {
       if(index == 0) {
@@ -500,19 +531,6 @@ export default {
       }
       this.showExchangeCard = true
     },
-    /** 判断用户是否要看广告 **/
-    userReadAdvertiting (item) {
-      if(item.profit != 0) {
-        this.confirmItem = item
-        this.showReadAdvertiting = true
-        this.$marchSetsPoint('A_H5PT0303000043', {
-          task_id: item.id,
-          task_name: item.remark
-        })
-      }else {
-        this._getAward(item)
-      }
-    },
     /** 跳转手机绑定页 **/
     goPhoneBind () {
       this.$router.push({
@@ -522,23 +540,6 @@ export default {
     /** 复制成功回调 **/
     onSuccess () {
       this.$Toast('复制成功，请前往游戏兑换礼包')
-    },
-    /** 重新下载 **/
-    downloadApk () {
-      if(this.downlock) {
-        this.$Toast('请勿连续点击')
-        return 
-      } 
-      this.copy(() => {
-        this.taskDetail.status = 0
-        sessionStorage.setItem(`downloadLength${this.taskDetail.id}`, 0)
-        const url = this.taskDetail.download.split('?')[0]
-        AppCall.downloadApk(url)
-      })
-      this.downlock = true
-      setTimeout( () => {
-        this.downlock = false
-      }, 3000)
     },
     /** 计算APP下载的按钮状态 **/
     async appBtnStatus () {
