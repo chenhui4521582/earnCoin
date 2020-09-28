@@ -31,7 +31,7 @@
         </div>
         <div class="item">
           <div class="icon">
-             <img class="inner-img" src="./img/money1-icon.png" alt="">
+             <img class="inner-img" src="./img/money9-icon.png" alt="">
           </div>
           <div class="text">
             <div class="name">分成奖励9元</div>
@@ -54,7 +54,7 @@
         <div class="key">累计收入</div>
         <div class="value">
           <span class="num">{{ activeInfo.totalIncome }}</span>
-          <span class="unit">个</span>
+          <span class="unit">金币</span>
         </div>
         <div class="money">≈{{ activeInfo.totalMoney }}元</div>
       </div>
@@ -66,7 +66,7 @@
       </div>
       <div class="rule-center">
         <p><span class="dot"></span>活动日期为{{activeInfo.beginDate}}～{{activeInfo.endShowDate}}</p>
-        <p><span class="dot"></span>基础奖励好友成功提现后直接发放，分成奖励第二日 12:00:00统一发放，可以在“我的-提现-金币记录”查看金 币记录。</p>
+        <p><span class="dot"></span>基础奖励好友成功提现后直接发放，分成奖励第二日 12:00:00统一发放，可以在“我的-提现-金币记录”查看金币记录。</p>
         <p><span class="dot"></span>邀请好友分成奖励必须是在活动期间获得的金币，活动时 间之后好友获得的金币不算做分成奖励。</p>
         <p><span class="dot"></span>被邀请的好友设备以及手机号微信号必须是之前从未下载 过且从未登陆过，本app才会记录有效，手机号必须为中 国大陆地区归属。</p>
         <p><span class="dot"></span>邀请好友数量无上限，邀请越多奖励越多。</p>
