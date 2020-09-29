@@ -5,6 +5,9 @@
       1.点击右上角“...”按钮；<br>
       2.选择浏览器打开。
     </div>
+    <div class="bottom-tips">
+      *所述金额是任务累计获得
+    </div>
     <div class="download-btn"></div>
   </div>
 </template>
@@ -28,7 +31,7 @@ export default {
           return 
         }
         this.download()
-        return `from=earnShareNewUser&userId=${getUrlParams('userId')}`;
+        return `from=earnShareNewUser&userId=${getUrlParams('userId')}`
       }
       })
       clipboardJS.on('success', (e) => {
@@ -76,6 +79,13 @@ export default {
     height: 1.16rem;
     background: url(./img/wechat-tips.png) no-repeat center top;
     background-size: 100% 100%;
+  }
+  .bottom-tips {
+    position: absolute;
+    bottom: .2rem;
+    left: .2rem;
+    color: #9e63f5;
+    font-size: .18rem;
   }
   .download-btn {
     position: absolute;
