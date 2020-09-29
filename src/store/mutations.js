@@ -1,6 +1,5 @@
 export default {
   SET_USER_CENTER (state, data) {
-    console.log()
     state.userCenter = {...state.userCenter, ...data}
   },
   SET_VISITORY (state, data) {

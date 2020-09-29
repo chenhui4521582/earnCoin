@@ -23,7 +23,6 @@ export default {
     _getBanner () {
       isShowBanner().then(res => {
         const { code, data, message } = _get(res, 'data')
-        console.log(data)
         if(code == 200) {
           this.img = _get(res, 'data.data.img', '')
           this.url = _get(res, 'data.data.url', '')

@@ -43,7 +43,7 @@ const share_userRelevance = async function (currentUserID) {
   /** 获取粘贴板数据 **/
   let copy = await AppCall.getClipboardContent()
   let from = copy && copy.split('&')[0].replace('from=', '')
-  let userId = copy.split('&')[1].replace('userId=', '')
+  let userId = copy && copy.split('&')[1].replace('userId=', '')
   if (from == 'earnShareNewUser' && userId && currentUserID) {
     try {
       let url = `//platform-api.beeplaying.com/point/api/invite/record/${userId}_${currentUserID}`
