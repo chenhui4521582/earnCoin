@@ -9,15 +9,13 @@
         <img class="inner-img" src="../img/wechat1-icon.png" alt="">
         <p>朋友圈</p>
       </div>
-      <div class="item">
+      <div class="item"
+        v-clipboard:copy="qrCodeUrl"
+        v-clipboard:success="onCopy"
+        v-clipboard:error="onError"
+      >
         <img class="inner-img" src="../img/copy-icon.png" alt="">
-        <p 
-          v-clipboard:copy="qrCodeUrl"
-          v-clipboard:success="onCopy"
-          v-clipboard:error="onError"
-        >
-          复制链接
-        </p>
+        <p>复制链接</p>
       </div>
     </div>
   </transition>

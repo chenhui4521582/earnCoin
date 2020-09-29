@@ -216,26 +216,6 @@ AppCall.extend({
   closeApp: function () {
     return this.call("closeApp")
   },
-  //下载进度
-  downloadApk: function (url) {
-    return this.call('downloadApk', url)
-  },
-  // 查看手机上是否下载了app 传文件名
-  checkIsDownload: function (fileName) {
-    return AppCall.call("checkIsDownload", fileName)
-  },
-  // 查看手机上是否安装了app 传包名
-  checkIsInstall: function (packageName) {
-    return AppCall.call("checkIsInstall", packageName)
-  },
-  // 安装app  传文件名
-  installApk: function (fileName) {
-    return AppCall.call("installApk", fileName)
-  },
-  // 打开APP 传包名
-  openPackage: function (packageName) {
-    return AppCall.call("openPackage", packageName)
-  },
   // 行为调起
   navigate: function (action) {
     return AppCall.call("navigate", JSON.stringify(action))
@@ -411,6 +391,14 @@ AppCall.extend({
   // 打开APP 传包名
   openPackage: function (packageName) {
     return AppCall.call("openPackage", packageName)
+  },
+  // 获取粘贴板
+  getClipboardContent: function () {
+    return this.call('getClipboardContent')
+  },
+  // 清空粘贴板
+  clearClipboardContent: function() {
+    return this.call('clearClipboardContent')
   },
   // APP本地存放数据
   setData: function (key, value) {

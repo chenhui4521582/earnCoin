@@ -1,5 +1,6 @@
 import AppCall from '@/utils/native/index'
 import { userIsVisitor, getUserCenter } from '@/services/user'
+import { share_userRelevance } from '@/services/activities'
 import { qttReport } from '@/services/qutoutiao'
 import _get from 'lodash.get'
 export default {
@@ -35,9 +36,12 @@ export default {
     } catch {}
   },
   /** 趣头条绑定回调 **/
-  QTT_REPORT ({ commit, state }, type) {
+  async QTT_REPORT ({ commit }, type) {
+    let productData = await AppCall.getProductData()
+    productData && (productData = JSON.parse(productData))
+    commit('SET_ANDROID_ID', productData.androidId)
     qttReport({
-      deviceNum: state.deviceId,
+      deviceNum: productData.androidId,
       type: type
     }).then(res => {
       if(type==0) {
@@ -53,6 +57,8 @@ export default {
         commit('SET_USER_CENTER', data)
         localStorage.setItem('user_info', JSON.stringify(data))
         AppCall.setData('platUserId', data.userId)
+        /** 新手拉新，关联用户接口 **/
+        share_userRelevance(data.userId)
       }
     })
   }

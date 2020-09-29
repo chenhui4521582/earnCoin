@@ -5,7 +5,9 @@ let state = {
   APP_VERSION: null,
   /** 是否是游客 **/
   isVisitory: null,
-  /** 获取设备号 **/
-  deviceId: null
+  /** 设备号 **/
+  deviceId: null,
+  /** android_id **/
+  android_id: null
 }
 export default state

@@ -11,5 +11,8 @@ export default {
   },
   SET_DEVICEID (state, data) {
     state.deviceId = data
+  },
+  SET_ANDROID_ID (state, data) {
+    state.android_id = data
   }
 }

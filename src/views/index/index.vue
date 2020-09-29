@@ -1,6 +1,5 @@
 <template>
-  <div class="index">
-    <div class="goshare" @click="goshare">去分享</div>
+    <div class="index">
     <!-- coin-info -->
     <div class="coin-info">
       <div class="coin item" @click="goWithdraw">
@@ -64,8 +63,8 @@ import AppUpdate from './components/AppUpdate'
 import RedPacket from './components/redPacket'
 import NewUserActive from './components/newUserActive'
 import Services from '@/services/index'
-import { getUrlParams } from '@/utils/utils'
 import { getOpenToken } from '@/services/user'
+import { getUrlParams } from '@/utils/utils'
 import { mapState, mapActions } from 'vuex'
 import _get from 'lodash.get'
 export default {

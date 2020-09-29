@@ -49,8 +49,6 @@ export default {
     }
   },
   mounted () {
-    let access = getUrlParams('token')
-    let channel = getUrlParams('channel')
     this.copy()
   }
 }
