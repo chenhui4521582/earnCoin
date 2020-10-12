@@ -158,22 +158,22 @@ export default {
     },
     /** 首页弹框排序Init **/
     popupSortInit () {
-      /** 服务器返回来的3个弹框 **/
+      /** 服务器返回来的2个弹框 **/
       this.popupSort.serverSort = [1, 4]
       /** 打开第一个弹框 **/
       let index = this.popupSort.serverSort[this.popupSort.currentIndex]
       let popup = this.popupSort.popup[index] || ''
-      this.openPopup(popup)
+      this.popupSortOpen(popup)
     },
     /** 首页弹框排序->关闭弹框 **/
     popupSortHide () {
       this.popupSort.currentIndex ++
       let index = this.popupSort.serverSort[this.popupSort.currentIndex]
       let popup = this.popupSort.popup[index] || ''
-      this.openPopup(popup)
+      this.popupSortOpen(popup)
     },
     /** 首页弹框排序->打开弹框 **/
-    openPopup (popup) {
+    popupSortOpen (popup) {
       if(!popup) return 
       // /** 判断不同平台的新手引导 **/
       if (popup == 'userGuide' && this.APP_VERSION) {
