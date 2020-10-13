@@ -64,6 +64,13 @@ const startNewUserActive = function () {
   return $axios.post(Api.startNewUserActive)
 }
 
+/**
+ * @description 关服公告
+ */
+const closeServer = function () {
+  return $axios.post(Api.closeServer)
+}
+
 export { 
   getYesterdayRank, 
   getRankList, 
@@ -73,7 +80,8 @@ export {
   getRedPacketAward, 
   sendRedPacketToServer, 
   getNewUserActive, 
-  startNewUserActive
+  startNewUserActive,
+  closeServer
 }
 
 const Services = {
@@ -85,6 +93,7 @@ const Services = {
   getRedPacketAward,
   sendRedPacketToServer,
   getNewUserActive,
-  startNewUserActive
+  startNewUserActive,
+  closeServer
 }
 export default Services

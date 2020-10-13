@@ -13,6 +13,9 @@
       <div class="light2" v-if="type==4">
         <img class="inner-img" src="./assets/hight-title2.png" alt="">
       </div>
+      <div class="light3" v-if="type==5">
+        <img class="inner-img" src="./assets/hight-title3.png" alt="">
+      </div>
       <div class="modal-content">
         <div class="header">
           <span>{{title}}</span>
@@ -157,6 +160,15 @@ export default {
     left: 50%;
     top: 0;
     transform: translate(-50%, -2.1rem);
+    width: 5rem;
+    height: 3.12rem;
+    z-index: 1;
+  }
+  .light3 {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translate(-50%, -2.2rem);
     width: 5rem;
     height: 3.12rem;
     z-index: 1;

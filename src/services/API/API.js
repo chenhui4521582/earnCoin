@@ -60,7 +60,8 @@ const API = {
   getNewUserActive: `${HOST.PLATFORM_API}/point/new/user/welfare/popup`, //获取新手1小时活动
   startNewUserActive: `${HOST.PLATFORM_API}/point/new/user/welfare/apply`, //开始新手1小时活动
   getReadAdAward: `${HOST.PLATFORM_API}/point/api/task/drawAward`, //看广告领奖励
-  isShowBanner: `${HOST.PLATFORM_API}/point/api/user/banner` //判断个人中心是否显示banner
+  isShowBanner: `${HOST.PLATFORM_API}/point/api/user/banner`, //判断个人中心是否显示banner
+  closeServer: `${HOST.PLATFORM_API}/point/api/entrance/close/server` //关服公告
 }
 
 const activities = {

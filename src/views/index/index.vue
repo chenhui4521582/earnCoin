@@ -51,6 +51,10 @@
     <New-user-active ref="newUserActive" @popupSortHide="popupSortHide"/>
     <!-- 红包 -->
     <Red-packet ref="redPacket" @refresh="_getUserCenter" @popupSortHide="popupSortHide" />
+    <!-- H5关服弹框 -->
+    <H5-close-server ref="h5CloseServer" @popupSortHide="popupSortHide"/>
+    <!-- app关服弹框 -->
+    <App-close-server ref="appCloseServer" @popupSortHide="popupSortHide"/>
   </div>
 </template>
 <script>
@@ -58,6 +62,8 @@ import BaseFooter from '@/components/baseFooter/baseFooter'
 import Navigation from './components/navigation'
 import H5UserGuide from './components/h5UserGuide'
 import AppUserGuide from './components/appUserGuide'
+import AppCloseServer from './components/appCloseServer'
+import H5CloseServer from './components/h5CloseServer'
 import RankInfo from './components/rankInfo'
 import AppUpdate from './components/AppUpdate'
 import RedPacket from './components/redPacket'
@@ -79,7 +85,8 @@ export default {
         1: 'appUpdate',
         2: 'redPacket',
         3: 'userGuide',
-        4: 'newUserActive'
+        4: 'newUserActive',
+        5: 'closeServer'
       },
       currentIndex: 0,
       serverSort: []
@@ -92,6 +99,8 @@ export default {
     AppUpdate,
     H5UserGuide,
     AppUserGuide,
+    AppCloseServer,
+    H5CloseServer,
     RedPacket,
     NewUserActive
   },
@@ -159,7 +168,7 @@ export default {
     /** 首页弹框排序Init **/
     popupSortInit () {
       /** 服务器返回来的2个弹框 **/
-      this.popupSort.serverSort = [1, 4]
+      this.popupSort.serverSort = [1, 4, 5]
       /** 打开第一个弹框 **/
       let index = this.popupSort.serverSort[this.popupSort.currentIndex]
       let popup = this.popupSort.popup[index] || ''
@@ -175,13 +184,16 @@ export default {
     /** 首页弹框排序->打开弹框 **/
     popupSortOpen (popup) {
       if(!popup) return 
-      // /** 判断不同平台的新手引导 **/
-      if (popup == 'userGuide' && this.APP_VERSION) {
-        popup = 'appUserGuide'
-      } 
-      /** 判断不同平台的新手引导 **/
-      if (popup == 'userGuide' && !this.APP_VERSION) {
-        popup = 'h5UserGuide'
+      let curPopup = ''
+      switch (popup) {
+        /** 判断不同平台的新手引导 **/
+        case 'userGuide':
+          popup = this.APP_VERSION ? 'appUserGuide' : 'h5UserGuide' 
+          break
+        /** 判断不同平台的关服弹框 **/
+        case 'closeServer': 
+          popup = this.APP_VERSION ? 'appCloseServer' : 'h5CloseServer' 
+          break
       }
       this.$refs[popup].init(isShow => {
         if(!isShow) {
